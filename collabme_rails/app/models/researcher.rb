@@ -1,0 +1,3 @@
+class Researcher < ActiveRecord::Base
+  attr_accessible :email, :name
+end
