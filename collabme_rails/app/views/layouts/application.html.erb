@@ -7,8 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+	<div class="header banner"><a href="/"><img src="assets/logo.png"></img></a></div> 
+	<div class="body">
+		<%= yield %>
+	</div>
+	<div class="footer banner">
+		<p>Contact: <a href="mailto:CollabMe@null.net">E-Mail</a>&nbsp;<a href="https://github.com/jnthntatum/CollabMe">GitHub</a></p>
+	</div> 
 </body>
 </html>
