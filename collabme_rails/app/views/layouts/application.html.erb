@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-	<div class="header banner"><a href="/"><img src="assets/logo.png"></img></a></div> 
+	<div class="header banner"><a href="/"><%= image_tag "/assets/logo.png"%></a></div> 
 	<div class="body">
 		<%= yield %>
 	</div>
