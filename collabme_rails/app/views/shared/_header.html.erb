@@ -1,0 +1,14 @@
+<div class="header banner">
+	<div id="logo"> <a href="/"><%= image_tag "/assets/logo.png"%></a></div>
+	<div id="search_bar"><%= form_tag("/", :method => "get") do %>
+	  	<%= select_tag(:type, options_for_select([["Researchers", 1], ["Groups", 2], ["Projects", 3]], 1)) %>
+	  	<%= text_field_tag(:q) %>
+	  	<%= submit_tag("->") %>
+		<% end %>
+	</div>
+	<div id="quick_links">
+		<span><a href="/projects">p</a>
+		<a href="/groups">g</a>
+		<a href="/researchers">r</a></span>
+	</div>  
+</div>

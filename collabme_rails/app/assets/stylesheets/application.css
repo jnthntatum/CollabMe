@@ -29,6 +29,28 @@ div.banner{
 	padding-left:10px;
 
 }
+
+
+.header a{
+	display: inline-block;
+	position: inherit; 
+}
+
+.header div{
+	display: inline-block;
+	height: 50px;
+	min-height: 50px;
+	max-height: 50px;
+	/*position: absolute; 
+	top: 0px;*/
+	margin: 0px;
+	padding: 0px;
+	border: none; 
+}
+
+
+
+
 .banner < h1{
 	font-weight:bold;
 	font-variant:small-caps;

@@ -1,4 +1,8 @@
 CollabmeRails::Application.routes.draw do
+  get "projects/new"
+
+  get "projects/show"
+
   #get "home/index"
 
 # You can have the root of your site routed with "root"
@@ -17,7 +21,11 @@ CollabmeRails::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
-  resources :researchers
+  resources :researchers do
+    resource :projects
+  end 
+
+  resources :projects
 
   # Sample resource route with options:
   #   resources :products do

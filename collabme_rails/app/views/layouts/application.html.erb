@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-	<div class="header banner"><a href="/"><%= image_tag "/assets/logo.png"%></a></div> 
+	<%= render "shared/header" %> 
 	<div class="body">
 		<%= yield %>
 	</div>
