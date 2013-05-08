@@ -9,10 +9,12 @@
  
 <% @researchers.each do |researcher| %>
   <tr>
-    <td><%= researcher.name %></td>
+    <td><%= researcher.firstname %></td>
     <td><%= researcher.email %></td>
-    <td><%= link_to 'Show', researcher %></tr>
+    <td><%= link_to 'Show', researcher %></td>
+  </tr>
 <% end %>
 </table>
+<br />
 <%= link_to("Add new Researcher", new_researcher_path) %>
 <br />
