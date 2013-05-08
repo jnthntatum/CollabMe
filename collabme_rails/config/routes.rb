@@ -1,7 +1,4 @@
 CollabmeRails::Application.routes.draw do
-  get "projects/new"
-
-  get "projects/show"
 
   #get "home/index"
 
@@ -25,7 +22,11 @@ CollabmeRails::Application.routes.draw do
     resource :projects
   end 
 
-  resources :projects
+  resources :projects do
+    member do
+      post 'add_member'
+    end
+  end
 
   # Sample resource route with options:
   #   resources :products do

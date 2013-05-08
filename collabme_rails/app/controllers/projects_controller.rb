@@ -34,4 +34,28 @@ class ProjectsController < ApplicationController
 			format.html # index.html.erb
 		end
 	end
+
+	def add_member
+		id = 
+		if params.has_key?(:id) then 
+			params[:id].to_i 
+		else 
+			(params.has_key?(:project_id))? params[:project_id]: nil 
+		end
+		member = if params.has_key?(:researcher_id) then params[:researcher_id].to_i else nil end
+		@project = Project.find(id)
+		member = Researcher.find(member)
+		@project.members << member
+		respond_to do |f|
+			
+			if @project.save()
+				@notify = "#{member.name} added to #{@project.name}"
+				f.html {redirect_to(@project, :notice => @notify)};
+			else
+				@notify = "Error : #{@project.errors[:name]}"
+				f.html {redirect_to(@project, :notice => @notify)} 
+			end
+		end
+	end
+
 end

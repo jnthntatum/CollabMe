@@ -1,12 +1,14 @@
 <h1>projects index</h1>
 
 <table>
-<tr><th>id</th><th>Name</th><th>Desc</th></tr>
+<tr><th>id</th><th>Name</th><th>Desc</th><th>owner</th><th></th></tr>
 <% @projects.each do |project| %>
 	<tr>
 	<td><%= project.id%></td>
 	<td><%= if project.name != nil then project.name else "nil" end %></td>
 	<td><%= if project.description != nil then project.description else "nil" end %></td>
+	<td><%= if project.owner != nil then project.owner else "nil" end %> </td>
+	<td><%= link_to "Show", project %> | </td> 
 	</tr> 	
 <% end %>
 </table>

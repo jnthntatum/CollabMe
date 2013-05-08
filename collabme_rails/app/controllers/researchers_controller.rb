@@ -15,4 +15,22 @@ class ResearchersController < ApplicationController
 	    format.json  { render :json => @researcher }
 	  end
 	end
+
+	def new
+		@researcher = Researcher.new();
+		respond_to do |format|
+			format.html # new.html.erb
+		end
+	end
+
+	def create
+		@researcher = Researcher.new(params[:researcher])
+		respond_to do |format|
+			if @researcher.save()
+				format.html {redirect_to(@researcher)}
+			else
+				format.html {render :action => "new"}
+			end
+		end
+	end
 end

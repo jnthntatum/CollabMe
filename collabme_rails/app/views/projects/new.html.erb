@@ -1,9 +1,9 @@
 <h1>Projects#new</h1>
 
-<%= form_for @project do |f| %>
+<%= form_for @project, :url => {:action => "create"} do |f| %>
 	<!--<%= label_tag(:owner, "Owner id:" ) %> 
 	<%= f.text_field :owner %> <br /> -->
-	<%= label_tag(:owner, "Project Name: ") %> 
+	<%= f.label(:name, "Project Name: ") %> 
   	<%= f.text_field :name %> <br />
   	<%= f.text_area :description, :size => "60x12" %> <br />
   	<%= f.submit "Create" %>
