@@ -17,7 +17,7 @@ class ResearchersController < ApplicationController
 	end
 
 	def new
-		@researcher = Researcher.new();
+		@researcher = Researcher.new()
 		respond_to do |format|
 			format.html # new.html.erb
 		end
@@ -29,7 +29,7 @@ class ResearchersController < ApplicationController
 			if @researcher.save()
 				format.html {redirect_to(@researcher)}
 			else
-				format.html {render :action => "new"}
+				format.html {render :action => "index"}
 			end
 		end
 	end
