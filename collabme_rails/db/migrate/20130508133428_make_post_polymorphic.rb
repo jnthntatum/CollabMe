@@ -1,6 +1,6 @@
 class MakePostPolymorphic < ActiveRecord::Migration
   def up
-  	change_table :post do |t|
+  	change_table :posts do |t|
   		t.integer :post_interface_id
   		t.string :post_interface_type
   		t.index :post_interface_id
@@ -8,7 +8,7 @@ class MakePostPolymorphic < ActiveRecord::Migration
   end
 
   def down
-  	change_table :post do |t|
+  	change_table :posts do |t|
   		t.remove :post_interface_id, :post_interface_type
   	end
   end

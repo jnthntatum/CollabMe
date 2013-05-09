@@ -22,9 +22,13 @@ ActiveRecord::Schema.define(:version => 20130508230030) do
 
   create_table "posts", :force => true do |t|
     t.string   "desc"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "post_interface_id"
+    t.string   "post_interface_type"
   end
+
+  add_index "posts", ["post_interface_id"], :name => "index_posts_on_post_interface_id"
 
   create_table "projects", :force => true do |t|
     t.string   "name"
@@ -34,7 +38,12 @@ ActiveRecord::Schema.define(:version => 20130508230030) do
     t.string   "description"
   end
 
-  add_index "projects", ["researcher_id"], :name => "index_projects_on_researcher_id"
+  add_index "projects", ["researcher_id"], :name => "index_projects_on_Researcher_id"
+
+  create_table "projects_researchers", :id => false, :force => true do |t|
+    t.integer "project_id"
+    t.integer "researcher_id"
+  end
 
   create_table "researchers", :force => true do |t|
     t.string   "email"

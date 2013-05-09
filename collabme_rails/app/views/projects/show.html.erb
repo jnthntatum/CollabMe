@@ -1,10 +1,10 @@
 <h1>Projects#show</h1>
 <%= render "shared/notice_block" %>
 <p> Title: <%= @project.name %> </p>
-<p> owner: <%= if @project.owner != nil then @project.owner.name else "nil" end %> </p>
+<p> owner: <%= if @project.owner != nil then @project.owner.firstname else "nil" end %> </p>
 <p>Members: 	
 	<% @project.members.each do |member| %> 
-	<%= "#{member.name},"%>
+	<%= "#{member.firstname},"%>
 	<% end %>
 </p> 
 <%= render "add_member_form" %>
