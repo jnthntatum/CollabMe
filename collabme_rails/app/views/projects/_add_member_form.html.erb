@@ -1,0 +1,8 @@
+<!-- _add_member_form.html.erb-->
+<div class="form_container">
+	<%= form_tag({:controller => "projects", :action=>"add_member"}, :method => "POST" ) %>
+	<%= label_tag(:researcher_id, "Researcher")  %>
+	<% researcher_array = Researcher.all.map {|r| [r.name, r.id]} %>
+	<%= select_tag(:researcher_id, options_for_select(researcher_array)) %>
+	<%= submit_tag("Add Member")%> 
+</div> 
