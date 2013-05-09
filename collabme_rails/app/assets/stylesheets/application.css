@@ -78,3 +78,8 @@ div.body{
 div.footer{
 	bottom:0px;
 }
+
+div.userInputHeader{
+  position:relative;
+  top:-20px;
+}
