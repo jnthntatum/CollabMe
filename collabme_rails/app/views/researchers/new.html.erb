@@ -1,7 +1,9 @@
 <h1>Create New User</h1>
 <%= form_for @researcher do |f| %>
-  First Name: <%= f.text_field :firstname %><br />
-  Last Name: <%= f.text_field :lastname %><br />
+<p>
+  First Name: <%= f.text_field :first_name %><br />
+  Last Name: <%= f.text_field :last_name %><br />
   Email Address: <%= f.text_field :email %><br />
   <%= f.submit %>
+</p>
 <% end %>

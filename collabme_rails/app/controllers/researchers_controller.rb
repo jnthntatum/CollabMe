@@ -29,6 +29,11 @@ class ResearchersController < ApplicationController
 			if @researcher.save()
 				format.html {redirect_to(@researcher)}
 			else
+				if @researcher.errors.any?
+					@errors = @researcher.errors
+				else
+					@researchers = Researcher.all
+				end
 				format.html {render :action => "index"}
 			end
 		end
