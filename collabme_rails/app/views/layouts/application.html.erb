@@ -2,17 +2,28 @@
 <html>
 <head>
   <title>CollabmeRails</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= stylesheet_link_tag "bootstrap.min" %>
+  <%= stylesheet_link_tag "bootstrap-responsive.min" %>
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "bootstrap.min" %>
+  <%= javascript_include_tag "jquery-2.0.0.min" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-	<%= render "shared/header" %> 
-	<div class="body">
-		<%= yield %>
-	</div>
+  <div class="wrapper">
+  	<%= render "shared/header" %> 
+  	<div class="contents">
+  		<%= yield %>
+  	</div>
+    <div class="push"></div>
+  </div>
 	<div class="footer banner">
-		<p>Contact: <a href="mailto:CollabMe@null.net">E-Mail</a>&nbsp;<a href="https://github.com/jnthntatum/CollabMe">GitHub</a></p>
-	</div> 
+		<p>Contact: 
+      <a href="mailto:CollabMe@null.net">E-Mail</a>
+      <a href="https://github.com/jnthntatum/CollabMe">GitHub</a>
+      Now powered by bootstrap.
+    </p>
+	</div>
 </body>
 </html>

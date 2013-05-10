@@ -12,74 +12,81 @@
  *= require_tree .
  */
 
-body{
-	padding:0;
-	border:none;
-	margin:0;
-	font-family:tahoma, verdana, arial, sans-serif;
+* {
+	margin: 0;
 }
 
-div.banner{
-	position: absolute;
-	min-height: 50px;
-	max-height: 50px;
-	left: 0;
-	min-width: 100%;
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	background: white;
+}
+
+/* Wrapper */
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -30px;
+}
+
+/* Banner */
+.banner {
+	width: 100%;
 	background: rgb(100, 100, 160);
-	padding-left:10px;
-
+	padding-left: 10px;
 }
 
-
-.header a{
-	display: inline-block;
-	position: inherit; 
+.banner a {
+	color: white;
 }
 
-.header div{
-	display: inline-block;
+.banner < h1 {
+	font-weight: bold;
+	font-variant: small-caps;
+	color: #FFFFFF;
+	font-size: 40px;
+}
+
+/* Header */
+.header {
 	height: 50px;
-	min-height: 50px;
-	max-height: 50px;
-	/*position: absolute; 
-	top: 0px;*/
-	margin: 0px;
-	padding: 0px;
-	border: none; 
 }
 
-
-
-
-.banner < h1{
-	font-weight:bold;
-	font-variant:small-caps;
-	color:#FFFFFF;
-	font-size:40px;
+.header #logo {
+	display: inline-block;	
+	float: left;
 }
 
-div.header{
-	top: 0; 
+.header #user_input_header {
+	display: inline-block;
+	padding-top: 10px;
+	margin-left: 10px;
+	height: 40px;
 }
 
-div.body{
-	background: rgb(250, 250, 250);
-	float: none;
-	position: absolute;
-	top: 50px;
-	bottom: 50px;
-	left: 0;
-	min-width: 100%;
-	border:none;
-	margin:0;
-	padding-left: 30px;
-	padding-right: 30px;
-}
-div.footer{
-	bottom:0px;
+.header #search_bar {
+	float: left;
+	height: inherit;
 }
 
-div.userInputHeader{
-  position:relative;
-  top:-20px;
+.header #quick_links {
+	float: left;
+	padding-top: 10px;
+	margin-left: 20px;
+}
+
+/* Contents */
+.contents {
+	height: 100%;
+	width: 100%;
+	padding: 0 30px;
+}
+
+/* Footer */
+.footer, .push {
+	height: 30px;
 }
