@@ -1,8 +1,9 @@
 <h1>Projects#new</h1>
 
 <%= form_for @project, :url => {:action => "create"} do |f| %>
-	<!--<%= label_tag(:owner, "Owner id:" ) %> 
-	<%= f.text_field :owner %> <br /> -->
+	<%= label_tag("Project Owner") %>
+	<% researcher_array = Researcher.all.map {|r| ["#{r.last_name}, #{r.first_name}", r.id]} %>
+	<%= select_tag(:researcher_id, options_for_select(researcher_array)) %>
 	<%= f.label(:name, "Project Name: ") %> 
   	<%= f.text_field :name %> <br />
   	<%= f.text_area :description, :size => "60x12" %> <br />

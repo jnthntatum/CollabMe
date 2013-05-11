@@ -20,6 +20,11 @@ class ProjectsController < ApplicationController
 
 		@project = Project.new(params[ :project ])
 		
+		if params.has_key?(:researcher_id)
+			owner = Researcher.find(params[:researcher_id]);
+			@project.owner = owner;
+		end 
+
 		respond_to do |format|   
 			if @project.save
 				format.html {redirect_to (@project)}
@@ -42,14 +47,21 @@ class ProjectsController < ApplicationController
 		else 
 			(params.has_key?(:project_id))? params[:project_id]: nil 
 		end
-		member = if params.has_key?(:researcher_id) then params[:researcher_id].to_i else nil end
+		member = 
+		if params.has_key?(:researcher_id) then
+		 	params[:researcher_id].to_i
+		else 
+		 	nil 
+		end
 		@project = Project.find(id)
 		member = Researcher.find(member)
-		@project.members << member
 		respond_to do |f|
-			
+			if @project.members.include?(member)
+				f.html {redirect_to(@project, :notice => "#{member.first_name} already added")}
+			end
+			@project.members << member
 			if @project.save()
-				@notify = "#{member.name} added to #{@project.name}"
+				@notify = "#{member.first_name} added to #{@project.name}"
 				f.html {redirect_to(@project, :notice => @notify)};
 			else
 				@notify = "Error : #{@project.errors[:name]}"
