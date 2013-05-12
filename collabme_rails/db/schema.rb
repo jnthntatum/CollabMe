@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130512154307) do
+ActiveRecord::Schema.define(:version => 20130512180521) do
 
   create_table "friendships", :id => false, :force => true do |t|
     t.integer  "user_id"
@@ -66,9 +66,13 @@ ActiveRecord::Schema.define(:version => 20130512154307) do
   create_table "resources", :force => true do |t|
     t.integer  "type"
     t.string   "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+    t.integer  "resource_interface_id"
+    t.string   "resource_interface_type"
   end
+
+  add_index "resources", ["resource_interface_id"], :name => "index_resources_on_resource_interface_id"
 
   create_table "tasks", :force => true do |t|
     t.integer  "type"
