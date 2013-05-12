@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130512180521) do
+ActiveRecord::Schema.define(:version => 20130512181535) do
 
   create_table "friendships", :id => false, :force => true do |t|
     t.integer  "user_id"
@@ -77,8 +77,13 @@ ActiveRecord::Schema.define(:version => 20130512180521) do
   create_table "tasks", :force => true do |t|
     t.integer  "type"
     t.string   "desc"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "project_id"
+    t.integer  "creator_id"
+    t.integer  "assignee_id"
   end
+
+  add_index "tasks", ["project_id", "creator_id", "assignee_id"], :name => "index_tasks_on_project_id_and_creator_id_and_assignee_id"
 
 end
