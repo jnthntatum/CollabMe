@@ -1,3 +1,6 @@
+=begin
+Researcher Model -- class representation of users
+=end
 class Researcher < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name
   has_many :owned_projects, :class_name => "Project", :foreign_key => "researcher_id" 
@@ -8,10 +11,15 @@ class Researcher < ActiveRecord::Base
   has_many :inverse_friends, :class_name => "Researcher",:through => :inverse_friendships,  :source => :user, :uniq => true
 
   def friends
-
+  	arr = direct_friends
+  	if !(inverse_friends.empty?)
+  		arr = arr.concat(inverse_friends)
+  	end
+  	return arr
   end
 
   def friendships
+  	return direct_friendships.concat(inverse_friendships);
   end
   	
   validates :first_name, presence: true

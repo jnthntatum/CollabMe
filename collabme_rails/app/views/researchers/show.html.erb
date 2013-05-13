@@ -1,3 +1,6 @@
 <h1><%= @researcher.first_name + ' ' + @researcher.last_name %></h1>
 <p><%= @researcher.email %></p>
 <p>Page here</p>
+<div id="friends"> 
+<%= render :partial => "friend", :collection => @friends %>  
+</div> 
