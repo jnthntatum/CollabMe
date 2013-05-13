@@ -1,11 +1,18 @@
-module ResearchersHelper
+
+module ResearchersHelper 
 	def self.FriendsInfo(r)
-		friendsifo=[];
-		r.friends.each do |f|
+		require 'set'
+		friendsifo=Set.new
+		r.direct_friends.each do |f|
 			friendsifo << {:first_name => f.first_name, 
 				:last_name => f.last_name, :email => f.email} 
 		end
-		return friendsifo;  	
+		r.inverse_friends.each do |f|
+			friendsifo << {:first_name =>f.first_name,
+				:last_name => f.last_name, :email => f.email}
+		end
+		return friendsifo.to_a; 
+
 	end
 
 	def Friends(r)
