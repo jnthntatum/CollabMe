@@ -11,7 +11,7 @@ class Researcher < ActiveRecord::Base
   has_many :inverse_friends, :class_name => "Researcher",:through => :inverse_friendships,  :source => :user, :uniq => true
 
   def friends
-  	ResearchersHelper.FriendsInfo(self);
+  	ResearchersHelper.Friends(self);
   end
 
   def friendships

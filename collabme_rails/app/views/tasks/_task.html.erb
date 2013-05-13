@@ -1,0 +1,13 @@
+<!-- _task.html.erb start-->
+<div style= "background-color:rgb(200,200,250)">
+<% if task.creator != nil then %>
+<p>Creator: <%= task.creator.first_name %></p>
+<p>Assigned to: <%= if task.assignee == nil then "nil" else task.assignee.first_name end %> </p> 
+<p>Description: </p>
+<p><%= task.desc %></p> 
+<% else %>
+<%= "error"%>
+<p> id: <%= task.id %> | creator_id <%= task.creator_id%> | </p> 
+<% end%>
+</div>
+<!-- _task.html.erb end--> 

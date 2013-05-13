@@ -14,7 +14,22 @@
     jt = Researcher.new(:first_name => "Jonathan", :last_name => "Tatum", :email => "jdtatum@stanford.edu")
     jt.save(:validate => false)
 
+    rr = Researcher.new(:first_name => "Radom", :last_name => "McRandomson", :email => "rr@dsl.com")
+    
     pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
-    pj.save();
     pj.owner = gk; 
-    pj.members << ss << kg << jt; 
+    pj.members << ss << kg << jt;
+    pj.save();
+    
+    ss.direct_friends << kg << gk << jt;
+    kg.direct_friends << gk << jt; 
+    gk.direct_friends << jt; 
+
+    t = Task.new(:desc => "Woo a task!!!", :category => 1);
+    t.project=pj;
+    t.category = 1; 
+    t.creator = jt; 
+    t.save();
+
+    p = Post.new(:title=>"comment", :desc => "What an awesome project!!!")
+    pj.posts << p;    

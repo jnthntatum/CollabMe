@@ -9,6 +9,7 @@
 </p>
 <p>tasks</p> 
 <%= render(:partial => "tasks/task", :collection => @tasks, :as => :task) %>
+<p>posts</p>
+<%= render(:partial => "shared/post", :collection => @posts, :as => :post) %>
 
-<!-- TODO: add comments-->
 <%= render "add_member_form" %>
