@@ -6,5 +6,9 @@
 	<% @project.members.each do |member| %> 
 	<%= "#{member.first_name},"%>
 	<% end %>
-</p> 
+</p>
+<p>tasks</p> 
+<%= render(:partial => "tasks/task", :collection => @tasks, :as => :task) %>
+
+<!-- TODO: add comments-->
 <%= render "add_member_form" %>

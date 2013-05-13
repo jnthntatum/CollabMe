@@ -2,7 +2,7 @@
 <div class="form_container">
 	<%= form_tag({:controller => "projects", :action=>"add_member"}, :method => "POST" ) %>
 	<%= label_tag(:researcher_id, "Researcher")  %>
-	<% researcher_array = Researcher.all.map {|r| ["#{r.last_name}, #{r.first_name}", r.id]} %>
+	<% researcher_array = ApplicationHelper.MapOptions(@project.owner.friends, :first_name) %>
 	<%= select_tag(:researcher_id, options_for_select(researcher_array)) %>
 	<%= submit_tag("Add Member")%> 
 </div> 

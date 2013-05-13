@@ -2,6 +2,8 @@ class ProjectsController < ApplicationController
 	
 	def show
 		@project = Project.find(params[:id])
+		@posts = @project.posts
+		@tasks = @project.tasks
 		respond_to do |format|
 			format.html # show.html.erb
 			format.json  { render :json => @project }

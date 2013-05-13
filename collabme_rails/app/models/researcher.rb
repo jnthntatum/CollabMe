@@ -11,11 +11,7 @@ class Researcher < ActiveRecord::Base
   has_many :inverse_friends, :class_name => "Researcher",:through => :inverse_friendships,  :source => :user, :uniq => true
 
   def friends
-  	arr = direct_friends
-  	if !(inverse_friends.empty?)
-  		arr = arr.concat(inverse_friends)
-  	end
-  	return arr
+  	ResearchersHelper.FriendsInfo(self);
   end
 
   def friendships

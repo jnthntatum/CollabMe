@@ -10,7 +10,7 @@ class ResearchersController < ApplicationController
 
 	def show
 	  @researcher = Researcher.find(params[:id])
-	  @friends = ResearchersHelper.FriendsInfo(@researcher)
+	  @friends = @researcher.friends
 	  respond_to do |format|
 	    format.html  # show.html.erb
 	    format.json  { render :json => @researcher }
