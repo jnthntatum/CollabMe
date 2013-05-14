@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130513064209) do
+ActiveRecord::Schema.define(:version => 20130514171410) do
 
   create_table "friendships", :id => false, :force => true do |t|
     t.integer  "user_id"
@@ -55,6 +55,16 @@ ActiveRecord::Schema.define(:version => 20130513064209) do
     t.integer "project_id"
     t.integer "researcher_id"
   end
+
+  create_table "research_group_members", :id => false, :force => true do |t|
+    t.integer  "researcher_id"
+    t.integer  "group_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "research_group_members", ["group_id", "researcher_id"], :name => "group_members_index", :unique => true
+  add_index "research_group_members", ["researcher_id", "group_id"], :name => "member_groups_index", :unique => true
 
   create_table "researchers", :force => true do |t|
     t.string   "email"

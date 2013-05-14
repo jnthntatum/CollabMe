@@ -10,6 +10,9 @@ class Researcher < ActiveRecord::Base
   has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
   has_many :inverse_friends, :class_name => "Researcher",:through => :inverse_friendships,  :source => :user, :uniq => true
 
+  has_many :group_memberships, :class_name => "ResearchGroupMember", :foreign_key => "researcher_id"  
+  has_many :groups, :class_name => "Group", :through => :group_memberships, :source => :group, :uniq => true
+
   def friends
   	ResearchersHelper.Friends(self);
   end

@@ -33,3 +33,7 @@
 
     p = Post.new(:title=>"comment", :desc => "What an awesome project!!!")
     pj.posts << p;    
+
+    g = Group.new(:name => "cs194", :email => "don't_email@me.com")
+    g.save();
+    g.researchers << ss << jt << kg << gk;

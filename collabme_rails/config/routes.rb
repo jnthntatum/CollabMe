@@ -28,6 +28,11 @@ CollabmeRails::Application.routes.draw do
     end
   end
 
+  resources :groups do
+    member do
+      post 'add_member'
+    end
+  end
   # Sample resource route with options:
   #   resources :products do
   #     member do
