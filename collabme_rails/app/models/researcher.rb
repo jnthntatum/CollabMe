@@ -7,4 +7,10 @@ class Researcher < ActiveRecord::Base
   validates :last_name, presence: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+
+
+  def self.search(search)
+  	search_condition = "%" + search + "%"
+  	find(:all, :conditions => ['first_name LIKE ? OR last_name LIKE ?', search_condition, search_condition])
+  end
 end
