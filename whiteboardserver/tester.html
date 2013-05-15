@@ -1,0 +1,122 @@
+<!-- tester.html --> 
+<html>
+	<head>
+		<title>TEST PAGE FOR CANVAs</title> 
+		<script type="text/javascript" src="wbprimatives.js" >
+		</script>
+		<script type="text/javascript" src="../collabme_rails/app/assets/javascripts/jquery-2.0.0.min.js"> </script>
+		<script type="text/javascript">
+		/** 
+		*/
+
+		function debugSM(sm, pos){
+			var text = "";
+			if (sm.state==0){
+				text = "not captured"
+			}else if(sm.state == 1){
+				text = "hover"
+			}else if (sm.state == 2){
+				text = "mouse down"
+			}else if (sm.state == 3){
+				text = "mouse down and out"
+			}
+			console.log("State:"+sm.state+": "+ text + " x:" + pos.x + " y:"+pos.y);
+		}
+
+		var sm = {
+			//0 not captured
+			//1 hover
+			//2 mouse down in object		//3 mouse down outside object
+			state: 0,
+			x: 0, 
+			y: 0,
+			left: 0,
+			top: 0,
+			drag: false,
+			disabled: false, 
+			coords: function (ev){
+				pos = {}
+				pos.y = ev.pageY - sm.top;
+				pos.x = ev.pageX - sm.left; 
+				return pos; 
+			},
+			move: function(ev){
+				if(sm.disabled)
+					return;
+				if (sm.state == 0 || sm.state == 1)
+					return;  
+				pos = sm.coords(ev);
+				console.log("drag")
+				debugSM(sm, pos);
+			},
+			mousein: function(ev){
+				if (sm.disabled)
+					return;
+				if (sm.state == 0)
+					sm.state = 1;
+				if (sm.state == 3)
+					sm.state = 2;	
+				pos = sm.coords(ev);
+				console.log("enter")
+				debugSM(sm, pos)
+			},
+			mouseout: function(ev){
+				if (sm.disabled)
+					return;
+				if (sm.state == 2)
+					sm.state = 3
+				if (sm.state == 1)
+					sm.state = 0
+				console.log("leave")
+				pos = sm.coords(ev);
+
+			debugSM(sm, pos)
+			},
+			mousedown: function(ev){
+				if(sm.disabled)
+					return;
+				if (sm.state == 1)
+					sm.state = 2;
+				console.log("down");
+				pos = sm.coords(ev);
+				debugSM(sm, pos)
+			},
+			mouseup: function(ev){
+				if (sm.disabled)
+					return;
+				if (sm.state == 2){
+					sm.state = 1;
+				}
+				if (sm.state == 3){
+					sm.state = 0; 
+				}
+				pos = sm.coords(ev);
+				console.log("up");
+				debugSM(sm, pos)
+			},
+			bindJQuery: function(jq){
+				sm.top = jq.offset().top
+				sm.left = jq.offset().left
+				jq.mouseenter(sm.mousein)
+				jq.mouseleave(sm.mouseout)
+				jq.mousemove(sm.move)
+				$('body').mouseup(sm.mouseup);
+				$('body').mousedown(sm.mousedown);
+			}
+		};
+		
+		$(function (){
+			jq = $('#whiteBoard')
+			sm.bindJQuery(jq);
+		});
+		</script>
+	</head>
+	<body>
+		<p>start</p>
+		<hr/>
+		<canvas id="whiteBoard" height="500" width="1000">
+		</canvas>
+		<hr />
+		<p>end</p>
+	</body>
+</html>
