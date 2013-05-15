@@ -1,0 +1,31 @@
+Readme
+All requests take the form
+
+
+incoming objects take the form: 
+
+{"command": <COMMAND>, "uid": <UID>
+	("session_id" : <int>, 
+		"action" : { type: <Action> 
+			action_specific members		 
+	 	}	
+	 )
+} 
+
+COMMAND is one of 
+BEGIN session
+LEAVE session
+POST post a primative to the user
+ACTION is one of 
+
+outgoing objects take the form: 
+
+{	"type": <RTYPE>, "session_id": <int>,
+	"status": <success|fail|warn>,
+	"message":<string>,
+	(	"data": <RTYPE Specific>
+
+	) 
+
+		
+}

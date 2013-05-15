@@ -1,4 +1,5 @@
 class ResearchersController < ApplicationController
+	include ResearchersHelper
 	def index
 		@researchers = Researcher.all
 		respond_to do |format|
@@ -9,7 +10,7 @@ class ResearchersController < ApplicationController
 
 	def show
 	  @researcher = Researcher.find(params[:id])
-	 
+	  @friends = @researcher.friends
 	  respond_to do |format|
 	    format.html  # show.html.erb
 	    format.json  { render :json => @researcher }

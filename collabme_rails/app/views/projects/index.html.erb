@@ -7,7 +7,7 @@
 	<td><%= project.id%></td>
 	<td><%= if project.name != nil then project.name else "nil" end %></td>
 	<td><%= if project.description != nil then project.description else "nil" end %></td>
-	<td><%= if project.owner != nil then project.owner else "nil" end %> </td>
+	<td><%= if project.owner != nil then project.owner.email else "nil" end %> </td>
 	<td><%= link_to "Show", project %> | </td> 
 	</tr> 	
 <% end %>

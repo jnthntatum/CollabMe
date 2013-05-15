@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130509082518) do
+ActiveRecord::Schema.define(:version => 20130514171410) do
+
+  create_table "friendships", :id => false, :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "friend_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "friendships", ["friend_id", "user_id"], :name => "index_friendships_on_friend_id_and_user_id", :unique => true
+  add_index "friendships", ["user_id", "friend_id"], :name => "index_friendships_on_user_id_and_friend_id", :unique => true
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -26,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20130509082518) do
     t.datetime "updated_at",          :null => false
     t.integer  "post_interface_id"
     t.string   "post_interface_type"
+    t.string   "title"
   end
 
   add_index "posts", ["post_interface_id"], :name => "index_posts_on_post_interface_id"
@@ -45,6 +56,16 @@ ActiveRecord::Schema.define(:version => 20130509082518) do
     t.integer "researcher_id"
   end
 
+  create_table "research_group_members", :id => false, :force => true do |t|
+    t.integer  "researcher_id"
+    t.integer  "group_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "research_group_members", ["group_id", "researcher_id"], :name => "group_members_index", :unique => true
+  add_index "research_group_members", ["researcher_id", "group_id"], :name => "member_groups_index", :unique => true
+
   create_table "researchers", :force => true do |t|
     t.string   "email"
     t.datetime "created_at", :null => false
@@ -56,15 +77,26 @@ ActiveRecord::Schema.define(:version => 20130509082518) do
   create_table "resources", :force => true do |t|
     t.integer  "type"
     t.string   "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+    t.integer  "resource_interface_id"
+    t.string   "resource_interface_type"
   end
 
+  add_index "resources", ["resource_interface_id"], :name => "index_resources_on_resource_interface_id"
+
   create_table "tasks", :force => true do |t|
-    t.integer  "type"
+    t.integer  "category"
     t.string   "desc"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "project_id"
+    t.integer  "creator_id"
+    t.integer  "assignee_id"
   end
+
+  add_index "tasks", ["assignee_id"], :name => "index_tasks_on_assignee_id"
+  add_index "tasks", ["creator_id"], :name => "index_tasks_on_creator_id"
+  add_index "tasks", ["project_id"], :name => "index_tasks_on_project_id"
 
 end

@@ -1,10 +1,15 @@
 <h1>Projects#show</h1>
 <%= render "shared/notice_block" %>
 <p> Title: <%= @project.name %> </p>
-<p> owner: <%= if @project.owner != nil then @project.owner.firstname else "nil" end %> </p>
+<p> owner: <%= if @project.owner != nil then @project.owner.first_name else "nil" end %> </p>
 <p>Members: 	
 	<% @project.members.each do |member| %> 
-	<%= "#{member.firstname},"%>
+	<%= "#{member.first_name},"%>
 	<% end %>
-</p> 
+</p>
+<p>tasks</p> 
+<%= render(:partial => "tasks/task", :collection => @tasks, :as => :task) %>
+<p>posts</p>
+<%= render(:partial => "shared/post", :collection => @posts, :as => :post) %>
+
 <%= render "add_member_form" %>
