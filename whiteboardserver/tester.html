@@ -5,115 +5,114 @@
 		<script type="text/javascript" src="wbprimatives.js" >
 		</script>
 		<script type="text/javascript" src="../collabme_rails/app/assets/javascripts/jquery-2.0.0.min.js"> </script>
+		<script type="text/javascript" src="evCanvas.js"> </script>
 		<script type="text/javascript">
 		/** 
 		*/
-
-		function debugSM(sm, pos){
-			var text = "";
-			if (sm.state==0){
-				text = "not captured"
-			}else if(sm.state == 1){
-				text = "hover"
-			}else if (sm.state == 2){
-				text = "mouse down"
-			}else if (sm.state == 3){
-				text = "mouse down and out"
-			}
-			console.log("State:"+sm.state+": "+ text + " x:" + pos.x + " y:"+pos.y);
+		var drawables = []; 
+		var cur;
+		var ctx;
+		var curColor = "blue";  
+		function sDragFn(pos){
+			cur = new Squiggle(pos.x, pos.y);
+			cur.color = curColor;
+			drawables.push(cur) 
+		}
+		var count = 0; 
+		function dragFn(pos){
+			cur.pts.push([pos.x, pos.y]) 
+			if (count % 3 == 0 )
+				redraw();
+			count ++;
 		}
 
-		var sm = {
-			//0 not captured
-			//1 hover
-			//2 mouse down in object		//3 mouse down outside object
-			state: 0,
-			x: 0, 
-			y: 0,
-			left: 0,
-			top: 0,
-			drag: false,
-			disabled: false, 
-			coords: function (ev){
-				pos = {}
-				pos.y = ev.pageY - sm.top;
-				pos.x = ev.pageX - sm.left; 
-				return pos; 
-			},
-			move: function(ev){
-				if(sm.disabled)
-					return;
-				if (sm.state == 0 || sm.state == 1)
-					return;  
-				pos = sm.coords(ev);
-				console.log("drag")
-				debugSM(sm, pos);
-			},
-			mousein: function(ev){
-				if (sm.disabled)
-					return;
-				if (sm.state == 0)
-					sm.state = 1;
-				if (sm.state == 3)
-					sm.state = 2;	
-				pos = sm.coords(ev);
-				console.log("enter")
-				debugSM(sm, pos)
-			},
-			mouseout: function(ev){
-				if (sm.disabled)
-					return;
-				if (sm.state == 2)
-					sm.state = 3
-				if (sm.state == 1)
-					sm.state = 0
-				console.log("leave")
-				pos = sm.coords(ev);
+		function eDragFn(pos){
+			cur.pts.push([pos.x, pos.y])
+			redraw();
+		}
 
-			debugSM(sm, pos)
-			},
-			mousedown: function(ev){
-				if(sm.disabled)
-					return;
-				if (sm.state == 1)
-					sm.state = 2;
-				console.log("down");
-				pos = sm.coords(ev);
-				debugSM(sm, pos)
-			},
-			mouseup: function(ev){
-				if (sm.disabled)
-					return;
-				if (sm.state == 2){
-					sm.state = 1;
-				}
-				if (sm.state == 3){
-					sm.state = 0; 
-				}
-				pos = sm.coords(ev);
-				console.log("up");
-				debugSM(sm, pos)
-			},
-			bindJQuery: function(jq){
-				sm.top = jq.offset().top
-				sm.left = jq.offset().left
-				jq.mouseenter(sm.mousein)
-				jq.mouseleave(sm.mouseout)
-				jq.mousemove(sm.move)
-				$('body').mouseup(sm.mouseup);
-				$('body').mousedown(sm.mousedown);
+		function redraw(){
+			for (var i = 0; i < drawables.length; i ++){
+				drawables[i].draw(ctx);
 			}
-		};
-		
+		} 
+
+		var colors = ["black", "green", "blue", "red", "purple"]
+
+		function uiColorBlock(color){
+			var el = document.createElement("div")
+			el.setAttribute("class", "tool_button color_option")
+			el.setAttribute("color", color);
+			el.innerHTML = color;
+			return el; 
+		}
+
+		function uiColorPicker(){
+			var el = document.createElement("div");
+			el.setAttribute("class", "tool color_picker");
+			for (var i = 0; i< colors.length; i ++ ){
+				el.appendChild(uiColorBlock(colors[i])); 
+			}
+			return el; 
+		}
+
+		function uiEraser(){
+			var el = document.createElement("div"); 
+			el.setAttribute("class", "tool eraser")
+			el.innerHTML = "erase"
+			return el; 
+		}
+
+		function toolBarify(el){
+			el.appendChild(uiColorPicker());
+			el.appendChild(uiEraser())
+		}
+
 		$(function (){
-			jq = $('#whiteBoard')
-			sm.bindJQuery(jq);
+			toolBarify($(".toolBar")[0])
+			$(".color_option").click(function(){
+				curColor = $(this).attr('color'); 
+				$(".color_selected").removeClass("color_selected")
+				$(this).addClass("color_selected")
+			});
+			id = "whiteBoard"
+			ctx = $('#'+id)[0].getContext("2d");
+			evBindCanvas(id);
+			evStartDragfn(id, sDragFn)
+			evDragfn(id, dragFn)
+			evStopDragfn(id, eDragFn)
+			
 		});
 		</script>
+		<style type="text/css"> 
+			.toolBar{
+				background-color: rgb(230, 230, 230);
+			}
+			.tool {
+				display: inline-block;
+			}
+			.tool_button {
+				display: inline-block;
+				max-width: 25px;
+				max-height: 25px;
+				min-width: 25px;
+				min-height: 25px;
+				border-width: 2px 2px 2px 2px;
+				border-style: solid;
+				margin: 1px;
+				border-color: black;
+				border-radius: 5px;
+			}
+
+			.tool_button.color_selected{
+				border-color: yellow;
+			}
+		</style>
 	</head>
 	<body>
 		<p>start</p>
 		<hr/>
+		<div class="toolBar"></div> 
 		<canvas id="whiteBoard" height="500" width="1000">
 		</canvas>
 		<hr />

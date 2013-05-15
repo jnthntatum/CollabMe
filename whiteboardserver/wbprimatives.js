@@ -33,7 +33,7 @@ Squiggle.prototype.draw = function( Canvas ){
 		pt = this.pts[i];
 		Canvas.lineTo(pt[0], pt[1]);
 	}
-	Canvas.closePath()
+	//Canvas.closePath()
 	Canvas.stroke();
 }
 
