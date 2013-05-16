@@ -1,6 +1,25 @@
 Readme
-All requests take the form
 
+======================================
+Supported primatives
+======================================
+Squiggle: a free form line implemented as a series of points.
+members
+x, y		: starting position
+pts[][2]	: array of control points
+color		: color to be used
+draw(ctx)	: draws the squiggle given the 2d graphics contex ctx
+
+TextBox: text
+x,y		: position to draw at
+text	: text to be drawn
+draw()
+
+======================================
+Communication
+======================================
+
+All requests take the form
 
 incoming objects take the form: 
 
@@ -25,7 +44,14 @@ outgoing objects take the form:
 	"message":<string>,
 	(	"data": <RTYPE Specific>
 
-	) 
-
-		
+	) 		
 }
+
+======================================
+resources used 
+======================================
+
+socket.io
+node.js
+
+davidwalsh.name/websocket -- an actually intuitive descriptios of socket.io and websocket (as opposed to the respective websites of these technologies....)
