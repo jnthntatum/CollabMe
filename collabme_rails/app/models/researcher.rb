@@ -14,18 +14,13 @@ class Researcher < ActiveRecord::Base
   has_many :groups, :class_name => "Group", :through => :group_memberships, :source => :group, :uniq => true
 
   def friends
-  	ResearchersHelper.Friends(self);
-  end
-
-  def self.search(search)
-    search_condition = "%" + search + "%"
-    find(:all, :conditions => ['first_name LIKE ? OR last_name LIKE ?', search_condition, search_condition])
+    ResearchersHelper.Friends(self);
   end
 
   def friendships
-  	return direct_friendships.concat(inverse_friendships);
+    return direct_friendships.concat(inverse_friendships);
   end
-  	
+    
   validates :first_name, presence: true
   validates :last_name, presence: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
