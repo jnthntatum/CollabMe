@@ -17,6 +17,11 @@ class Researcher < ActiveRecord::Base
   	ResearchersHelper.Friends(self);
   end
 
+  def self.search(search)
+    search_condition = "%" + search + "%"
+    find(:all, :conditions => ['first_name LIKE ? OR last_name LIKE ?', search_condition, search_condition])
+  end
+
   def friendships
   	return direct_friendships.concat(inverse_friendships);
   end
