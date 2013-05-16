@@ -6,6 +6,7 @@
 		</script>
 		<script type="text/javascript" src="../collabme_rails/app/assets/javascripts/jquery-2.0.0.min.js"> </script>
 		<script type="text/javascript" src="evCanvas.js"> </script>
+		<script src="socket.io.min.js"></script>
 		<script type="text/javascript">
 		/** 
 		*/
@@ -22,16 +23,17 @@
 		function dragFn(pos){
 			cur.pts.push([pos.x, pos.y]) 
 			if (count % 3 == 0 )
-				redraw();
+				uiRedraw();
 			count ++;
 		}
 
 		function eDragFn(pos){
 			cur.pts.push([pos.x, pos.y])
-			redraw();
+			sendMessageToServer(cur); 
+			uiRedraw();
 		}
 
-		function redraw(){
+		function uiRedraw(){
 			for (var i = 0; i < drawables.length; i ++){
 				drawables[i].draw(ctx);
 			}
@@ -68,6 +70,22 @@
 			el.appendChild(uiEraser())
 		}
 
+		var socket; 
+
+		function sendMessageToServer(message){
+			socket.json.send(message);
+		}
+
+		function setUpCommunications(){
+			socket = io.connect('http://localhost:8989');
+			socket.on('connect', function(){
+				console.log('connection success!'); 
+			});
+			socket.on('message', function(data){
+				console.log('Received message from server', data)
+			});
+		}
+
 		$(function (){
 			toolBarify($(".toolBar")[0])
 			$(".color_option").click(function(){
@@ -81,6 +99,7 @@
 			evStartDragfn(id, sDragFn)
 			evDragfn(id, dragFn)
 			evStopDragfn(id, eDragFn)
+			setUpCommunications(); 
 			
 		});
 		</script>
