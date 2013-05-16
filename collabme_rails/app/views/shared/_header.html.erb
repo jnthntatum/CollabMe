@@ -4,10 +4,10 @@
 	</div>
 	<div id="user_input_header">
 		<div id="search_bar">
-			<%= form_tag("/", :method => "post") do %>
-		  	<%= select_tag(:type, options_for_select([["Researchers", 1], ["Groups", 2], ["Projects", 3]], 1)) %>
-		  	<%= text_field_tag(:q) %>
-		  	<%= submit_tag("Submit") %>
+			<%= form_tag("/search/search", :method => "get") do %>
+		  		<%= select_tag(:type, options_for_select([["Researchers", 1], ["Groups", 2], ["Projects", 3]], 1)) %>
+		  		<%= text_field_tag(:q) %>
+		  		<%= submit_tag("Submit") %>
 			<% end %>
 		</div>
 		<div id="quick_links">

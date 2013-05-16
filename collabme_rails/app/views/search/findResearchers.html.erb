@@ -1,2 +1,8 @@
 <h1>Search#findResearchers</h1>
 <p>Find me in app/views/search/findResearchers.html.erb</p>
+
+<p>Searched for <%= @query%></p>
+
+<%@researchers.each do |researcher|%>
+	<%= researcher.first_name%>
+<%end%>

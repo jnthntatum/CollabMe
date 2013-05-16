@@ -1,6 +1,7 @@
 CollabmeRails::Application.routes.draw do
 
   get "search/findResearchers"
+  get "search/search"
 
   #get "home/index"
 
