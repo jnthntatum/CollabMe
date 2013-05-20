@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(:version => 20130514171410) do
     t.string   "description"
   end
 
-  add_index "projects", ["researcher_id"], :name => "index_projects_on_Researcher_id"
+  add_index "projects", ["researcher_id"], :name => "index_projects_on_researcher_id"
 
   create_table "projects_researchers", :id => false, :force => true do |t|
     t.integer "project_id"
