@@ -6,6 +6,10 @@ class SearchController < ApplicationController
   	flash[:query] = params[:q]
   	if type == 1
   		redirect_to :action => "findResearchers"
+    elsif type == 2
+      redirect_to :action => "findGroups"
+    elsif type == 3
+      redirect_to :action => "findProjects"
   	end
   end
 
@@ -13,5 +17,17 @@ class SearchController < ApplicationController
   	logger.debug @query
   	@query = flash[:query]
   	@researchers = Researcher.where("first_name LIKE ? OR last_name LIKE ?", @query, @query)
+  end
+
+   def findGroups
+    logger.debug @query
+    @query = flash[:query]
+    @researchers = Researcher.where("first_name LIKE ? OR last_name LIKE ?", @query, @query)
+  end
+
+   def findProjects
+    logger.debug @query
+    @query = flash[:query]
+    @researchers = Researcher.where("first_name LIKE ? OR last_name LIKE ?", @query, @query)
   end
 end
