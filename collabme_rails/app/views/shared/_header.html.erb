@@ -16,6 +16,19 @@
 				<a href="/groups">g</a>
 				<a href="/researchers">r</a>
 			</span>
-		</div>  
+		</div>
+		<div id="user_panel">
+			<% if session[:current_user_id] %>
+				<p> 
+					Welcome <%= session[:current_user_first_name] %>! 
+					<%= link_to 'Logout?', logout_researchers_path %>
+				</p>
+			<% else %>
+				<p>
+					<%= link_to 'New Account?', new_researcher_path %>
+					<%= link_to 'Login?', login_researchers_path %>
+				</p>
+			<% end %>
+		</div> 
 	</div>
 </div>

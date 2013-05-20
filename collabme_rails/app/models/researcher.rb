@@ -13,6 +13,7 @@ class Researcher < ActiveRecord::Base
   has_many :group_memberships, :class_name => "ResearchGroupMember", :foreign_key => "researcher_id"  
   has_many :groups, :class_name => "Group", :through => :group_memberships, :source => :group, :uniq => true
 
+  # Friends
   def friends
     ResearchersHelper.Friends(self);
   end
@@ -20,9 +21,28 @@ class Researcher < ActiveRecord::Base
   def friendships
     return direct_friendships.concat(inverse_friendships);
   end
-    
+
   validates :first_name, presence: true
   validates :last_name, presence: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+
+  # Passwords
+  def password
+    @password
+  end
+
+  def password=(plaintext_password)
+    self.salt = SecureRandom.urlsafe_base64
+    self.password_digest = Digest::SHA1.hexdigest(plaintext_password + self.salt)
+    @password = plaintext_password
+  end
+
+  def password_valid?(plaintext_password)
+    return self.password_digest == Digest::SHA1.hexdigest(plaintext_password + self.salt)
+  end
+
+  attr_accessible :password, :password_digest, :salt, :password_confirmation
+  validates :password, :presence => true, :confirmation => true
+  validates :password_confirmation, :presence => true
 end

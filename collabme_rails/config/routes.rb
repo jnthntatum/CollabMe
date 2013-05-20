@@ -22,6 +22,12 @@ CollabmeRails::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   resources :researchers do
+    collection do
+      get :login
+      post :post_login
+      get :logout  
+    end
+
     resource :projects
   end 
 
@@ -36,6 +42,7 @@ CollabmeRails::Application.routes.draw do
       post 'add_member'
     end
   end
+
   # Sample resource route with options:
   #   resources :products do
   #     member do
