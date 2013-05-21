@@ -59,6 +59,38 @@ function ChatMessage (name, text){
 	this.type = 'chat_message';
 }
 
+function primCopy(template, json){
+	for(var key in template){
+		if(typeof template[key] == 'function')
+			continue; 
+		if (!(key in json))
+			return null;
+		template[key] = json[key]
+	}
+	return template; 
+}
+
+/**
+return an instance of the of the object if parseable from JSON
+else null
+*/
+function parse(message){
+	if(!(typeof message.type === 'string'))
+		return null
+	var t = message.type;
+	var template; 
+	if (t === "text_box")
+		template = new TextBox(0, 0)
+	else if(t === "squiggle")
+		template = new Squiggle(0, 0)
+	else if(t === "chat_message")
+		template = ChatMessage("", "")
+	else
+		return null;
+	return primCopy(template, message);
+}
+
+
 if (typeof module == 'object' && module && typeof module.exports == 'object' && module.exports){
 	module.exports.Squiggle = Squiggle;
 	module.exports.TextBox = TextBox;

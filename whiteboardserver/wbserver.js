@@ -26,6 +26,23 @@ function Session(){
 	this.users = []
 	this.drawables = []
 	this.messages = []
+	this.addUser = function (uid){
+		if (this.users.indexOf(uid) == -1){
+			users.push(uid);
+			return true
+		} else{
+			return false;
+		}
+	}
+	this.removeUser = function (uid){
+		var idx = this.users.indexOf(uid); 
+		if ( idx == -1){
+			return false;
+		} else{
+			this.users.splice(idx, 1); 
+			return true;
+		}
+	}
 }
 
 var sessions = []; 
@@ -58,7 +75,7 @@ function UserMap(){
 			return false; 
 		}
 	}
-	this.userIn(uid){
+	this.hasUser = function(uid){
 		return uid in this.userToClient; 
 	}
 }
@@ -77,6 +94,12 @@ function sendError(client, message, error){
 	sendMessage(client, m) 
 }
 
+function sendAck(client, message){
+	var m = new Message("ACK", 0);
+	m.ack = message; 
+	sendMessage(client, m); 
+}
+
 function sendMessage(client, message){
 	console.log("send message to" + client.id + ": " + message.command)
 }
@@ -89,31 +112,69 @@ function validateMessage(message){
 		return false; 
 }
 
+function procAck(client, message){
+
+}
+
+function validSid(message){
+	return (typeof message.sid === 'number' && message.sid <= sessions.length && message.sid >= 0)
+}
+
 function procMessage(client, message){
 	if (!validateMessage(message)){
 		sendError(client, message, "malformed message header"); 
+		return;
 	}
 	var command = message.command;
 	var uid = message.uid; 
 	if (command === "STATUS"){
-		sessions.push(uid);  
 		users.put(uid, client.id);
-		if (typeof message.uids ==='object' && message.uids instanceof Array)
-			for (var i = 0; i < message.uids.length; i++){
-				if (users.hasUser(uid))
-					sessions.push(uid)
-			} 
-		var m = new Message("ACK", );
-	} else if(command === "CREATE"){
+		sendAck(client, message); 
+		//todo: logic for statuses other than here and away
 
-	} else if(command === "LEAVE"){
-		
-	} else if(command === "ADD"){
-		
-	} else if(command === "POST"){
-		
 	} else if(command === "CREATE"){
-		
+		var s = new session;
+		s.users.addUser(uid);
+		if (typeof message.uids === "object" && message.uids instanceof Array){
+			for (var i = 0; i< message.uids.length ; i++){
+				s.addUser(message.uids[i])
+			}
+			sendAck(client, message);		
+		}
+		var m = new Message("ACK", 0)
+		m.sid = sessions.length;
+		m.ack = message; 
+		sendMessage(client, m);  
+		sessions.push(s); 
+	} else if(command === "LEAVE"){
+		if (validSid(message)){
+			var s = sessions[message.sid]; 
+			if (s.removeUser(uid)){
+				sendAck(client, message); 
+			}else{
+				sendError(client, message, "user not in session")
+			}
+		}else{
+			sendError(client, message, "not a valid sid")
+		}
+	} else if(command === "ADD"){
+		if (validSid(message)){
+			var s = sessions[message.sid]; 
+			if (s.addUser(uid)){
+				sendAck(client, message); 
+			}else{
+				sendError(client, message, "user could not be added to session")
+			}
+		}else{
+			sendError(client, message, "not a valid sid")
+		}
+	} else if(command === "POST"){
+		if(!validSid(message)){
+			sendError(client, message, "invalid sid") 
+		}
+		if (!(typeof message.data === 'object')){
+			sendError(client, message, "no data supplied"); 
+		}
 	} else {
 		sendError(client, message, "unrecognized command")
 	}
