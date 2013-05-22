@@ -1,9 +1,7 @@
 class ResearchersController < ApplicationController
-  before_filter :authenticate_user
+  #before_filter :authenticate_user 
 
 	include ResearchersHelper
-	
-	before_filter :protect, :only => :edit
 	
 	def index
 		@researchers = Researcher.all
@@ -130,8 +128,7 @@ class ResearchersController < ApplicationController
 
   def authenticate_user
     unless params[:id].to_i == session[:current_user_id]
-      flash.now[:error] = 'You cannot access this section.'
-      render :partial => 'shared/show_errors' 
+      flash.now[:error] = 'You cannot access this section.' 
     end
   end
 end
