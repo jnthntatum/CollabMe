@@ -1,7 +1,7 @@
 <h1>Create New User</h1>
 <% if @researcher.errors %>
   <% @researcher.errors.full_messages.each do |message| %>
-    <p><%= message %>.</p>
+    <p class="error"><%= message %>.</p>
   <% end %>
 <% end %>
 <%= form_for @researcher do |f| %>
@@ -9,8 +9,8 @@
     First Name: <%= f.text_field :first_name %> <br />
     Last Name: <%= f.text_field :last_name %> <br />
     Email Address: <%= f.text_field :email %> <br />
-    Password: <%= f.text_field :password %> <br />
-    Confirm Password: <%= f.text_field :password_confirmation %> <br />
+    Password: <%= f.password_field :password %> <br />
+    Confirm Password: <%= f.password_field :password_confirmation %> <br />
     <%= f.submit %>
   </p>
 <% end %>

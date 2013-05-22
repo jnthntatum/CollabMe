@@ -1,4 +1,6 @@
 class ResearchersController < ApplicationController
+  before_filter :authenticate_user
+
 	include ResearchersHelper
 	def index
 		@researchers = Researcher.all
@@ -82,4 +84,28 @@ class ResearchersController < ApplicationController
     flash[:notice] = 'You have successfully logged out.'
     redirect_to login_researchers_path
 	end
+
+  def edit
+    @researcher = Researcher.find_by_id(params[:id])
+  end
+
+  def update
+    if params[:id].to_i == session[:current_user_id]
+      @researcher = Researcher.find_by_id(params[:id]) 
+      if @researcher.update_attributes(:email => params[:researcher][:email])
+        flash[:notice] = 'You have successfully changed your email.'
+        redirect_to edit_researcher_path
+      else
+        flash[:error] = 'Email is invalid.'
+        redirect_to edit_researcher_path
+      end
+    end
+  end
+
+  def authenticate_user
+    unless session[:current_user_id] == params[:id]
+      flash.now[:error] = 'You cannot access this section.'
+      render 'shared/show_errors' 
+    end
+  end
 end
