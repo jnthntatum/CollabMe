@@ -1,5 +1,8 @@
 class ResearchersController < ApplicationController
+  #before_filter :authenticate_user 
+
 	include ResearchersHelper
+	
 	def index
 		@researchers = Researcher.all
 		respond_to do |format|
@@ -9,6 +12,15 @@ class ResearchersController < ApplicationController
 	end	
 
 	def show
+	  if session[:current_user_id] and session[:current_user_id] == params[:id].to_i
+	    @user = Researcher.find(session[:current_user_id])
+	    @friends = @user.friends
+	    respond_to do |format|
+	      format.html # show.html.erb
+	      format.json { render :json => @researcher}
+	    end
+	    return
+	  end
 	  @researcher = Researcher.find(params[:id])
 	  @friends = @researcher.friends
 	  respond_to do |format|
@@ -16,6 +28,20 @@ class ResearchersController < ApplicationController
 	    format.json  { render :json => @researcher }
 	  end
 	end
+
+  def edit
+    @researcher = Researcher.find(session[:current_user_id])
+    if request.post? and params[:researcher] #should probably make a param_posted method
+      if @researcher.update_attributes(params[:researcher])
+        flash[:notice] = "Email updated."
+        redirect_to :action => "index"
+      end
+    end
+  end
+  
+  def update
+    @researcher
+  end
 
 	def new
 		@researcher = Researcher.new
@@ -82,4 +108,27 @@ class ResearchersController < ApplicationController
     flash[:notice] = 'You have successfully logged out.'
     redirect_to login_researchers_path
 	end
+
+  def edit
+    @researcher = Researcher.find_by_id(params[:id])
+  end
+
+  def update
+    if params[:id].to_i == session[:current_user_id]
+      @researcher = Researcher.find_by_id(params[:id]) 
+      if @researcher.update_attributes(:email => params[:researcher][:email])
+        flash[:notice] = 'You have successfully changed your email.'
+        redirect_to edit_researcher_path
+      else
+        flash[:error] = 'Email is invalid.'
+        redirect_to edit_researcher_path
+      end
+    end
+  end
+
+  def authenticate_user
+    unless params[:id].to_i == session[:current_user_id]
+      flash.now[:error] = 'You cannot access this section.' 
+    end
+  end
 end

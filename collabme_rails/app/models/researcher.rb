@@ -1,6 +1,3 @@
-=begin
-Researcher Model -- class representation of users
-=end
 class Researcher < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name
   has_many :owned_projects, :class_name => "Project", :foreign_key => "researcher_id" 
@@ -22,8 +19,8 @@ class Researcher < ActiveRecord::Base
     return direct_friendships.concat(inverse_friendships);
   end
 
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  validates_presence_of :first_name
+  validates_presence_of :last_name
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 
@@ -38,11 +35,16 @@ class Researcher < ActiveRecord::Base
     @password = plaintext_password
   end
 
+  def password_present?
+    ! @password.nil?
+  end
+
   def password_valid?(plaintext_password)
     return self.password_digest == Digest::SHA1.hexdigest(plaintext_password + self.salt)
   end
 
   attr_accessible :password, :password_digest, :salt, :password_confirmation
-  validates :password, :presence => true, :confirmation => true
-  validates :password_confirmation, :presence => true
+  validates_presence_of :password, :if => :password_present?
+  validates_confirmation_of :password, :if => :password_present?
+  validates_presence_of :password_confirmation, :if => :password_present?
 end
