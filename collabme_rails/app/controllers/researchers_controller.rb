@@ -2,6 +2,9 @@ class ResearchersController < ApplicationController
   before_filter :authenticate_user
 
 	include ResearchersHelper
+	
+	before_filter :protect, :only => :edit
+	
 	def index
 		@researchers = Researcher.all
 		respond_to do |format|
@@ -11,6 +14,15 @@ class ResearchersController < ApplicationController
 	end	
 
 	def show
+	  if session[:current_user_id] and session[:current_user_id] == params[:id].to_i
+	    @user = Researcher.find(session[:current_user_id])
+	    @friends = @user.friends
+	    respond_to do |format|
+	      format.html # show.html.erb
+	      format.json { render :json => @researcher}
+	    end
+	    return
+	  end
 	  @researcher = Researcher.find(params[:id])
 	  @friends = @researcher.friends
 	  respond_to do |format|
@@ -18,6 +30,20 @@ class ResearchersController < ApplicationController
 	    format.json  { render :json => @researcher }
 	  end
 	end
+
+  def edit
+    @researcher = Researcher.find(session[:current_user_id])
+    if request.post? and params[:researcher] #should probably make a param_posted method
+      if @researcher.update_attributes(params[:researcher])
+        flash[:notice] = "Email updated."
+        redirect_to :action => "index"
+      end
+    end
+  end
+  
+  def update
+    @researcher
+  end
 
 	def new
 		@researcher = Researcher.new

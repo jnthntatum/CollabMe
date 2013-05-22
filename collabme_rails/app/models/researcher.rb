@@ -1,6 +1,3 @@
-=begin
-Researcher Model -- class representation of users
-=end
 class Researcher < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name
   has_many :owned_projects, :class_name => "Project", :foreign_key => "researcher_id" 
@@ -50,5 +47,4 @@ class Researcher < ActiveRecord::Base
   validates_presence_of :password, :if => :password_present?
   validates_confirmation_of :password, :if => :password_present?
   validates_presence_of :password_confirmation, :if => :password_present?
-
 end

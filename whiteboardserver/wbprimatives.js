@@ -24,17 +24,16 @@ function Squiggle(x,y){
 }
 Squiggle.prototype  = new Drawable()
 
-Squiggle.prototype.draw = function( Canvas ){
-	Canvas.beginPath();
-	Canvas.lineWidth=this.lineWidth;
-	Canvas.strokeStyle=this.color; 
-	Canvas.moveTo(this.x, this.y);
+Squiggle.prototype.draw = function(	canvas ){
+	canvas.beginPath();
+	canvas.lineWidth=this.lineWidth;
+	canvas.strokeStyle=this.color; 
+	canvas.moveTo(this.x, this.y);
 	for (var i = 0; i < this.pts.length; i ++){
 		pt = this.pts[i];
-		Canvas.lineTo(pt[0], pt[1]);
+		canvas.lineTo(pt[0], pt[1]);
 	}
-	//Canvas.closePath()
-	Canvas.stroke();
+	canvas.stroke();
 }
 
 
@@ -48,6 +47,47 @@ TextBox.prototype = new Drawable();
 
 TextBox.prototype.draw = function ( canvas ){
 // TODO:
+	
+	context.font = '10px sans-serif'
+	context.fillStyle = 'black';
+	context.fillText(this.text, this.x, this.y); 
+}
+
+function ChatMessage (name, text){
+	this.name = name;
+	this.text = text;
+	this.type = 'chat_message';
+}
+
+function primCopy(template, json){
+	for(var key in template){
+		if(typeof template[key] == 'function')
+			continue; 
+		if (!(key in json))
+			return null;
+		template[key] = json[key]
+	}
+	return template; 
+}
+
+/**
+return an instance of the of the object if parseable from JSON
+else null
+*/
+function parse(message){
+	if(!(typeof message.type === 'string'))
+		return null
+	var t = message.type;
+	var template; 
+	if (t === "text_box")
+		template = new TextBox(0, 0)
+	else if(t === "squiggle")
+		template = new Squiggle(0, 0)
+	else if(t === "chat_message")
+		template = ChatMessage("", "")
+	else
+		return null;
+	return primCopy(template, message);
 }
 
 
@@ -55,4 +95,5 @@ if (typeof module == 'object' && module && typeof module.exports == 'object' && 
 	module.exports.Squiggle = Squiggle;
 	module.exports.TextBox = TextBox;
 	module.exports.Drawable = Drawable;
+	module.exports.ChatMessage = ChatMessage; 
 }
