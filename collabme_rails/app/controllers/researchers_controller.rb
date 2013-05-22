@@ -129,9 +129,9 @@ class ResearchersController < ApplicationController
   end
 
   def authenticate_user
-    unless session[:current_user_id] == params[:id]
+    unless params[:id].to_i == session[:current_user_id]
       flash.now[:error] = 'You cannot access this section.'
-      render 'shared/show_errors' 
+      render :partial => 'shared/show_errors' 
     end
   end
 end
