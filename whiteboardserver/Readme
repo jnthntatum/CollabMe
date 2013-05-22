@@ -38,7 +38,7 @@ STATUS change / update
 ERROR alert sender to error
 ACK acknowledge a packet from the client
 POST an update or a new message to the buffer
-
+ERASE the drawable buffer
 
 
 ======================================

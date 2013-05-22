@@ -3,7 +3,7 @@
 * 
 */ 
 
-var primatives = require('./wbprimatives'); 
+var prim = require('./wbprimatives'); 
 
 // code from davidwalsh.name/websocket 
 
@@ -28,7 +28,7 @@ function Session(){
 	this.messages = []
 	this.addUser = function (uid){
 		if (this.users.indexOf(uid) == -1){
-			users.push(uid);
+			this.users.push(uid);
 			return true
 		} else{
 			return false;
@@ -56,13 +56,9 @@ function UserMap(){
 	this.getClient= function(uid){
 		return this.userToClient[uid]
 	}
-	this.put = function(uid, client){
-		if (uid in this.userToClient){
-			return false;
-		} else {
-			this.userToClient[uid] = client;
-			this.clientToUser[client] = uid;
-		}
+	this.put = function(uid, client){	
+		this.userToClient[uid] = client;
+		this.clientToUser[client] = uid;
 	}
 	this.remove = function (uid){
 
@@ -83,7 +79,7 @@ function UserMap(){
 var users = new UserMap();  
 
 function Message(command, uid){
-	this.message = command;
+	this.command = command;
 	this.uid = uid; 
 }
 
@@ -102,6 +98,7 @@ function sendAck(client, message){
 
 function sendMessage(client, message){
 	console.log("send message to" + client.id + ": " + message.command)
+	client.emit("message", message);
 }
 
 function validateMessage(message){
@@ -120,6 +117,18 @@ function validSid(message){
 	return (typeof message.sid === 'number' && message.sid <= sessions.length && message.sid >= 0)
 }
 
+function broadcast(session, message, source){
+	for (var i = 0; i < session.users.length; i++){
+		if (typeof source !== 'undefined' && session.users[i] === source)
+			continue; 
+		var c = users.getClient(session.users[i]);
+		console.log("Trying to send to " + c);
+		if (c){
+			sendMessage(io.sockets.socket(c), message); 
+		}
+	}
+}
+
 function procMessage(client, message){
 	if (!validateMessage(message)){
 		sendError(client, message, "malformed message header"); 
@@ -133,8 +142,8 @@ function procMessage(client, message){
 		//todo: logic for statuses other than here and away
 
 	} else if(command === "CREATE"){
-		var s = new session;
-		s.users.addUser(uid);
+		var s = new Session();
+		s.addUser(uid);
 		if (typeof message.uids === "object" && message.uids instanceof Array){
 			for (var i = 0; i< message.uids.length ; i++){
 				s.addUser(message.uids[i])
@@ -159,22 +168,54 @@ function procMessage(client, message){
 		}
 	} else if(command === "ADD"){
 		if (validSid(message)){
-			var s = sessions[message.sid]; 
-			if (s.addUser(uid)){
-				sendAck(client, message); 
+			var s = sessions[message.sid];
+			var uids = message.uids; 
+			if (typeof uids === 'object' && uids instanceof Array ){
+				var uids2 = []; 
+				for (var i =0; i <uids.length; i ++){	
+					if (s.addUser(uids[i])){
+						uids2.push(uids[i]);  
+					}
+				}
+				message.uids = uids2; 
+				sendAck(client, message);
 			}else{
-				sendError(client, message, "user could not be added to session")
+				sendError(client, message, "uids array not valid");
 			}
+
 		}else{
 			sendError(client, message, "not a valid sid")
 		}
 	} else if(command === "POST"){
 		if(!validSid(message)){
-			sendError(client, message, "invalid sid") 
+			sendError(client, message, "invalid sid")
+			return;  
 		}
 		if (!(typeof message.data === 'object')){
-			sendError(client, message, "no data supplied"); 
+			sendError(client, message, "no data supplied");
+			return; 
 		}
+		var parse = prim.parseJSON(message.data); 
+		if (parse == null){
+			sendError(client, message, "data type not recognized");
+			return; 
+		}
+		var sid = message.sid; 
+		var s = sessions[sid];
+		var idx = s.drawables.length;
+		s.drawables.push(parse); 
+		message.idx = idx;
+		broadcast(s, message, uid); 
+		sendAck(client, message); 
+	} else if (command === "ERASE"){
+		if (!validSid(message)){
+			sendError(client, message, "not a valid session");
+			return;
+		}
+		var s = sessions[message.sid]; 
+		s.drawbles = [];  
+		broadcast(s, message, uid);
+		sendAck(client, message);
 	} else {
 		sendError(client, message, "unrecognized command")
 	}
@@ -184,7 +225,8 @@ function procMessage(client, message){
 io.sockets.on('connection', function(client){ 
 	
 	// Success!  Now listen to messages to be received
-	client.on('message',function(event){ 
+	client.on('message',function(event){
+		console.log("message received: ", event) 
 		procMessage(client, event)
 	});
 

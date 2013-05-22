@@ -2,8 +2,6 @@
 *wbprimatives.js
 */
 
-
-
 function Drawable(x, y){
 	this.x = x
 	this.y = y
@@ -45,9 +43,7 @@ function TextBox(x, y, z){
 
 TextBox.prototype = new Drawable();
 
-TextBox.prototype.draw = function ( canvas ){
-// TODO:
-	
+TextBox.prototype.draw = function ( canvas ){	
 	context.font = '10px sans-serif'
 	context.fillStyle = 'black';
 	context.fillText(this.text, this.x, this.y); 
@@ -74,7 +70,7 @@ function primCopy(template, json){
 return an instance of the of the object if parseable from JSON
 else null
 */
-function parse(message){
+function parseJSON(message){
 	if(!(typeof message.type === 'string'))
 		return null
 	var t = message.type;
@@ -96,4 +92,5 @@ if (typeof module == 'object' && module && typeof module.exports == 'object' && 
 	module.exports.TextBox = TextBox;
 	module.exports.Drawable = Drawable;
 	module.exports.ChatMessage = ChatMessage; 
+	module.exports.parseJSON = parseJSON
 }

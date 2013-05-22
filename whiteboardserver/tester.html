@@ -8,20 +8,14 @@
 		<script type="text/javascript" src="evCanvas.js"> </script>
 		<script src="socket.io.min.js"></script>
 		<script src="wbio.js"></script>
-		<scripr src="wbui.js"></script>
+		<script src="wbui.js"></script>
 		<script type="text/javascript">
 		/** 
 		*/
-	var drawables = []; 
-		
-	var cur;
-
-
-
+		var uid = 1;
 		$(function (){
-			uiInit('whiteBoard');
+			uiInit('whiteboard');
 			ioInit(); 
-			
 		});
 		</script>
 		<style type="text/css"> 
@@ -47,14 +41,16 @@
 			.tool_button.color_selected{
 				border-color: yellow;
 			}
+			canvas.whiteboard{
+				height: 500;
+				width: 1000;
+			}
 		</style>
 	</head>
 	<body>
 		<p>start</p>
 		<hr/>
-		<div class="toolBar"></div> 
-		<canvas id="whiteBoard" height="500" width="1000">
-		</canvas>
+			<div class="canvasWrapper"> </div>
 		<hr />
 		<p>end</p>
 	</body>
