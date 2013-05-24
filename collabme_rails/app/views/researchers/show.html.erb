@@ -1,16 +1,49 @@
 <% unless @user %>
+<!--
 <h1><%= @researcher.first_name + ' ' + @researcher.last_name %></h1>
 <p><%= @researcher.email %></p>
+-->
+<% @user = @researcher %>
+<!--
 <p>Page here</p>
 <div id="friends"> 
 <%= render :partial => "friend", :collection => @friends %> 
-</div> 
-<% else %>
-<h1><%= @user.first_name + ' ' + @user.last_name %></h1>
-<p><%= @user.email %></p>
-<p>Welcome to your profile page!</p>
-<p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
+</div>
+-->
+<% end %>
+<div class="row border_row">
+  <div class="span2"><%= image_tag("default-profile-pic.png", :alt => "rss feeds") %></div>
+  <div class="span8">
+    <h1><%= @user.first_name + ' ' + @user.last_name %></h1>
+    <p><%= @user.email %></p>
+    <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
+  </div>
+</div>
+<div class="row border_row">
+  <div class="tabbable span10"> <!-- Only required for left/right tabs -->
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#tab1" data-toggle="tab">Experience</a></li>
+      <li><a href="#tab2" data-toggle="tab">Publications</a></li>
+      <li><a href="#tab3" data-toggle="tab">About Me</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab1">
+        <p>I'm in Section 1.</p>
+      </div>
+      <div class="tab-pane" id="tab2">
+        <p>Howdy, I'm in Section 2.</p>
+      </div>
+      <div class="tab-pane" id="tab3">
+        <p>Hello, I'm in Section 3.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row border_row">
+  <div class="span10" >
+    <input type="text" placeholder="Update Your Status">
+  </div>
+</div>
 <div id="friends"> 
 <%= render :partial => "friend", :collection => @friends %>  
 </div> 
-<% end %>
