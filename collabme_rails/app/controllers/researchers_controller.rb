@@ -21,7 +21,13 @@ class ResearchersController < ApplicationController
 	    end
 	    return
 	  end
-	  @user = Researcher.find(params[:id])
+	  id = params[:id]
+	  @user = Researcher.find_by_id(id)
+	  unless @user
+	    flash[:notice] = "No such user with id: #{id}"
+	    redirect_to :action => "index"
+	    return
+	  end
 	  @friends = @user.friends
 	  respond_to do |format|
 	    format.html  # show.html.erb

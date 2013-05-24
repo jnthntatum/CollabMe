@@ -1,6 +1,11 @@
 class GroupsController < ApplicationController
   def show
-    @group = Group.find(params[:id])
+    id = params[:id]
+    @group = Group.find_by_id(id)
+	  unless @group
+	    flash[:notice] = "No such group with id: #{id}"
+	    redirect_to :action => "index"
+	  end
   end
   
   def index

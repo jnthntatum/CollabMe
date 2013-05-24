@@ -1,5 +1,9 @@
 CollabmeRails::Application.routes.draw do
 
+  get "profile/index"
+
+  get "profile/show"
+
   get "search/findResearchers"
   get "search/search"
 
@@ -42,6 +46,9 @@ CollabmeRails::Application.routes.draw do
       post 'add_member'
     end
   end
+  
+  #resources :profiles
+    
 
   # Sample resource route with options:
   #   resources :products do
@@ -75,7 +82,7 @@ CollabmeRails::Application.routes.draw do
   #     resources :products
   #   end
 
-  
+  #match 'profile/:user_id' => 'profile#show
 
   # See how all your routes lay out with "rake routes"
 
