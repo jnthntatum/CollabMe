@@ -59,10 +59,15 @@ class ResearchersController < ApplicationController
 	def create
 		@researcher = Researcher.new(params[:researcher])
 		respond_to do |format|
-			if @researcher.save()
-				format.html { redirect_to @researcher }
+			if @researcher.save
+			  UserMailer.welcome_email(@researcher).deliver
+				#format.html { redirect_to (@researcher,  => 'User was successfully created.') }
+				format.html { redirect_to(@researcher, :notice => 'User registration was successfully emailed.') }
+        
+				format.json  { render :json => @researcher }
 			else
 				format.html { render new_researcher_path }
+				format.json { render :json => @researcher.errors}
 			end
 		end
 	end
