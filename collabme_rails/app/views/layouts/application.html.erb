@@ -15,11 +15,13 @@
   <div class="wrapper">
   	<%= render "shared/header" %> 
   	<div class="container-fluid contents">
-  	  <div class="span10">
-  		<%= yield %>
-  		</div>
-  		<div class="span2 sidebar">
-  		<%= render "shared/sidebar" %>
+  	  <div class="row-fluid">
+  	    <div class="span9">
+  		    <%= yield %>
+  		  </div>
+  		  <div class="span3 well sidebar">
+  		    <%= render "shared/sidebar" %>
+  		  </div>
   		</div>
   	</div>
     <div class="push"></div>
