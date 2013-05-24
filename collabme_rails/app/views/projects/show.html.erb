@@ -1,15 +1,63 @@
-<h1>Projects#show</h1>
-<%= render "shared/notice_block" %>
-<p> Title: <%= @project.name %> </p>
-<p> owner: <%= if @project.owner != nil then @project.owner.first_name else "nil" end %> </p>
-<p>Members: 	
-	<% @project.members.each do |member| %> 
-	<%= "#{member.first_name},"%>
-	<% end %>
-</p>
-<p>tasks</p> 
-<%= render(:partial => "tasks/task", :collection => @tasks, :as => :task) %>
-<p>posts</p>
-<%= render(:partial => "shared/post", :collection => @posts, :as => :post) %>
+<div class="span9">
+  <div class="row-fluid border_row">
+    <div class="span3"><%= image_tag("default-profile-pic.png", :alt => "rss feeds") %></div>
+    <div class="span9">
+      <h1><%= @project.name %></h1>
+      <p>Owner: <%= @project.owner.first_name %></p>
+      <div id="friends">
+        <p>Members: 	
+	        <% @project.members.each do |member| %> 
+	        <%= "#{member.first_name},"%>
+	        <% end %>
+        </p>
+      </div>
+      <!--<p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>-->
+    </div>
+  </div>
+  <div class="row-fluid border_row">
+    <div class="tabbable span12"> <!-- Only required for left/right tabs -->
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Experience</a></li>
+        <li><a href="#tab2" data-toggle="tab">Publications</a></li>
+        <li><a href="#tab3" data-toggle="tab">About Me</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+          <p>I'm in Section 1.</p>
+        </div>
+        <div class="tab-pane" id="tab2">
+          <p>Howdy, I'm in Section 2.</p>
+        </div>
+        <div class="tab-pane" id="tab3">
+          <p>Hello, I'm in Section 3.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row-fluid border_row">
+    <div class="span12" >
+      <input type="text" placeholder="Update Your Status">
+    </div>
+  </div>
+</div>
+<div class="span3 well sidebar">
+  <%= render "shared/sidebar" %>
+</div>
 
-<%= render "add_member_form" %>
+
+<!--
+<% if false %>
+  <p> owner: <%= if @project.owner != nil then @project.owner.first_name else "nil" end %> </p>
+  <p>Members: 	
+    <% @project.members.each do |member| %> 
+    <%= "#{member.first_name},"%>
+    <% end %>
+  </p>
+  <p>tasks</p> 
+  <%= render(:partial => "tasks/task", :collection => @tasks, :as => :task) %>
+  <p>posts</p>
+  <%= render(:partial => "shared/post", :collection => @posts, :as => :post) %>
+  
+  <%= render "add_member_form" %>
+<% end %>
+//-->

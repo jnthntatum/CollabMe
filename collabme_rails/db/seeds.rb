@@ -19,12 +19,14 @@
     #jt.save(:validate => false)
 
     #rr = Researcher.new(:first_name => "Radom", :last_name => "McRandomson", :email => "rr@dsl.com")
-=begin    
-    pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
-    pj.owner = gk; 
-    pj.members << ss << kg << jt;
-    pj.save();
     
+    pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
+    #pj.owner = gk;
+    pj.owner = ss
+    #pj.members << ss << kg << jt;
+    pj.members << ss
+    pj.save();
+=begin   
     ss.direct_friends << kg << gk << jt;
     kg.direct_friends << gk << jt; 
     gk.direct_friends << jt; 

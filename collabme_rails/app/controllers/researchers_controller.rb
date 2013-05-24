@@ -21,11 +21,11 @@ class ResearchersController < ApplicationController
 	    end
 	    return
 	  end
-	  @researcher = Researcher.find(params[:id])
-	  @friends = @researcher.friends
+	  @user = Researcher.find(params[:id])
+	  @friends = @user.friends
 	  respond_to do |format|
 	    format.html  # show.html.erb
-	    format.json  { render :json => @researcher }
+	    format.json  { render :json => @user }
 	  end
 	end
 
