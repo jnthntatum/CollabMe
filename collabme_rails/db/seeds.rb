@@ -25,7 +25,7 @@
     pj.owner = ss
     #pj.members << ss << kg << jt;
     pj.members << ss
-    pj.save();
+    pj.save()
 =begin   
     ss.direct_friends << kg << gk << jt;
     kg.direct_friends << gk << jt; 
@@ -39,8 +39,7 @@
 
     p = Post.new(:title=>"comment", :desc => "What an awesome project!!!")
     pj.posts << p;    
-
-    g = Group.new(:name => "cs194", :email => "don't_email@me.com")
-    g.save();
-    g.researchers << ss << jt << kg << gk;
 =end
+    g = Group.new(:name => "cs194", :email => "don't_email@me.com")
+    g.researchers << ss
+    g.save();
