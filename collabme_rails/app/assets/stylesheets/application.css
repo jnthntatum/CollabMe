@@ -88,6 +88,15 @@ body {
 	padding-top: 10px;
 }
 
+#logo {
+  padding: 5px;
+}
+
+.navbar .brand {
+  @elementHeight: 32px;
+  padding: ((@navbarHeight - @elementHeight) / 2 - 2) 20px ((@navbarHeight - @elementHeight) / 2 + 2);
+}
+
 /* Contents */
 .contents {
 	height: 100%;
