@@ -92,9 +92,8 @@ body {
   padding: 5px;
 }
 
-.navbar .brand {
-  @elementHeight: 32px;
-  padding: ((@navbarHeight - @elementHeight) / 2 - 2) 20px ((@navbarHeight - @elementHeight) / 2 + 2);
+.jumbotron {
+  text-align: center;
 }
 
 /* Contents */
