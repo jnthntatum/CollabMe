@@ -48,6 +48,7 @@
     t.save();
 
     p = Post.new(:title=>"comment", :desc => "What an awesome project!!!")
+    p.creator = ss
     pj.posts << p;    
 
     g = Group.new(:name => "cs194", :email => "don't_email@me.com")

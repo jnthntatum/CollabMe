@@ -17,13 +17,22 @@
   <div class="row-fluid border_row">
     <div class="tabbable span12"> <!-- Only required for left/right tabs -->
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Experience</a></li>
-        <li><a href="#tab2" data-toggle="tab">Publications</a></li>
-        <li><a href="#tab3" data-toggle="tab">About Me</a></li>
+        <li class="active"><a href="#tab1" data-toggle="tab">Bulletin Board</a></li>
+        <li><a href="#tab2" data-toggle="tab">Task</a></li>
+        <li><a href="#tab3" data-toggle="tab">Project Description</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-          <p>I'm in Section 1.</p>
+          <div class="input-append input-block-level">
+            <input class="span11" type="text" placeholder="Write a New Post">
+            <button class="btn" type="button">Post</button>
+          </div>
+          <div>
+          <% @project.posts.each do |p| %>
+            <% creator = Researcher.find_by_id(p.creator_id)%>
+            <%= creator.first_name + " " + creator.last_name + ": " + p.desc %>
+          <% end %>
+          </div>
         </div>
         <div class="tab-pane" id="tab2">
           <p>Howdy, I'm in Section 2.</p>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520042036) do
+ActiveRecord::Schema.define(:version => 20130527044607) do
 
   create_table "friendships", :id => false, :force => true do |t|
     t.integer  "user_id"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20130520042036) do
     t.integer  "post_interface_id"
     t.string   "post_interface_type"
     t.string   "title"
+    t.integer  "creator_id"
   end
 
   add_index "posts", ["post_interface_id"], :name => "index_posts_on_post_interface_id"
