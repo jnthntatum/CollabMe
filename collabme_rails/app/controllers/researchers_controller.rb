@@ -12,14 +12,9 @@ class ResearchersController < ApplicationController
 	end	
 
 	def show
+	  @currentUserPage = false
 	  if session[:current_user_id] and session[:current_user_id] == params[:id].to_i
-	    @user = Researcher.find(session[:current_user_id])
-	    @friends = @user.friends
-	    respond_to do |format|
-	      format.html # show.html.erb
-	      format.json { render :json => @researcher}
-	    end
-	    return
+	    @currentUserPage = true
 	  end
 	  id = params[:id]
 	  @user = Researcher.find_by_id(id)
@@ -34,6 +29,28 @@ class ResearchersController < ApplicationController
 	    format.json  { render :json => @user }
 	  end
 	end
+
+  def email
+    @recipient = Researcher.find_by_id(params[:id].to_i)
+    @sender = Researcher.find_by_id(session[:current_user_id])
+    if request.post?
+      if not params[:Body]
+        flash[:notice] = "Can't send an empty email!"
+        redirect_to :action => "email"
+        return
+      elsif not params[:Subject]
+        flash[:notice] = "Can't send an email with an empty subject!"
+        redirect_to :action=> "email"
+        return
+      else
+        respond_to do |format|
+          UserMailer.user_email(@recipient, @sender, params[:Subject], params[:Body]).deliver
+          format.html { redirect_to(@recipient, :notice => 'Researcher was successfully emailed.') }
+				  format.json  { render :json => @researcher }
+				end
+      end
+    end
+  end
 
   def edit
     @researcher = Researcher.find(session[:current_user_id])

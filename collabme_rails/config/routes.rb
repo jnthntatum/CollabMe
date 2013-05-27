@@ -31,6 +31,11 @@ CollabmeRails::Application.routes.draw do
       post :post_login
       get :logout  
     end
+    
+    member do
+      get 'email'
+      post 'email'
+    end
 
     resource :projects
   end 
