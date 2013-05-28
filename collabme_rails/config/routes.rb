@@ -41,6 +41,7 @@ CollabmeRails::Application.routes.draw do
   end 
 
   resources :projects do
+    resources :posts
     member do
       post 'add_member'
     end
