@@ -20,13 +20,13 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-          <p>I'm in Section 1.</p>
+          <p><%= @user.experience %></p>
         </div>
         <div class="tab-pane" id="tab2">
-          <p>Howdy, I'm in Section 2.</p>
+          <p><%= @user.publications %></p>
         </div>
         <div class="tab-pane" id="tab3">
-          <p>Hello, I'm in Section 3.</p>
+          <p><%= @user.about_me %></p>
         </div>
       </div>
     </div>
@@ -41,6 +41,6 @@
   </div>
 </div>
 <div class="span3 well sidebar">
-  <%= render "shared/sidebar" %>
+  <%= render :partial => "shared/sidebar", :locals => { :user => @user} %>
 </div>
 

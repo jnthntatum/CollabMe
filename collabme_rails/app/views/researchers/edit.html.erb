@@ -3,6 +3,9 @@
 <%= form_for @researcher do |f| %>
   <p>
     Email Address: <%= f.text_field :email %> <br />
+    Experience: <%= f.text_area :experience %> <br />
+    Publications: <%= f.text_area :publications %> <br />
+    About Me: <%= f.text_area :about_me %> <br />
     <%= f.submit %>
   </p>
 <% end %>

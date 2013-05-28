@@ -16,6 +16,9 @@
  	  #ss.save(:validate => false)
  	  ss = Researcher.new(:first_name => "Shayon", :last_name => "Saleh", :email => "ssaleh@stanford.edu", :password => "collabme13", :password_confirmation => "collabme13")
  	  ss.password="collabme13"
+ 	  ss.about_me="I love research collaboration!"
+ 	  ss.experience="Java, C++, Python, Rails"
+ 	  ss.publications="Inference of Tumor Phylogenies with Improved Somatic Mutation Discovery"
  	  ss.save()
  	  #Need to add passwords for the seeds
 	  kg = Researcher.new(:first_name => "Kristian", :last_name => "Gampong", :email => "kgampong@stanford.edu", :password => "collabme13", :password_confirmation => "collabme13")

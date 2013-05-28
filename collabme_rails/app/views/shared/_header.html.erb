@@ -26,7 +26,7 @@
         </ul>
         <% if session[:current_user_id] %>
           <ul class="nav pull-right">
-            <li class="navbar-text">Welcome <%= session[:current_user_first_name] %>! </li>
+            <li> <%= link_to 'Welcome ' + session[:current_user_first_name] + '!', researcher_path(session[:current_user_id]) %></li>
             <li class="divider-vertical"></li>
             <li><%= link_to 'Logout?', logout_researchers_path %></li>
           </ul>
