@@ -8,6 +8,10 @@ CollabmeRails::Application.routes.draw do
   get "search/findGroups"
   get "search/findProjects"
   get "search/search"
+  get "researchers/addInterest"
+  get "researchers/addSkill"
+  get "researchers/removeInterest"
+  get "researchers/removeSkill"
 
   #get "home/index"
 
