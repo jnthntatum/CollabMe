@@ -35,18 +35,57 @@ Squiggle.prototype.draw = function(	canvas ){
 }
 
 
-function TextBox(x, y, z){ 
+function TextBox(x, y, w, h){ 
 	Drawable.call(this, x, y)
 	this.type = "text_box"
+	this.style = "black"
 	this.text = ""
 }
 
 TextBox.prototype = new Drawable();
 
 TextBox.prototype.draw = function ( canvas ){	
-	context.font = '10px sans-serif'
-	context.fillStyle = 'black';
-	context.fillText(this.text, this.x, this.y); 
+	if (this.resizing){
+		canvas.font = '10px sans-serif'
+		canvas.strokeStyle = rgba(0,0,0,0.5)
+		canvas.strokeRect(this.text, this.x, this.y); 
+	}else{
+		canvas.font = '10px sans-serif'
+		canvas.fillStyle = this.style;
+		canvas.fillText(this.text, this.x, this.y); 
+	}	
+}
+
+function Circle(x, y, r){
+	Drawable.call(this, x, y);
+	this.r = r; 
+	this.type = "circle"
+	this.color = "black"
+}
+
+Circle.prototype = new Drawable(); 
+
+Circle.prototype.draw = function( canvas ){
+	var x = this.x
+	var r = this.r
+	var y = this.y 
+	canvas.fillStyle = this.color; 
+	canvas.fillRect(x - r, y - r, 2 * r, 2 * r);
+}
+
+function Square(x, y, w, h){
+	Drawable.call(this, x, y);
+	this.w = w; 
+	this.h = h;
+	this.type = "square" 
+	this.color = 'black'
+}
+
+Square.prototype = new Drawable(); 
+
+Square.prototype.draw = function( canvas ){
+	canvas.fillStyle = this.color;
+	canvas.fillRect(this.x, this.y, this.w, this.h); 
 }
 
 function ChatMessage (name, text){
@@ -80,7 +119,11 @@ function parseJSON(message){
 	else if(t === "squiggle")
 		template = new Squiggle(0, 0)
 	else if(t === "chat_message")
-		template = ChatMessage("", "")
+		template = new ChatMessage("", "")
+	else if(t === "circle")
+		template =  new Circle(0, 0, 0)
+	else if(t === "square")
+		template = new Square(0, 0, 0, 0)
 	else
 		return null;
 	return primCopy(template, message);
@@ -91,6 +134,8 @@ if (typeof module == 'object' && module && typeof module.exports == 'object' && 
 	module.exports.Squiggle = Squiggle;
 	module.exports.TextBox = TextBox;
 	module.exports.Drawable = Drawable;
-	module.exports.ChatMessage = ChatMessage; 
+	module.exports.ChatMessage = ChatMessage;
+	module.exports.Circle = Circle; 
+	module.exports.Square = Square;
 	module.exports.parseJSON = parseJSON
 }

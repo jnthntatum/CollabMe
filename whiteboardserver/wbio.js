@@ -21,7 +21,10 @@ function procPOST(message){
 	var idx = message.idx;
 	var d = parseJSON(message.data); 
 	console.log("parsed d", d)
-	uiAddDrawable(d, idx) 
+	if (d.type === 'chat_message')
+		uiAddChatMessage(d, idx); 
+	else
+		uiAddDrawable(d, idx) 
 }
 
 function procAck(message){
@@ -61,6 +64,13 @@ function ioSendDrawable(drawable){
 	var m = new Message("POST", uid);
 	m.sid = sid;
 	m.data = drawable;
+	sendMessageToServer(m);  
+}
+
+function ioSendChatMessage(message, lSid){
+	var m = new Message("POST", uid);
+	m.sid = lSid;
+	m.data = message;
 	sendMessageToServer(m);  
 }
 

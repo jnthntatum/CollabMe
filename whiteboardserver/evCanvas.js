@@ -33,6 +33,11 @@ function evStopDragfn(id, fn){
 	sm.stopDragfn = fn; 
 }
 
+function evClickfn(){
+	sm = getStateMachine(id); 
+	sm.clickfn = fn; 
+}
+
 function evSetAux(id, aux){
 	sm = getStateMachine(id);
 	sm.aux = aux;
@@ -84,6 +89,8 @@ function StateMachine(aux){
 	this.state= 0
 	this.left= 0
 	this.top= 0
+	this.cx = 0
+	this.cy = 0
 	this.drag= false
 	this.disabled= false
 	this.aux = aux;
@@ -106,6 +113,8 @@ _move= function(ev){
 		return;
 	if (sm.state == 2){
 		if (!sm.drag){
+			pos.oldX = sm.cx;
+			pos.oldY = sm.cy;
 			testAndFire(sm.startDragfn, pos, sm.aux)
 			sm.drag = true;
 		}
@@ -142,6 +151,8 @@ _mousedown= function(ev){
 	if(sm.disabled)
 		return;
 	pos = sm.coords(ev);
+	sm.cx = pos.x
+	sm.cy = pos.y
 	if (sm.state == 1)
 		sm.state = 2;
 }		 

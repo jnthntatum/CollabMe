@@ -4,6 +4,7 @@
 		<title>TEST PAGE FOR CANVAs</title> 
 		<script type="text/javascript" src="wbprimatives.js" >
 		</script>
+		<link rel="stylesheet" type="text/css" href="whiteboard.css">
 		<script type="text/javascript" src="../collabme_rails/app/assets/javascripts/jquery-2.0.0.min.js"> </script>
 		<script type="text/javascript" src="evCanvas.js"> </script>
 		<script src="socket.io.min.js"></script>
@@ -18,34 +19,6 @@
 			ioInit(); 
 		});
 		</script>
-		<style type="text/css"> 
-			.toolBar{
-				background-color: rgb(230, 230, 230);
-			}
-			.tool {
-				display: inline-block;
-			}
-			.tool_button {
-				display: inline-block;
-				max-width: 25px;
-				max-height: 25px;
-				min-width: 25px;
-				min-height: 25px;
-				border-width: 2px 2px 2px 2px;
-				border-style: solid;
-				margin: 1px;
-				border-color: black;
-				border-radius: 5px;
-			}
-
-			.tool_button.color_selected{
-				border-color: yellow;
-			}
-			canvas.whiteboard{
-				height: 500;
-				width: 1000;
-			}
-		</style>
 	</head>
 	<body>
 		<p>start</p>
