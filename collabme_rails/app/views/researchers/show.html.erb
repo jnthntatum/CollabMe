@@ -6,6 +6,8 @@
       <% if @currentUserPage %>
       <p><%= @user.email %></p>
       <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
+      <p><%= link_to "Create A Project", {:controller => "projects", :action => "new"} %></p>
+      <p><%= link_to "Create A Group", {:controller => "groups", :action => "new"} %></p>
       <% else %>
       <p><%= link_to @user.email, {:controller =>"researchers", :action => "email"} %></p>
       <% end %>
@@ -32,7 +34,7 @@
     </div>
   </div>
   <div class="row-fluid border_row">
-    <% if session[:current_user_id] and session[:current_user_id].to_i == @user.id%>
+    <% if @currentUserPage%>
         <%= form_for([@user, Post.new], :html => {:class => 'input-append input-block-level'}) do |p| %>
           <%= p.text_field(:desc, {:placeholder => "Update Your Status", :class => "span11"}) %>
           <%= p.hidden_field(:creator_id, :value => session[:current_user_id]) %> 
