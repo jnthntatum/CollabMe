@@ -10,6 +10,7 @@ class Researcher < ActiveRecord::Base
   has_many :group_memberships, :class_name => "ResearchGroupMember", :foreign_key => "researcher_id"  
   has_many :groups, :class_name => "Group", :through => :group_memberships, :source => :group, :uniq => true
   
+  has_one :photo
   has_many :posts, :as => :post_interface
 
   # Friends
