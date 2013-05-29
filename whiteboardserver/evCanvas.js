@@ -18,22 +18,22 @@ evBindCanvas= function(id, aux){
 
 }
 
-function evStartDragfn(id, fn){
+function evStartDrag(id, fn){
 	sm = getStateMachine(id);
 	sm.startDragfn = fn; 
 }
 
-function evDragfn(id, fn){
+function evDrag(id, fn){
 	sm = getStateMachine(id);
 	sm.dragfn = fn; 
 }
 
-function evStopDragfn(id, fn){
+function evStopDrag(id, fn){
 	sm = getStateMachine(id);
 	sm.stopDragfn = fn; 
 }
 
-function evClickfn(){
+function evClick(id, fn){
 	sm = getStateMachine(id); 
 	sm.clickfn = fn; 
 }

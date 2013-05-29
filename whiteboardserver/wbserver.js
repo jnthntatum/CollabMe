@@ -114,7 +114,9 @@ function procAck(client, message){
 }
 
 function validSid(message){
-	return (typeof message.sid === 'number' && message.sid <= sessions.length && message.sid >= 0)
+	return (typeof message.sid === 'number' &&
+	 	message.sid <= sessions.length && message.sid >= 0 &&
+	  	sessions[message.sid] != undefined)
 }
 
 function broadcast(session, message, source){

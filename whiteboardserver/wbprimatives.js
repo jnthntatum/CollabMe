@@ -40,15 +40,16 @@ function TextBox(x, y, w, h){
 	this.type = "text_box"
 	this.style = "black"
 	this.text = ""
+	
 }
 
 TextBox.prototype = new Drawable();
 
 TextBox.prototype.draw = function ( canvas ){	
 	if (this.resizing){
-		canvas.font = '10px sans-serif'
-		canvas.strokeStyle = rgba(0,0,0,0.5)
-		canvas.strokeRect(this.text, this.x, this.y); 
+		canvas.lineWidth = '2px'
+		canvas.strokeStyle = 'rgba(0,0,0,128)'
+		canvas.strokeRect(this.x, this.y, this.w, this.h); 
 	}else{
 		canvas.font = '10px sans-serif'
 		canvas.fillStyle = this.style;
