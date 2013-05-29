@@ -32,12 +32,6 @@
               <%= p.submit "Post" %>
             <% end %>
           <% end %>
-          <!--<div class="input-append input-block-level">
-          
-            <input class="span11" type="text" placeholder="Write a New Post">
-            <button class="btn" type="button">Post</button>
-          </div>
-          -->
           <div>
           <% @project.posts.each do |p| %>
             <% creator = Researcher.find_by_id(p.creator_id)%>
@@ -55,9 +49,7 @@
     </div>
   </div>
   <div class="row-fluid border_row">
-    <div class="span12" >
-      <input type="text" placeholder="Update Your Status">
-    </div>
+    Put project stats here possibly.
   </div>
 </div>
 <div class="span3 well sidebar">

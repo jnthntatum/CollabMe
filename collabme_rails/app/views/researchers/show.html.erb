@@ -6,6 +6,8 @@
       <% if @currentUserPage %>
       <p><%= @user.email %></p>
       <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
+      <p><%= link_to "Create A Project", {:controller => "projects", :action => "new"} %></p>
+      <p><%= link_to "Create A Group", {:controller => "groups", :action => "new"} %></p>
       <% else %>
       <p><%= link_to @user.email, {:controller =>"researchers", :action => "email"} %></p>
       <% end %>
@@ -20,27 +22,35 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-          <p>I'm in Section 1.</p>
+          <p><%= @user.experience %></p>
         </div>
         <div class="tab-pane" id="tab2">
-          <p>Howdy, I'm in Section 2.</p>
+          <p><%= @user.publications %></p>
         </div>
         <div class="tab-pane" id="tab3">
-          <p>Hello, I'm in Section 3.</p>
+          <p><%= @user.about_me %></p>
         </div>
       </div>
     </div>
   </div>
   <div class="row-fluid border_row">
-    <div class="span12" >
-      <input type="text" placeholder="Update Your Status">
-    </div>
+    <% if @currentUserPage%>
+        <%= form_for([@user, Post.new], :html => {:class => 'input-append input-block-level'}) do |p| %>
+          <%= p.text_field(:desc, {:placeholder => "Update Your Status", :class => "span11"}) %>
+          <%= p.hidden_field(:creator_id, :value => session[:current_user_id]) %> 
+          <%= p.submit "Post" %>
+        <% end %>
+    <% end %>
+    <% @user.posts.each do |p| %>
+      <% creator = Researcher.find_by_id(p.creator_id)%>
+      <%= creator.first_name + " " + creator.last_name + ": " + p.desc %>
+    <% end %>
   </div>
   <div id="friends"> 
   <%= render :partial => "friend", :collection => @friends %>  
   </div>
 </div>
 <div class="span3 well sidebar">
-  <%= render "shared/sidebar" %>
+  <%= render :partial => "shared/sidebar", :locals => { :user => @user} %>
 </div>
 

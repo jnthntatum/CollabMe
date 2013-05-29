@@ -1,12 +1,17 @@
 <div class="nav nav-list">
-  <li class="nav-header">Ongoing Projects</li>
-    <li><a href="#">Project1</a></li>
-    <li><a href="#">Project2</a></li>
-  <li class="nav-header">Completed Projects</li>
-    <li><a href="#">Project3</a></li>
-  <li class="nav-header">Groups</li>
-    <li><a href="#">Group 1</a></li>
-    <li><a href="#">Group 2</a></li>
-  <li class="nav-header">Related Researchers</li>
-    <li><a href="#">Researcher 1</a></li>
+  <% user = nil if local_assigns[:user].nil? %>
+  <% if user %>
+    <li class="nav-header">Projects</li>
+      <% user.memberof.each do |p| %>
+      <li><%= link_to p.name, project_path(p) %></li>
+      <% end %>
+    <li class="nav-header">Groups</li>
+      <% user.groups.each do |g| %>
+      <li><%= link_to g.name, group_path(g) %></li>
+      <% end %>
+    <li class="nav-header">Related Researchers</li>
+      <% user.friends.each do |f| %>
+      <li><%= link_to f.first_name + " " + f.last_name, researcher_path(f) %></li>
+      <% end %>
+  <% end %>
 </div>
