@@ -361,19 +361,36 @@ function uiInit(id){
 	canvasID = id; 
 }
 
-//Adding a chat window / Session pair
+function makeChatLine(author, text){
+	var val = "<b>" + author + ": </b>" + text 
+	var el = document.createElement("p");
+	el.setAttribute("class", "chat chat_message")
+	el.innerHTML = val; 
+	return el; 
+}
 
+//Adding a chat window / Session pair
 function chatKeyupCB(ev){
-	if (ev.keycode === 13){
+	var chat_window = $(this).parent()
+	var mSid = chat_window.attr('sid')
+	console.log("keyup at ", this)
+	console.log('ev.keycode', ev.keycode) 
+	if (ev.keyCode === 13){
 		//enter so send a message!
+		var inp = $("textarea", this)[0];
+		$('.chat_history', chat_window)[0].appendChild(makeChatLine("Me", inp.value))
+		inp.value = "";
 	}
 }
 
-function bindCWListeners(){ 
-	$('.chat').keyup(chatKeyupCB)
+function bindCWListeners(context){ 
+	$('.chat_input_wrapper', context).keyup(chatKeyupCB)
 } 
 
 function uiChatWindow(sid){
+	var nub = document.createElement("div")
+	nub.setAttribute("class", "chat chat_nub");
+
 	var wind = document.createElement("div")
 	wind.setAttribute("class", "chat chat_window")
 	wind.setAttribute("sid", sid)
@@ -385,7 +402,8 @@ function uiChatWindow(sid){
 	inpDiv.appendChild(inp);
 	wind.appendChild(hist)
 	wind.appendChild(inpDiv);
-	return wind; 
+	nub.appendChild(wind);
+	return nub; 
 	//inp.setAttribute() 
 
 }
