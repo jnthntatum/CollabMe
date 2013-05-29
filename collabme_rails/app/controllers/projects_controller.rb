@@ -24,6 +24,21 @@ class ProjectsController < ApplicationController
 #			format.json 
 		end
 	end
+	
+	def edit
+	  @project = Project.find_by_id(params[:id])
+	end
+	
+	def update
+    @project = Project.find_by_id(params[:id]) 
+    if @project.update_attributes(params[:project])
+      flash[:notice] = 'You have successfully updated the project.'
+      redirect_to @project
+    else
+      flash[:error] = 'Invalid update.'
+      redirect_to edit_project_path
+    end
+  end
 
 	def create
 

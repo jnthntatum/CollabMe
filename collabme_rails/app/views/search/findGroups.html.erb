@@ -1,8 +1,8 @@
-<h1>Search#findResearchers</h1>
-<p>Find me in app/views/search/findResearchers.html.erb</p>
+<h1>Search Groups</h1>
 
 <p>Searched for <%= @query%></p>
 
-<%@researchers.each do |researcher|%>
-	<%= researcher.first_name%>
+<%@groups.each do |group|%>
+	<% name = group.name%>
+	<%= link_to name, :controller => "groups", :action => "show", :id => group%>
 <%end%>

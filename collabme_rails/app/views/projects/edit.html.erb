@@ -1,0 +1,8 @@
+<h1>Edit Project</h1>
+<%= render 'shared/show_errors' %>
+<%= form_for @project do |f| %>
+  <p>
+    Description: <%= f.text_field :description %> <br />
+    <%= f.submit %>
+  </p>
+<% end %>

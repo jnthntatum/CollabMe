@@ -22,12 +22,12 @@ class SearchController < ApplicationController
    def findGroups
     logger.debug @query
     @query = flash[:query]
-    @researchers = Researcher.where("first_name LIKE ? OR last_name LIKE ?", @query, @query)
+    @groups = Group.where("name LIKE ?", @query)
   end
 
    def findProjects
     logger.debug @query
     @query = flash[:query]
-    @researchers = Researcher.where("first_name LIKE ? OR last_name LIKE ?", @query, @query)
+    @projects = Project.where("name LIKE ?", @query)
   end
 end

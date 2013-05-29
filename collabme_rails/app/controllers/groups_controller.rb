@@ -2,6 +2,13 @@ class GroupsController < ApplicationController
   def show
     id = params[:id]
     @group = Group.find_by_id(id)
+    @currUserInGroup = false
+    if session[:current_user_id]
+      @currUser = Researcher.find_by_id(session[:current_user_id])
+    end
+    if @currUser and @group.researchers.include?(@currUser)
+      @currUserInGroup = true
+    end
 	  unless @group
 	    flash[:notice] = "No such group with id: #{id}"
 	    redirect_to :action => "index"
@@ -15,6 +22,21 @@ class GroupsController < ApplicationController
 #			format.json 
 		end
 	end
+	
+	def edit
+	  @group = Group.find_by_id(params[:id])
+	end
+	
+	def update
+    @group = Group.find_by_id(params[:id]) 
+    if @group.update_attributes(params[:group])
+      flash[:notice] = 'You have successfully updated the group.'
+      redirect_to @group
+    else
+      flash[:error] = 'Invalid update.'
+      redirect_to edit_group_path
+    end
+  end
 	
   def create
 
