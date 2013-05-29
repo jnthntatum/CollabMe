@@ -37,6 +37,8 @@ CollabmeRails::Application.routes.draw do
       post 'email'
     end
 
+    resources :posts
+
     resource :projects
   end 
 

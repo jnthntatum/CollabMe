@@ -32,9 +32,17 @@
     </div>
   </div>
   <div class="row-fluid border_row">
-    <div class="span12" >
-      <input type="text" placeholder="Update Your Status">
-    </div>
+    <% if session[:current_user_id] and session[:current_user_id].to_i == @user.id%>
+        <%= form_for([@user, Post.new], :html => {:class => 'input-append input-block-level'}) do |p| %>
+          <%= p.text_field(:desc, {:placeholder => "Update Your Status", :class => "span11"}) %>
+          <%= p.hidden_field(:creator_id, :value => session[:current_user_id]) %> 
+          <%= p.submit "Post" %>
+        <% end %>
+    <% end %>
+    <% @user.posts.each do |p| %>
+      <% creator = Researcher.find_by_id(p.creator_id)%>
+      <%= creator.first_name + " " + creator.last_name + ": " + p.desc %>
+    <% end %>
   </div>
   <div id="friends"> 
   <%= render :partial => "friend", :collection => @friends %>  

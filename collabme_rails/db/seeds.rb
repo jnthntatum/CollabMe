@@ -53,6 +53,10 @@
     p = Post.new(:title=>"comment", :desc => "What an awesome project!!!")
     p.creator = ss
     pj.posts << p;    
+    
+    p2 = Post.new(:title=>"status", :desc => "I love CollabMe!")
+    p2.creator = ss
+    ss.posts << p2
 
     g = Group.new(:name => "cs194", :email => "don't_email@me.com")
     g.researchers << ss

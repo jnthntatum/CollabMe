@@ -19,8 +19,22 @@ def create
       end
     end
     return
+  elsif params[:researcher_id]
+    researcher = Researcher.find_by_id(params[:researcher_id])
+    researcher.posts << @post
+    @post.save
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to researcher_path(researcher)}
+        format.json { render :json => @post, :status => :created, :location => @post }
+      else
+        format.html { redirect_to :back }
+        format.json { render :json => @post.errors, :status => :unprocessable_entity }
+      end
+    end
+    return
   end
-  #@post.desc = params[:post_text]
+  @post.desc = params[:post_text]
   @post.save
     respond_to do |format|
       if @post.save
