@@ -4,8 +4,8 @@
 *
 */
 
-evBindCanvas= function(id){
-	sm = new StateMachine();
+evBindCanvas= function(id, aux){
+	sm = new StateMachine(aux);
 	jq = $('#'+id )
 	sm.top = jq.offset().top
 	sm.left = jq.offset().left
@@ -14,7 +14,8 @@ evBindCanvas= function(id){
 	jq.mousemove(_move)
 	jq.mousedown(_mousedown);
 	$('body').mouseup(_mouseupWrapper);
-	stateMachines[id] = sm; 
+	stateMachines[id] = sm;
+
 }
 
 function evStartDragfn(id, fn){
@@ -30,6 +31,11 @@ function evDragfn(id, fn){
 function evStopDragfn(id, fn){
 	sm = getStateMachine(id);
 	sm.stopDragfn = fn; 
+}
+
+function evClickfn(){
+	sm = getStateMachine(id); 
+	sm.clickfn = fn; 
 }
 
 function evSetAux(id, aux){
@@ -60,7 +66,7 @@ function debugSM(sm, pos){
 	console.log("State:"+sm.state+": "+ text + " x:" + pos.x + " y:"+pos.y);
 }
 
-function testAndFire (cb, pos){
+function testAndFire (cb, pos, aux){
 	if(typeof cb === 'function')
 		cb(pos);
 }
@@ -76,15 +82,18 @@ function getStateMachine(id){
 		return stateMachines[id]; 
 }
 
-function StateMachine(){
+function StateMachine(aux){
 	//0 not captured
 	//1 hover
 	//2 mouse down in object		//3 mouse down outside object
 	this.state= 0
 	this.left= 0
 	this.top= 0
+	this.cx = 0
+	this.cy = 0
 	this.drag= false
 	this.disabled= false
+	this.aux = aux;
 	this.coords= function (ev){
 		pos = {}
 		pos.y = ev.pageY - sm.top;
@@ -104,10 +113,12 @@ _move= function(ev){
 		return;
 	if (sm.state == 2){
 		if (!sm.drag){
-			testAndFire(sm.startDragfn, pos)
+			pos.oldX = sm.cx;
+			pos.oldY = sm.cy;
+			testAndFire(sm.startDragfn, pos, sm.aux)
 			sm.drag = true;
 		}
-		testAndFire(sm.dragfn, pos)
+		testAndFire(sm.dragfn, pos, sm.aux)
 		
 	}  
 }
@@ -140,6 +151,8 @@ _mousedown= function(ev){
 	if(sm.disabled)
 		return;
 	pos = sm.coords(ev);
+	sm.cx = pos.x
+	sm.cy = pos.y
 	if (sm.state == 1)
 		sm.state = 2;
 }		 
@@ -151,13 +164,13 @@ _mouseup= function(ev, sm){
 	if (sm.state == 2){
 		sm.state = 1;
 		if(!sm.drag)
-			testAndFire(sm.clickfn, pos)
+			testAndFire(sm.clickfn, pos, sm.aux)
 	}
 	if (sm.state == 3){
 		sm.state = 0;
 	}
 	if(sm.drag){
-		testAndFire(sm.stopDragfn, pos);  
+		testAndFire(sm.stopDragfn, pos, sm.aux);  
 		sm.drag=false; 
 	}
 

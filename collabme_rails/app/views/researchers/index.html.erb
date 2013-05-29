@@ -1,8 +1,2 @@
 <h1>Listing Researchers</h1>
-<% if @errors %>
-  <% @errors.full_messages.each do |message| %>
-    <p><%= message %>.</p>
-  <% end %>
-<% else %> 
-  <%= render "show_all" %>
-<% end %>
+<%= render "show_all" %>

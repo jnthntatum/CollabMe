@@ -1,5 +1,9 @@
 CollabmeRails::Application.routes.draw do
 
+  get "profile/index"
+
+  get "profile/show"
+
   get "search/findResearchers"
   get "search/search"
 
@@ -22,10 +26,24 @@ CollabmeRails::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   resources :researchers do
+    collection do
+      get :login
+      post :post_login
+      get :logout  
+    end
+    
+    member do
+      get 'email'
+      post 'email'
+    end
+
+    resources :posts
+
     resource :projects
   end 
 
   resources :projects do
+    resources :posts
     member do
       post 'add_member'
     end
@@ -36,6 +54,10 @@ CollabmeRails::Application.routes.draw do
       post 'add_member'
     end
   end
+  
+  #resources :profiles
+    
+
   # Sample resource route with options:
   #   resources :products do
   #     member do
@@ -68,7 +90,7 @@ CollabmeRails::Application.routes.draw do
   #     resources :products
   #   end
 
-  
+  #match 'profile/:user_id' => 'profile#show
 
   # See how all your routes lay out with "rake routes"
 

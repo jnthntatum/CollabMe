@@ -15,37 +15,31 @@ x,y		: position to draw at
 text	: text to be drawn
 draw()
 
+Chat Message
+name/title
+message text
+
 ======================================
 Communication
 ======================================
 
-All requests take the form
-
-incoming objects take the form: 
-
+All communications take the form
+ 
 {"command": <COMMAND>, "uid": <UID>
-	("session_id" : <int>, 
-		"action" : { type: <Action> 
-			action_specific members		 
-	 	}	
-	 )
+	(command specific fields)
 } 
 
 COMMAND is one of 
-BEGIN session
+CREATE session
 LEAVE session
 POST post a primative to the user
-ACTION is one of 
+ADD member(s) to session
+STATUS change / update
+ERROR alert sender to error
+ACK acknowledge a packet from the client
+POST an update or a new message to the buffer
+ERASE the drawable buffer
 
-outgoing objects take the form: 
-
-{	"type": <RTYPE>, "session_id": <int>,
-	"status": <success|fail|warn>,
-	"message":<string>,
-	(	"data": <RTYPE Specific>
-
-	) 		
-}
 
 ======================================
 resources used 

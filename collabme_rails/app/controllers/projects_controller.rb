@@ -1,9 +1,16 @@
 class ProjectsController < ApplicationController
 	
 	def show
-		@project = Project.find(params[:id])
+	  id = params[:id]
+		@project = Project.find_by_id(id)
+		unless @project
+		  flash[:notice] = "No such project with id: #{id}"
+	    redirect_to :action => "index"
+	    return
+	  end
 		@posts = @project.posts
 		@tasks = @project.tasks
+		    	  
 		respond_to do |format|
 			format.html # show.html.erb
 			format.json  { render :json => @project }
@@ -35,6 +42,7 @@ class ProjectsController < ApplicationController
 			end
 		end
 	end
+	
 	def index
 		@projects = Project.all
 		respond_to do |format|

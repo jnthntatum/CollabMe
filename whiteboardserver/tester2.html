@@ -1,0 +1,30 @@
+<!-- tester.html --> 
+<html>
+	<head>
+		<title>TEST PAGE FOR CANVAs</title> 
+		<script type="text/javascript" src="wbprimatives.js" >
+		</script>
+		<link rel="stylesheet" type="text/css" href="whiteboard.css">
+		<script type="text/javascript" src="../collabme_rails/app/assets/javascripts/jquery-2.0.0.min.js"> </script>
+		<script type="text/javascript" src="evCanvas.js"> </script>
+		<script src="socket.io.min.js"></script>
+		<script src="wbio.js"></script>
+		<script src="wbui.js"></script>
+		<script type="text/javascript">
+		/** 
+		*/
+		var uid = 2;
+		$(function (){
+			uiInit('whiteboard');
+			ioInit(); 
+		});
+		</script>
+	</head>
+	<body>
+		<p>start</p>
+		<hr/>
+			<div class="canvasWrapper"> </div>
+		<hr />
+		<p>end</p>
+	</body>
+</html>

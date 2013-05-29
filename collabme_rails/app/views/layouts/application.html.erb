@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>CollabmeRails</title>
+  <%= yield :head %>
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= stylesheet_link_tag "bootstrap.min" %>
   <%= stylesheet_link_tag "bootstrap-responsive.min" %>
@@ -13,8 +14,11 @@
 <body>
   <div class="wrapper">
   	<%= render "shared/header" %> 
-  	<div class="contents">
-  		<%= yield %>
+  	<div class="container-fluid contents">
+  	  <div class="row-fluid">
+  	    <%= render 'shared/show_errors' %>
+  		  <%= yield %>
+  		</div>
   	</div>
     <div class="push"></div>
   </div>

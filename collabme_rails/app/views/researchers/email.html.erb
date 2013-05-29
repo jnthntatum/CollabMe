@@ -1,0 +1,20 @@
+<div class="text-center">
+<h1> Email Form </h1>
+<p>
+  From: <%= @sender.first_name + " " + @sender.last_name %>
+</p>
+<p>
+  To: <%= @recipient.first_name + " " + @recipient.last_name %>
+</p>
+<%= form_tag(nil, :class => "form-horizontal") do %>
+  <div class="control-group">
+  <%= text_field_tag('Subject', nil, :class => 'input-large', :type => 'text', :placeholder => 'Write your subject here.') %>
+  </div>
+  <div class="control-group">
+  <%= text_area_tag('Body', nil, :rows => 10, :class => 'input-large', :type => 'text', :placeholder => 'Write your message here.') %>
+  </div>
+  <div class="control-group">
+  <%= submit_tag('Send') %>
+  </div>
+<% end %>
+</div>
