@@ -34,9 +34,9 @@
     #rr = Researcher.new(:first_name => "Radom", :last_name => "McRandomson", :email => "rr@dsl.com")
     
     pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
-    pj.owner = gk;
+    pj.owner = ss;
     #pj.owner = ss
-    pj.members << ss << kg << jt;
+    pj.members << gk << kg << jt;
     #pj.members << ss
     pj.save()
    
