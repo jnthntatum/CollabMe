@@ -5,6 +5,8 @@ CollabmeRails::Application.routes.draw do
   get "profile/show"
 
   get "search/findResearchers"
+  get "search/findGroups"
+  get "search/findProjects"
   get "search/search"
 
   #get "home/index"
