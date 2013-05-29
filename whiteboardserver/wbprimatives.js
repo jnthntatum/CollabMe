@@ -47,7 +47,7 @@ TextBox.prototype = new Drawable();
 
 TextBox.prototype.draw = function ( canvas ){	
 	if (this.resizing){
-		canvas.lineWidth = '2px'
+		canvas.lineWidth = '2'
 		canvas.strokeStyle = 'rgba(0,0,0,128)'
 		canvas.strokeRect(this.x, this.y, this.w, this.h); 
 	}else{
@@ -89,11 +89,31 @@ Square.prototype.draw = function( canvas ){
 	canvas.fillRect(this.x, this.y, this.w, this.h); 
 }
 
+function DImage(src, x, y){
+	if(typeof x !== 'number')
+		x = 0;
+	if(typeof y !== 'number')
+		y = 0; 
+	Drawable.call(this, x, y)
+	this.src = src; 
+}
+
+DImage.prototype = new Drawable();
+
+DImage.prototype.draw = function (canvas, reload){
+	if (!this.img || reload){
+		this.img = new Image(); 
+		img.src= this.src
+	} 
+	canvas.drawImage(img, this.x, this.y)
+}
+
 function ChatMessage (name, text){
 	this.name = name;
 	this.text = text;
 	this.type = 'chat_message';
 }
+
 
 function primCopy(template, json){
 	for(var key in template){
@@ -125,6 +145,8 @@ function parseJSON(message){
 		template =  new Circle(0, 0, 0)
 	else if(t === "square")
 		template = new Square(0, 0, 0, 0)
+	else if(t === "image")
+		template = new Image("", 0, 0); 
 	else
 		return null;
 	return primCopy(template, message);
@@ -138,5 +160,6 @@ if (typeof module == 'object' && module && typeof module.exports == 'object' && 
 	module.exports.ChatMessage = ChatMessage;
 	module.exports.Circle = Circle; 
 	module.exports.Square = Square;
+	module.exports.DImage = DImage;
 	module.exports.parseJSON = parseJSON
 }

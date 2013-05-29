@@ -3,10 +3,10 @@ wbio.js
 io functions for client
 */
 
-var messages = []; 
-var socket; 
+var ioMessages = []; 
+var ioSocket; 
 var id;
-var sid;
+var ioCanvSid;
 
 function Message(command, uid){
 	this.command= command;
@@ -21,10 +21,14 @@ function procPOST(message){
 	var idx = message.idx;
 	var d = parseJSON(message.data); 
 	console.log("parsed d", d)
-	if (d.type === 'chat_message')
-		uiAddChatMessage(d, idx); 
-	else
-		uiAddDrawable(d, idx) 
+	if (d.type === 'chat_message'){
+		if (message.uid != uid){
+			uiAddChatMessage(message.sid, d, idx); 
+		}
+	}
+	else{
+		uiAddDrawable(message.sid, d, idx) 
+	}
 }
 
 function procAck(message){
@@ -33,10 +37,14 @@ function procAck(message){
 		console.log ("session Created", message);
 		console.log("id: ", message.sid);
 		uiCreateChatWindow(message.sid) 
-		sid = message.sid;
+		if(ackd.drawing === true){
+			ioCanvSid = message.sid;
+			uiSetCanvasSid(ioCanvSid);	
+		}
+		
 	} else if (ackd.command === "STATUS") {
 		console.log("now available requesting session")
-		ioCreateSession([2, 3])
+		ioCreateSession(true, [2, 3])
 	} else if (ackd.command === "POST") {
 		procPOST(message.ack); 
 	} else if(ackd.command === "ERASE"){
@@ -50,7 +58,8 @@ function procMessage(message){
 	if (message.command === "POST"){
 		procPOST(message);
 	} else if (message.command === "ADD"){
-		//TODO: logic for adding to session
+		//received an invite to join a session
+
 	} else if (message.command === "ACK"){
 		procAck(message); 
 	} else if (message.command === "ERASE"){
@@ -62,8 +71,8 @@ function procMessage(message){
 
 function ioSendDrawable(drawable, idx){
 	var m = new Message("POST", uid);
-	m.sid = sid;
-	m.dIdx = idx; 
+	m.sid = ioCanvSid;
+	m.idx = idx; 
 	m.data = drawable;
 	sendMessageToServer(m);  
 }
@@ -77,13 +86,14 @@ function ioSendChatMessage(message, lSid){
 
 function ioSendErase(){
 	var m = new Message("ERASE", uid);
-	m.sid = sid
+	m.sid = ioCanvSid
 	sendMessageToServer(m);
 }
 
-function ioCreateSession(uids){
+function ioCreateSession(drawing, uids){
 	var m = new Message("CREATE", uid);
 	m.uids= uids;
+	m.drawing = true;
 	sendMessageToServer(m);
 }
 

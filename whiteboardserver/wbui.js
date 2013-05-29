@@ -3,17 +3,17 @@ wbUI.js
 functions are prefixed with ui
 */
 
-var ctx;
-var colors = ["blue", "green", "purple", "red", "yellow", "black"]
-var curColor = "blue";  
+var uiCtx
+var uiColors = ["blue", "green", "purple", "red", "yellow", "black"]
+var uiCurColor = "blue";  
 var canvasID = "" 
 var count = 0; 
-var drawables = []; 
+var uiDrawables = []; 
 var messageScrollback = []
 var curDrawable = null; 
 var w = 1000;
 var h = 500;
-var uiSelection = undefined;
+var uiSelection = null;
 var uiMode = "Squiggle"
 var	uiSensitivity = 8
 var name = undefined;
@@ -30,7 +30,7 @@ function sSquiggleDragFn(pos){
 	console.log("curDrawable now not null")
 	curDrawable = new Squiggle(pos.oldX, pos.oldY);
 	curDrawable.pts.push([pos.x, pos.y]);
-	curDrawable.color = curColor;
+	curDrawable.color = uiCurColor;
 }		
 
 function squiggleDragFn(pos){
@@ -91,7 +91,7 @@ function bindTextFns(id){
 function sSquareDragFunction(pos){
 	console.log("new Square!")
 	curDrawable = new Square(pos.oldX, pos.oldY, pos.x-pos.oldX, pos.oldY);
-	curDrawable.color = curColor; 
+	curDrawable.color = uiCurColor; 
 	curDrawable.resizing = true; 
 	uiRedraw()
 }
@@ -118,8 +118,8 @@ function bindSquareFns(id){
 	uiRedraw()
 }
 
-function uiDeleteDrawable(){
-
+function uiDeleteDrawable(idx){
+	uiDrawables[idx] = null;
 } 
 
 function dist(x1, y1, x2, y2){
@@ -134,13 +134,15 @@ function dist2(x1, y1, x2, y2 ){
 }
 
 function hitBox(pos){
-	var len = drawables.length;
+	var len = uiDrawables.length;
 	for (var i = 0; i < len; i ++){
-		var d = drawables[i]; 
+		var d = uiDrawables[i];
+		if (!d)
+			continue 
 		console.log("pos: ", pos);
 		console.log("d: ", d);
 		if (dist(d.x, d.y, pos.oldX, pos.oldY) <= uiSensitivity){
-			return d;
+			return i;
 		}  
 	}
 	return null;
@@ -149,8 +151,12 @@ function hitBox(pos){
 function sSelectorDblClick(pos){
 	//delete object
 	var target = hitBox(pos);
-	if (target){
-		//delete
+	if (target != null){
+		var d = uiDrawables[target];
+		if(!d){
+			return
+		}
+		ioSendDrawable(null, uiSelection);
 	}
 }
 
@@ -160,23 +166,40 @@ function selectorClickFn(pos){
 
 function sSelectorDragFn(pos){
 	uiSelection = hitBox(pos);
-	if (!uiSelection)
+	if (uiSelection == null)
 		return;
-	uiSelection.x = pos.x;
-	uiSelection.y = pos.y;
+	var d = uiDrawables[uiSelection];
+	if (!d){
+		return; 
+	} 
+	d.x = pos.x;
+	d.y = pos.y;
+
 	uiRedraw();
 }
 
 function selectorDragFn(pos){
-	if(!uiSelection)
-		return
-	uiSelection.x = pos.x;
-	uiSelection.y = pos.y;
+	if (uiSelection == null)
+		return;
+	var d = uiDrawables[uiSelection];
+	if (!d){
+		return; 
+	} 
+	d.x = pos.x;
+	d.y = pos.y;
+	
 	uiRedraw()
 }
 
 function eSelectorDragFn(pos){
-	uiSelection = null;
+	if (uiSelection == null)
+		return;
+	var d = uiDrawables[uiSelection];
+	if (!d){
+		uiSelection = null;
+		return; 
+	} 
+	ioSendDrawable(d, uiSelection);
 	uiRedraw();
 }
 
@@ -192,23 +215,46 @@ function bindSelectorFns(id){
 // drawing functions
 //==================================
 
-function uiAddDrawable(drawable, idx){
-	drawables[idx] = drawable; 
-	uiRedraw();	
+function uiAddDrawable(sid, drawable, idx){
+	var canvas=getCanvas(sid);
+	if (canvas === null){
+		console.log('error no canvas for session ', sid);
+		return
+	}
+	console.log('updated obj at idx: ', idx)
+	uiDrawables[idx] = drawable; 
+	uiRedraw(canvas.getContext('2d'));	
 }
 
-function uiRedraw(){
+function uiRedraw(ctx){
+	if(!ctx)
+		ctx = uiCtx; 
 	ctx.clearRect(0, 0, w, h);
-	for (var i = 0; i < drawables.length; i ++){
-		if(drawables[i])
-			drawables[i].draw(ctx);
+	for (var i = 0; i < uiDrawables.length; i ++){
+		var d = uiDrawables[i]
+		if(d){
+			d.draw(ctx);
+			if (uiMode === 'Selector'){
+				ctx.save(); 
+				ctx.fillStyle = "red";
+				ctx.strokeStyle = "rgba(0,0,0,30)";
+				ctx.lineWidth = "3"
+				var delta = uiSensitivity 
+				var x = d.x ;
+				var y = d.y ; 
+				ctx.fillRect(x-delta, y-delta, 2*delta, 2*delta)
+				ctx.strokeRect(x-delta, y-delta, 2*delta, 2*delta)  
+				ctx.restore(); 
+			}
+		}
+
 	}
 	if (curDrawable)
 		curDrawable.draw(ctx);
 } 
 
 function uiErase(){
-	drawables = []; 
+	uiDrawables = []; 
 	uiRedraw();
 }
 
@@ -228,51 +274,17 @@ function uiColorBlock(color){
 function uiColorPicker(){
 	var el = document.createElement("div");
 	el.setAttribute("class", "tool color_picker");
-	for (var i = 0; i< colors.length; i ++ ){
-		el.appendChild(uiColorBlock(colors[i])); 
+	for (var i = 0; i< uiColors.length; i ++ ){
+		el.appendChild(uiColorBlock(uiColors[i])); 
 	}
 	return el; 
 }
 
-function uiEraser(){
-	var el = document.createElement("div"); 
-	el.setAttribute("class", "tool eraser")
-	el.innerHTML = "Er"	
-	return el; 
-}
 
-function uiSquiggle(){
-	var el = document.createElement("div"); 
-	el.setAttribute("class", "tool squiggle")
-	el.innerHTML = "Sq"	
-	return el; 
-}
-
-function uiTextBox(){
-	var el = document.createElement("div");
-	el.setAttribute("class", "tool textbox");
-	el.innerHTML = "T"
-	return el; 
-}
-
-function uiSquare(){
+function uiSimpleTool(toolName, toolText){
 	var el = document.createElement("div")
-	el.setAttribute("class", "tool square")
-	el.innerHTML = "S"
-	return el; 
-}
-
-function uiCircle(){
-	var el = document.createElement("div")
-	el.setAttribute("class", "tool square")
-	el.innerHTML = "C"
-	return el; 
-}
-
-function uiSelector(){ 
-	var el = document.createElement("div")
-	el.setAttribute("class", "tool selector")
-	el.innerHTML = "Se"
+	el.setAttribute("class", "tool " + toolName); 
+	el.innerHTML = toolText
 	return el; 
 }
 
@@ -280,18 +292,19 @@ function uiToolBar(){
 	var tb  = document.createElement("div");  
 	tb.setAttribute("class", "toolBar"); 
 	tb.appendChild(uiColorPicker());
-	tb.appendChild(uiEraser())
-	tb.appendChild(uiSquiggle())
-	tb.appendChild(uiTextBox())
-	tb.appendChild(uiSquare())
-	tb.appendChild(uiCircle()) 
-	tb.appendChild(uiSelector());
+	tb.appendChild(uiSimpleTool("eraser", "E"))
+	tb.appendChild(uiSimpleTool("squiggle", "SQ"))
+	tb.appendChild(uiSimpleTool("text_box", "T"))
+	tb.appendChild(uiSimpleTool("square", "s"))
+	tb.appendChild(uiSimpleTool("circle", "c")) 
+	tb.appendChild(uiSimpleTool("selector", "se"));
+	tb.appendChild(uiSimpleTool("flatten", "F"));
 	return tb 
 }
 
 function attachToolBarHandlers(){
 	$(".color_option").click(function(){
-		curColor = $(this).attr('color'); 
+		uiCurColor = $(this).attr('color'); 
 		$(".color_selected").removeClass("color_selected")
 		$(this).addClass("color_selected")
 	});
@@ -307,7 +320,7 @@ function attachToolBarHandlers(){
 			bindSquiggleFns(canvasID);
 		}
 	});
-	$('.textbox').click(function(){
+	$('.text_box').click(function(){
 		if(uiMode != "TextBox"){
 			uiMode = "TextBox"
 			bindTextFns(canvasID);
@@ -335,12 +348,34 @@ function attachToolBarHandlers(){
 			bindSelectorFns(canvasID)
 		}
 	});
+	$('.flatten').click(function(){
+		//todo 
+	})
 
 }
 
 //=============================
 //	Adding a canvas / session pair
 //=============================
+
+function uiSetCanvasSid(sid, canvas){
+	if (!canvas){
+		canvas = getCanvas('detached');
+		if (!canvas){
+			console.log("couldn't update canvas -- undefined")
+			return;
+		} 
+	}
+	canvas.setAttribute("sid", sid); 
+}
+
+function getCanvas(sid){
+	var tmp = $("canvas[sid='"+ sid+ "']");
+	if (tmp.length > 0)
+		return tmp[0];
+	else 
+		return null; 
+}
 
 function uiCanvas(id){
 	var c = document.createElement("canvas")
@@ -349,7 +384,7 @@ function uiCanvas(id){
 	c.setAttribute("class", "whiteBoard");
 	c.setAttribute("width", "1000");
 	c.setAttribute("height", "500") 
-	ctx = c.getContext("2d")
+	uiCtx = c.getContext("2d")
 	return c; 
 }
 
@@ -369,10 +404,21 @@ function uiInit(id){
 // IM functions
 //=====================================
 
+function uiFlattenCanvas(layers){
+	if (!layers)
+		layers = uiDrawables.length
+	for (var i = 0; i < layers; i ++){
+		var d = drawables[i]; 
+		if(d){
+			d.draw(ctx); 
+		}
+	}
+	return ctx.canvas.toDataURL();  
 
-function uiAddChatMessage(message, idx){
+} 
+
+function uiAddChatMessage(sid, message, idx){
 	messageScrollback[idx] = message; 
-	var sid = message; 
 	var w = $("div[sid='" + sid + "']");
 	if (w.length == 0){
 		var tmp = uiCreateChatWindow(sid);
@@ -396,8 +442,6 @@ function addLine(context, author, value){
 function chatKeyupCB(ev){
 	var chat_window = $(this).parent()
 	var mSid = chat_window.attr('sid')
-	console.log("keyup at ", this)
-	console.log('ev.keycode', ev.keycode) 
 	if (ev.keyCode === 13){
 		//enter so send a message!
 		var inp = $("textarea", chat_window)[0];

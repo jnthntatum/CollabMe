@@ -203,9 +203,9 @@ function procMessage(client, message){
 		}
 		var sid = message.sid; 
 		var s = sessions[sid];
-		if (message.dIdx && typeof message.dIdx === 'number'){
+		if (message.idx && typeof message.idx === 'number'){
 			var idx = message.idx; 
-			if (dIdx < 0 || dIdx >= drawables.length){
+			if (idx < 0 || idx >= s.drawables.length){
 				sendError(client, message, "not a valid index")
 				return
 			}
