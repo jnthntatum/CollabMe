@@ -115,7 +115,7 @@ function procAck(client, message){
 
 function validSid(message){
 	return (typeof message.sid === 'number' &&
-	 	message.sid <= sessions.length && message.sid >= 0 &&
+	 	message.sid < sessions.length && message.sid >= 0 &&
 	  	sessions[message.sid] != undefined)
 }
 
@@ -149,8 +149,7 @@ function procMessage(client, message){
 		if (typeof message.uids === "object" && message.uids instanceof Array){
 			for (var i = 0; i< message.uids.length ; i++){
 				s.addUser(message.uids[i])
-			}
-			sendAck(client, message);		
+			}	
 		}
 		var m = new Message("ACK", 0)
 		m.sid = sessions.length;
@@ -204,9 +203,28 @@ function procMessage(client, message){
 		}
 		var sid = message.sid; 
 		var s = sessions[sid];
-		var idx = s.drawables.length;
-		s.drawables.push(parse); 
-		message.idx = idx;
+		if (message.dIdx && typeof message.dIdx === 'number'){
+			var idx = message.idx; 
+			if (dIdx < 0 || dIdx >= drawables.length){
+				sendError(client, message, "not a valid index")
+				return
+			}
+
+			if (parse.type==='chat_message')
+				s.messages[idx] = parse
+			else
+				s.drawables[idx] = parse;
+		} else {
+			var idx; 
+			if (parse.type === 'chat_message'){
+				idx = s.messages.length;
+				s.messages.push(parse);
+			}else{
+				idx = s.drawables.length;
+				s.drawables.push(parse);
+			}
+			message.idx = idx;
+		}
 		broadcast(s, message, uid); 
 		sendAck(client, message); 
 	} else if (command === "ERASE"){

@@ -37,9 +37,11 @@ ADD member(s) to session
 STATUS change / update
 ERROR alert sender to error
 ACK acknowledge a packet from the client
-POST an update or a new message to the buffer
+POST an update or a new message to the buffer if idx is specified, 
+	the drawable in the stack that 
 ERASE the drawable buffer
-
+HISTORY ask for the whole draw stack or whole chat history
+SAVE flatten the image stack into an image 
 
 ======================================
 resources used 
@@ -49,3 +51,25 @@ socket.io
 node.js
 
 davidwalsh.name/websocket -- an actually intuitive descriptios of socket.io and websocket (as opposed to the respective websites of these technologies....)
+
+=====================================
+TODO:
+=====================================
+Image handling
+-flatten
+-save
+canva.toDataURL() /* URL encoded image*/
+-reload:
+function drawEx1() {
+    image1 = new Image();
+    image1.src =
+        "http://jenkov.com/images/screenshots/tutorials-screenshot.png"
+    image1.addEventListener('load', drawImage1);
+}
+
+function drawImage1() {
+    var canvas  = document.getElementById("ex1");
+    var context = canvas.getContext("2d");
+
+    context.drawImage(image1, 10, 10);
+}

@@ -9,12 +9,14 @@ var curColor = "blue";
 var canvasID = "" 
 var count = 0; 
 var drawables = []; 
-var curDrawable = []; 
+var messageScrollback = []
+var curDrawable = null; 
 var w = 1000;
 var h = 500;
 var uiSelection = undefined;
 var uiMode = "Squiggle"
 var	uiSensitivity = 8
+var name = undefined;
 //====================================
 //EVENT HANDLING
 //====================================
@@ -353,12 +355,30 @@ function uiCanvas(id){
 
 function uiInit(id){
 	var wrapper = $(".canvasWrapper")[0];
+	name=uid;
 	wrapper.appendChild(uiToolBar());
 	attachToolBarHandlers();  
 	wrapper.appendChild(uiCanvas(id));  
 	evBindCanvas(id);
 	bindSquiggleFns(id);
 	canvasID = id; 
+}
+
+
+//=====================================
+// IM functions
+//=====================================
+
+
+function uiAddChatMessage(message, idx){
+	messageScrollback[idx] = message; 
+	var sid = message; 
+	var w = $("div[sid='" + sid + "']");
+	if (w.length == 0){
+		var tmp = uiCreateChatWindow(sid);
+		w = $("div[sid='" + sid + "']", tmp);
+	}
+	addLine(w, message.name, message.text)
 }
 
 function makeChatLine(author, text){
@@ -369,7 +389,10 @@ function makeChatLine(author, text){
 	return el; 
 }
 
-//Adding a chat window / Session pair
+function addLine(context, author, value){
+	$('.chat_history', context)[0].appendChild(makeChatLine(author, value))
+}
+
 function chatKeyupCB(ev){
 	var chat_window = $(this).parent()
 	var mSid = chat_window.attr('sid')
@@ -377,9 +400,11 @@ function chatKeyupCB(ev){
 	console.log('ev.keycode', ev.keycode) 
 	if (ev.keyCode === 13){
 		//enter so send a message!
-		var inp = $("textarea", this)[0];
-		$('.chat_history', chat_window)[0].appendChild(makeChatLine("Me", inp.value))
-		inp.value = "";
+		var inp = $("textarea", chat_window)[0];
+		addLine(chat_window, "Me",  inp.value)
+		var m = new ChatMessage(name, inp.value);
+		ioSendChatMessage(m, mSid); 
+		inp.value = ""
 	}
 }
 
@@ -413,4 +438,5 @@ function uiCreateChatWindow(sid){
 	var cwind = uiChatWindow(sid); 
 	container.appendChild(cwind); 
 	bindCWListeners(cwind) 
+	return cwind;
 }

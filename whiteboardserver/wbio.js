@@ -30,13 +30,13 @@ function procPOST(message){
 function procAck(message){
 	var ackd = message.ack; 
 	if (ackd.command === "CREATE"){
+		console.log ("session Created", message);
+		console.log("id: ", message.sid);
+		uiCreateChatWindow(message.sid) 
 		sid = message.sid;
-		var m = new Message("ADD", uid);
-		m.sid = sid; 
-		m.uids = [2]; 
-		sendMessageToServer(m); 
-	} else if (ackd.command === "ADD") {
-		console.log ("session Created");
+	} else if (ackd.command === "STATUS") {
+		console.log("now available requesting session")
+		ioCreateSession([2, 3])
 	} else if (ackd.command === "POST") {
 		procPOST(message.ack); 
 	} else if(ackd.command === "ERASE"){
@@ -60,16 +60,17 @@ function procMessage(message){
 	}
 }
 
-function ioSendDrawable(drawable){
+function ioSendDrawable(drawable, idx){
 	var m = new Message("POST", uid);
 	m.sid = sid;
+	m.dIdx = idx; 
 	m.data = drawable;
 	sendMessageToServer(m);  
 }
 
 function ioSendChatMessage(message, lSid){
 	var m = new Message("POST", uid);
-	m.sid = lSid;
+	m.sid = parseInt(lSid);
 	m.data = message;
 	sendMessageToServer(m);  
 }
@@ -77,6 +78,12 @@ function ioSendChatMessage(message, lSid){
 function ioSendErase(){
 	var m = new Message("ERASE", uid);
 	m.sid = sid
+	sendMessageToServer(m);
+}
+
+function ioCreateSession(uids){
+	var m = new Message("CREATE", uid);
+	m.uids= uids;
 	sendMessageToServer(m);
 }
 
@@ -92,8 +99,7 @@ function ioInit(){
 	socket = io.connect('http://localhost:8989');
 	socket.on('connect', function(){
 		console.log('connection success!');
-		sendMessageToServer(new Message("STATUS", uid)); 
-		sendMessageToServer(new Message("CREATE", uid)); 
+		sendMessageToServer(new Message("STATUS", uid));  
 	});
 	socket.on('message', function(data){
 		console.log('Received message from server', data)
