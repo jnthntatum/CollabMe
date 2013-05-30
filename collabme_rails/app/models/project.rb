@@ -8,6 +8,8 @@ class Project < ActiveRecord::Base
 		:foreign_key => "project_id"	
 	has_many :posts, :as => :post_interface
 	has_many :tasks
+	
+	has_many :pending_requests, :as => :request_interface
 
  	attr_accessible :name, :description, :owner
 end
