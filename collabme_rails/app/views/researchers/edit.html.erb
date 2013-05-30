@@ -1,7 +1,17 @@
 <h1>Edit User</h1>
 <%= render 'shared/show_errors' %>
+  <%= form_tag({:controller => "researchers", :action => "addInterest"}, :method => "get") do%>
+    <%= text_field_tag(:tag) %>
+    <%= hidden_field_tag :id, @researcher.id %>
+     <%= submit_tag "Add Interest", :class => "btn btn-success" %>
+   <%end%>
+   <%= form_tag({:controller => "researchers", :action => "addSkill"}, :method => "get") do%>
+	<%= text_field_tag(:tag) %>
+	<%= hidden_field_tag :id, @researcher.id %>
+	<%= submit_tag "Add Skill", :class => "btn btn-success"%>
+   <%end%>
 <%= form_for @researcher do |f| %>
-  <p>
+<p>
     Email Address: <%= f.text_field :email %> <br />
     Experience: <%= f.text_area :experience %> <br />
     Publications: <%= f.text_area :publications %> <br />

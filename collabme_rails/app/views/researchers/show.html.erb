@@ -5,39 +5,9 @@
       <h1><%= @user.first_name + ' ' + @user.last_name %></h1>
       <% if @currentUserPage %>
       <p><%= @user.email %></p>
-      <table>
-        <tr>
-        <td>
           <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
-        </td>
-        <td>
-            <%= form_tag({:controller => "researchers", :action => "addSkill"}, :method => "get") do%>
-              <%= text_field_tag(:tag) %>
-              <%= hidden_field_tag :id, @user.id %>
-              <%= submit_tag("Add Skill") %>
-            <%end%>
-        </td>
-        
-        <tr>
-        <td>
           <p><%= link_to "Create A Project", {:controller => "projects", :action => "new"} %></p>
-        </td>
-         <td>
-            <%= form_tag({:controller => "researchers", :action => "addInterest"}, :method => "get") do%>
-              <%= text_field_tag(:tag) %>
-              <%= hidden_field_tag :id, @user.id %>
-              <%= submit_tag("Add Interest") %>
-            <%end%>
-        </td>
-
-        </tr>
-        <tr>
-        <td>
           <p><%= link_to "Create A Group", {:controller => "groups", :action => "new"} %></p>
-        </td>
-        </tr>
-      
-      </table>
       <% else %>
       <p><%= link_to @user.email, {:controller =>"researchers", :action => "email"} %></p>
       <% end %>
@@ -77,14 +47,14 @@
             <%= form_tag({:controller => "researchers", :action => "removeInterest"}, :method => "get") do%>
               <%= text_field_tag(:tag) %>
               <%= hidden_field_tag :id, @user.id %>
-              <%= submit_tag("Remove Interest") %>
+              <%= submit_tag "Remove Interest", :class => "btn btn-success" %>
             <%end%>
           </div>
           <div>
             <%= form_tag({:controller => "researchers", :action => "removeSkill"}, :method => "get") do%>
               <%= text_field_tag(:tag) %>
               <%= hidden_field_tag :id, @user.id %>
-              <%= submit_tag("Remove Skill") %>
+              <%= submit_tag "Remove Skill",:class => "btn btn-success" %>
             <%end%>
           </div>
         </div>
