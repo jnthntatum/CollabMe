@@ -2,7 +2,7 @@
 whiteboard.js
 */
 
-.toolBar{
+.tool_bar{
 	background-color: rgb(230, 230, 230);
 }
 .tool {
@@ -37,7 +37,7 @@ whiteboard.js
 	border-color: red;
 }
 
-canvas.whiteBoard{
+canvas.whiteboard{
 	height: 500;
 	width: 1000;
 	border-width: 2px 2px 2px 2px;

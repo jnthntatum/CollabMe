@@ -7,7 +7,7 @@
 var evDblClickThreshold = 1000
 
 evBindCanvas= function(id, aux){
-	sm = new StateMachine(aux);
+	var sm = new StateMachine(aux);
 	jq = $('#'+id )
 	sm.top = jq.offset().top
 	sm.left = jq.offset().left
@@ -21,44 +21,54 @@ evBindCanvas= function(id, aux){
 }
 
 function myGetTime(){
-	var m = getMinutes()
-	var s = getSeconds()
-	var ms = getMilliseconds()
+	var d = new Date(); 
+	var m = d.getMinutes()
+	var s = d.getSeconds()
+	var ms = d.getMilliseconds()
 	return m * 60 * 1000 + s * 1000 + m; 
 }
 
+function evClearCallbacks(id){
+	var sm = getStateMachine(id);
+	sm.startDragfn = undefined
+	sm.dragfn = undefined
+	sm.stopDragfn = undefined
+	sm.clickfn = undefined
+	sm.dblclickfn = undefined
+}
+
 function evStartDrag(id, fn){
-	sm = getStateMachine(id);
+	var sm = getStateMachine(id);
 	sm.startDragfn = fn; 
 }
 
 function evDrag(id, fn){
-	sm = getStateMachine(id);
+	var sm = getStateMachine(id);
 	sm.dragfn = fn; 
 }
 
 function evStopDrag(id, fn){
-	sm = getStateMachine(id);
+	var sm = getStateMachine(id);
 	sm.stopDragfn = fn; 
 }
 
 function evClick(id, fn){
-	sm = getStateMachine(id); 
+	var sm = getStateMachine(id); 
 	sm.clickfn = fn; 
 }
 
 function evDblClick(id, fn ){
-	sm = getStateMachine(id)
+	var sm = getStateMachine(id)
 	sm.dblclickfn = fn;
 }
 
 function evSetAux(id, aux){
-	sm = getStateMachine(id);
+	var sm = getStateMachine(id);
 	sm.aux = aux;
 }
 
 function evGetAux(id, aux){
-	sm = getStateMachine(id)
+	var sm = getStateMachine(id)
 	sm.aux = aux; 
 }
 
@@ -111,8 +121,8 @@ function StateMachine(aux){
 	this.lastClick = 0; 
 	this.coords= function (ev){
 		pos = {}
-		pos.y = ev.pageY - sm.top;
-		pos.x = ev.pageX - sm.left; 
+		pos.y = ev.pageY - this.top;
+		pos.x = ev.pageX - this.left; 
 		return pos; 
 	}
 };
@@ -120,7 +130,7 @@ function StateMachine(aux){
 		
 
 _move= function(ev){
-	sm = getStateMachine(this.id);
+	var sm = getStateMachine(this.id);
 	if(sm.disabled)
 		return;
 	pos = sm.coords(ev);
@@ -139,7 +149,7 @@ _move= function(ev){
 }
 
 _mousein= function(ev){
-	sm = getStateMachine(this.id);
+	var sm = getStateMachine(this.id);
 	if (sm.disabled)
 		return;
 	pos = sm.coords(ev);
@@ -150,7 +160,7 @@ _mousein= function(ev){
 }
 
 _mouseout= function(ev){
-	sm = getStateMachine(this.id);
+	var sm = getStateMachine(this.id);
 	if (sm.disabled)
 		return;
 	pos = sm.coords(ev);
@@ -162,7 +172,7 @@ _mouseout= function(ev){
 }
 
 _mousedown= function(ev){
-	sm = getStateMachine(this.id, ev);
+	var sm = getStateMachine(this.id, ev);
 	if(sm.disabled)
 		return;
 	pos = sm.coords(ev);
@@ -180,7 +190,7 @@ _mouseup= function(ev, sm){
 		sm.state = 1;
 		if(!sm.drag){
 			var t = myGetTime(); 
-			if (t - sm.lastClick < evDblClickThreshold){
+			if (t - sm.lastClick > evDblClickThreshold){
 				testAndFire(sm.clickfn, pos, sm.aux)
 			} else{
 				testAndFire(sm.dblclickfn, pos, sm.aux)

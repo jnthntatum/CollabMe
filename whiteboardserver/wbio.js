@@ -44,13 +44,13 @@ function procAck(message){
 		
 	} else if (ackd.command === "STATUS") {
 		console.log("now available requesting session")
-		ioCreateSession(true, [2, 3])
+		//ioCreateSession(true, [2, 3])
 	} else if (ackd.command === "POST") {
 		procPOST(message.ack); 
 	} else if(ackd.command === "ERASE"){
 		uiErase(); 
 	} else if (ackd.command === "DELETE"){
-		//
+		//yay! we deleted something!
 	} else if (ackd.command === "HISTORY"){
 		if (ackd.type === "chat_messages"){
 			//uiReloadMessages(ackd.chat_messages)
@@ -67,12 +67,13 @@ function procMessage(message){
 		procPOST(message);
 	} else if (message.command === "ADD"){
 		//received an invite to join a session
-
 	} else if (message.command === "ACK"){
 		procAck(message); 
 	} else if (message.command === "ERASE"){
 		uiErase(); 
-	} else {
+	} else if (message.command === "DELETE"){
+		uiDeleteDrawable(message.idx);
+	}else {
 		console.log("Error, unhandled server command: " + message.command, message);
 	}
 }
@@ -100,9 +101,17 @@ function ioSendErase(){
 
 function ioSendDelete(idx, chatMessage, sid){ 
 	if(chatMessage){
-		if(typeof sid === 'number')
+		//if(typeof sid === 'number')
+		//not suppported
+	}
+	var m = new Message("DELETE", uid); 
+	m.idx = idx; 
+	if (sid)
+		m.sid = sid; 
+	else
+		m.sid = ioCanvSid;
+	sendMessageToServer(m)
 
-	}	
 }
 
 function ioCreateSession(drawing, uids){

@@ -192,7 +192,7 @@ function procMessage(client, message){
 			sendError(client, message, "invalid sid")
 			return;  
 		}
-		if (!(typeof message.data === 'object')){
+		if (!(typeof message.data === 'object') || message.data == null){
 			sendError(client, message, "no data supplied");
 			return; 
 		}

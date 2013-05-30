@@ -16,20 +16,10 @@ var h = 500;
 var uiSelection = null;
 var uiMode = "Squiggle"
 var	uiSensitivity = 8
-var name = undefined;
+var name = "unset";
 //====================================
 //EVENT HANDLING
 //====================================
-
-
-function dblclickCB(pos){
-	if (uiMode === 'Selector'){
-		var idx = hitBox(pos);
-		if (idx != null){
-			uiDeleteDrawable(idx);
-		}
-	}
-}
 
 function max(a, b){
 	return (a >= b)? a : b;
@@ -60,6 +50,7 @@ function eSquiggleDragFn(pos){
 }
 
 function bindSquiggleFns(id){
+	evClearCallbacks(id); 
 	evStartDrag(id, sSquiggleDragFn)
 	evDrag(id, squiggleDragFn)
 	evStopDrag(id, eSquiggleDragFn)
@@ -91,6 +82,7 @@ function eTextDragFunction(pos){
 }
 
 function bindTextFns(id){
+	evClearCallbacks(id); 
 	evStartDrag(id, sTextDragFunction)
 	evDrag(id, textDragFunction)
 	evStopDrag(id, eTextDragFunction)
@@ -121,6 +113,7 @@ function eSquareDragFunction(pos){
 }
 
 function bindSquareFns(id){
+	evClearCallbacks(id); 
 	evStartDrag(id, sSquareDragFunction)
 	evDrag(id, squareDragFunction)
 	evStopDrag(id, eSquareDragFunction)
@@ -129,6 +122,7 @@ function bindSquareFns(id){
 
 function uiDeleteDrawable(idx){
 	uiDrawables[idx] = null;
+	uiRedraw();
 } 
 
 function dist(x1, y1, x2, y2){
@@ -150,23 +144,29 @@ function hitBox(pos){
 			continue 
 		console.log("pos: ", pos);
 		console.log("d: ", d);
-		if (dist(d.x, d.y, pos.oldX, pos.oldY) <= uiSensitivity){
+		if (pos.oldX && pos.oldY){
+			pos={x: pos.oldX, y: pos.oldY}	 
+		} 
+		if (dist(d.x, d.y, pos.x, pos.y) <= uiSensitivity){
 			return i;
 		}  
 	}
 	return null;
 }
 
-function sSelectorDblClick(pos){
+function selectorDblClickFn(pos){
 	//delete object
+	console.log('dblClick');
 	var target = hitBox(pos);
 	if (target != null){
 		var d = uiDrawables[target];
 		if(!d){
 			return
 		}
-		ioSendDrawable(null, uiSelection);
-	}S
+		ioSendDelete(target);
+		uiDeleteDrawable(target);
+	}
+	uiSelection = null;
 }
 
 function selectorClickFn(pos){
@@ -212,7 +212,9 @@ function eSelectorDragFn(pos){
 	uiRedraw();
 }
 
-function bindSelectorFns(id){  
+function bindSelectorFns(id){
+	evClearCallbacks(id);  
+	evDblClick(id, selectorDblClickFn) 
 	evClick(id, selectorClickFn)
 	evStartDrag(id, sSelectorDragFn)
 	evDrag(id, selectorDragFn)
@@ -303,7 +305,7 @@ function uiSimpleTool(toolName, toolText){
 
 function uiToolBar(){
 	var tb  = document.createElement("div");  
-	tb.setAttribute("class", "toolBar"); 
+	tb.setAttribute("class", "tool_bar"); 
 	tb.appendChild(uiColorPicker());
 	tb.appendChild(uiSimpleTool("eraser", "E"))
 	tb.appendChild(uiSimpleTool("squiggle", "SQ"))
@@ -390,30 +392,30 @@ function getCanvas(sid){
 		return null; 
 }
 
-function uiCanvas(id){
+function uiCanvas(sid){
 	var c = document.createElement("canvas")
-	c.id = 'Sid'+id;
-	c.setAttribute('sid', id);
-	c.setAttribute("class", "whiteBoard");
+	c.id = 'Sid'+sid;
+	c.setAttribute('sid', sid);
+	c.setAttribute("class", "whiteboard");
 	c.setAttribute("width", "1000");
 	c.setAttribute("height", "500") 
 	uiCtx = c.getContext("2d")
 	return c; 
 }
 
-function uiInit(id){
-	var tmp = $(".canvasWrapper"); 
-	if (tmp.length < 1)
+function uiCanvasInit(sid){
+	var tmp = $(".canvas_wrapper"); 
+	if (tmp.length < 1){
+		console.log('no canvas insertion point defined in document')
 		return false; 
+	}
 	var wrapper = tmp[0];
-	name=uid;
 	wrapper.appendChild(uiToolBar());
 	attachToolBarHandlers();  
-	wrapper.appendChild(uiCanvas(id));  
-	evBindCanvas(id);
-	bindSquiggleFns(id);
-	$("canvas[sid='" + id + "']").doubleClick(dblclkCB);  
-	canvasID = id;
+	wrapper.appendChild(uiCanvas(sid));  
+	canvasID = 'Sid' + sid;
+	evBindCanvas(canvasID);
+	bindSquiggleFns(canvasID);
 	return true;  
 }
 
