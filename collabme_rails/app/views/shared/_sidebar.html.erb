@@ -5,6 +5,9 @@
       <% user.memberof.each do |p| %>
       <li><%= link_to p.name, project_path(p) %></li>
       <% end %>
+      <% user.owned_projects.each do |p| %>
+      <li><%= link_to p.name, project_path(p) %></li>
+      <% end %>
     <li class="nav-header">Groups</li>
       <% user.groups.each do |g| %>
       <li><%= link_to g.name, group_path(g) %></li>
