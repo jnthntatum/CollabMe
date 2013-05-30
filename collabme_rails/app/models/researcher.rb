@@ -1,4 +1,6 @@
 class Researcher < ActiveRecord::Base
+  acts_as_taggable
+  acts_as_taggable_on :skills, :interests
   attr_accessible :email, :first_name, :last_name
   has_many :owned_projects, :class_name => "Project", :foreign_key => "researcher_id" 
   has_and_belongs_to_many :memberof, :class_name => "Project", :association_foreign_key => "project_id", :foreign_key => "researcher_id"
@@ -12,6 +14,9 @@ class Researcher < ActiveRecord::Base
   
   has_one :photo
   has_many :posts, :as => :post_interface
+  
+  has_many :requests, :inverse_of => :owner
+  has_many :pending_requests, :through => :request_interface
 
   # Friends
   def friends

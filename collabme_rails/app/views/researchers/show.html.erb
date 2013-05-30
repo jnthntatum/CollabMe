@@ -11,9 +11,9 @@
       <h1><%= @user.first_name + ' ' + @user.last_name %></h1>
       <% if @currentUserPage %>
       <p><%= @user.email %></p>
-      <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
-      <p><%= link_to "Create A Project", {:controller => "projects", :action => "new"} %></p>
-      <p><%= link_to "Create A Group", {:controller => "groups", :action => "new"} %></p>
+          <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
+          <p><%= link_to "Create A Project", {:controller => "projects", :action => "new"} %></p>
+          <p><%= link_to "Create A Group", {:controller => "groups", :action => "new"} %></p>
       <% else %>
       <p><%= link_to @user.email, {:controller =>"researchers", :action => "email"} %></p>
       <% end %>
@@ -34,7 +34,35 @@
           <p><%= @user.publications %></p>
         </div>
         <div class="tab-pane" id="tab3">
-          <p><%= @user.about_me %></p>
+          <div>
+            <p><%= @user.about_me %></p>
+          </div>
+          <div>
+            <h6>Interests</h6>
+            <% @user.interest_list.each do |interest|%>
+              <p><%= interest%></p>
+            <%end%>
+          </div>
+          <div>
+          <h6>Skills</h6>
+          <% @user.skill_list.each do |skill|%>
+            <p><%= skill%></p>
+          <%end%>
+          </div>
+          <div>
+            <%= form_tag({:controller => "researchers", :action => "removeInterest"}, :method => "get") do%>
+              <%= text_field_tag(:tag) %>
+              <%= hidden_field_tag :id, @user.id %>
+              <%= submit_tag "Remove Interest", :class => "btn btn-success" %>
+            <%end%>
+          </div>
+          <div>
+            <%= form_tag({:controller => "researchers", :action => "removeSkill"}, :method => "get") do%>
+              <%= text_field_tag(:tag) %>
+              <%= hidden_field_tag :id, @user.id %>
+              <%= submit_tag "Remove Skill",:class => "btn btn-success" %>
+            <%end%>
+          </div>
         </div>
       </div>
     </div>

@@ -138,6 +138,42 @@ class ResearchersController < ApplicationController
     end
   end
 
+  def addInterest
+    @researcher = Researcher.find_by_id(params[:id]) 
+    if params[:tag].length > 0
+      @researcher.interest_list.add(params[:tag])
+      @researcher.save
+    end
+    redirect_to @researcher
+  end
+
+  def addSkill
+    @researcher = Researcher.find_by_id(params[:id]) 
+    if params[:tag].length > 0
+      @researcher.skill_list.add(params[:tag])
+      @researcher.save
+    end
+    redirect_to @researcher
+  end
+
+  def removeSkill
+    @researcher = Researcher.find_by_id(params[:id]) 
+    if params[:tag].length > 0
+      @researcher.skill_list.remove(params[:tag])
+      @researcher.save
+    end
+    redirect_to @researcher
+  end
+
+  def removeInterest
+    @researcher = Researcher.find_by_id(params[:id]) 
+    if params[:tag].length > 0
+      @researcher.interest_list.remove(params[:tag])
+      @researcher.save
+    end
+    redirect_to @researcher
+  end
+
   def authenticate_user
     if session[:current_user_id].nil?
       flash[:error] = 'You must be logged in to access this section.' 

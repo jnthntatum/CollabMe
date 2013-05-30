@@ -1,8 +1,13 @@
 <div class="nav nav-list">
   <% user = nil if local_assigns[:user].nil? %>
+  <% group = nil if local_assigns[:group].nil? %>
+  <% project = nil if local_assigns[:project].nil? %>
   <% if user %>
     <li class="nav-header">Projects</li>
       <% user.memberof.each do |p| %>
+      <li><%= link_to p.name, project_path(p) %></li>
+      <% end %>
+      <% user.owned_projects.each do |p| %>
       <li><%= link_to p.name, project_path(p) %></li>
       <% end %>
     <li class="nav-header">Groups</li>
@@ -12,6 +17,18 @@
     <li class="nav-header">Related Researchers</li>
       <% user.friends.each do |f| %>
       <li><%= link_to f.first_name + " " + f.last_name, researcher_path(f) %></li>
+      <% end %>
+  <% elsif group %>
+    <li class="nav-header">Members</li>
+      <% group.researchers.each do |r| %>
+      <li><%= link_to r.first_name + " " + r.last_name, researcher_path(r) %></li>
+      <% end %>
+  <% elsif project %>
+    <li class="nav-header">Owner</li>
+      <li><%= link_to project.owner.first_name + " " + project.owner.last_name, researcher_path(project.owner) %></li>
+    <li class="nav-header">Members</li>
+      <% project.members.each do |r| %>
+      <li><%= link_to r.first_name + " " + r.last_name, researcher_path(r) %></li>
       <% end %>
   <% end %>
 </div>
