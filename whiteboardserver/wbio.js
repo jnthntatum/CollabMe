@@ -49,6 +49,10 @@ function procAck(message){
 		procPOST(message.ack); 
 	} else if(ackd.command === "ERASE"){
 		uiErase(); 
+	} else if (ackd.command === "DELETE"){
+		//ignore; 
+	} else if (ackd.command === "HISTORY"){
+		//TODO: 
 	}else{
 		console.log("Unhandled ack type")
 	}
@@ -88,6 +92,13 @@ function ioSendErase(){
 	var m = new Message("ERASE", uid);
 	m.sid = ioCanvSid
 	sendMessageToServer(m);
+}
+
+function ioSendDelete(idx, chatMessage, sid){ 
+	if(chatMessage){
+		if(typeof sid === 'number')
+
+	}	
 }
 
 function ioCreateSession(drawing, uids){

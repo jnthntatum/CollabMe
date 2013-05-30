@@ -227,6 +227,43 @@ function procMessage(client, message){
 		}
 		broadcast(s, message, uid); 
 		sendAck(client, message); 
+	} else if (command == "DELETE"){
+		if(!validSid(message)){
+			sendError(client, message, "not a valid session"); 
+			return;  
+		}
+		if (!(typeof message.idx === 'number' && message.idx >= 0)){
+			sendError(client, message, "invalid drawable index"); 
+			return;
+		}
+		var idx = message.idx; 
+		var sid = message.sid; 
+		var s = sessions[sid];
+		if (idx >= s.drawables.length){
+			sendError(client, message, "invalid drawable index"); 
+			return;
+		}
+		s.drawables[idx] = null; 
+		broadcast(s, message, uid);
+		sendAck(client, message);
+	} else if(command == "HISTORY" ){
+		if(!validSid(message)){
+			sendError(client, message, "not a valid session"); 
+			return;  
+		}
+		if (typeof message.type !== 'string'){
+			sendError(client, message, "no type specified")
+			return; 
+		}
+		var type = message.type;
+		var sid = message.sid; 
+		var s = sessions[sid]; 
+		if (type === "drawables"){
+			message.drawables = s.drawables;
+		} else if (type === "chat_messages"){
+			message.chat_messages = s.messages; 
+		}
+		sendAck(client, message); 
 	} else if (command === "ERASE"){
 		if (!validSid(message)){
 			sendError(client, message, "not a valid session");

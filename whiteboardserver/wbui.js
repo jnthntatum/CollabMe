@@ -22,6 +22,15 @@ var name = undefined;
 //====================================
 
 
+function dblclickCB(pos){
+	if (uiMode === 'Selector'){
+		var idx = hitBox(pos);
+		if (idx != null){
+			uiDeleteDrawable(idx);
+		}
+	}
+}
+
 function max(a, b){
 	return (a >= b)? a : b;
 }
@@ -157,7 +166,7 @@ function sSelectorDblClick(pos){
 			return
 		}
 		ioSendDrawable(null, uiSelection);
-	}
+	}S
 }
 
 function selectorClickFn(pos){
@@ -203,7 +212,7 @@ function eSelectorDragFn(pos){
 	uiRedraw();
 }
 
-function bindSelectorFns(id){
+function bindSelectorFns(id){  
 	evClick(id, selectorClickFn)
 	evStartDrag(id, sSelectorDragFn)
 	evDrag(id, selectorDragFn)
@@ -396,6 +405,7 @@ function uiInit(id){
 	wrapper.appendChild(uiCanvas(id));  
 	evBindCanvas(id);
 	bindSquiggleFns(id);
+	$("canvas[sid='" + id + "']").doubleClick(dblclkCB);  
 	canvasID = id; 
 }
 

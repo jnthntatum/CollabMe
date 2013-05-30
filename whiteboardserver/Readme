@@ -60,6 +60,10 @@ ACK acknowledge a packet from the client
 	sid -- (Create only) session id that was allocated for the request  
 POST an update or a new message to the buffer if idx is specified, 
 	the drawable in the stack that 
+DELETE remove the specified drawable from the stack -- 
+	this signals all clients to replace this with
+	sid -- the relevant session
+	idx -- the relevant drawing  
 ERASE the drawable buffer
 HISTORY ask for the whole draw stack or whole chat history
 SAVE flatten the image stack into an image 
