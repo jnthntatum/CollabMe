@@ -235,6 +235,10 @@ function uiAddDrawable(sid, drawable, idx){
 	uiRedraw(canvas.getContext('2d'));	
 }
 
+function uiSetDrawables(arr){
+	uiDrawables = arr;
+}
+
 function uiRedraw(ctx){
 	if(!ctx)
 		ctx = uiCtx; 
@@ -388,7 +392,7 @@ function getCanvas(sid){
 
 function uiCanvas(id){
 	var c = document.createElement("canvas")
-	c.id = id;
+	c.id = 'Sid'+id;
 	c.setAttribute('sid', id);
 	c.setAttribute("class", "whiteBoard");
 	c.setAttribute("width", "1000");
@@ -398,7 +402,10 @@ function uiCanvas(id){
 }
 
 function uiInit(id){
-	var wrapper = $(".canvasWrapper")[0];
+	var tmp = $(".canvasWrapper"); 
+	if (tmp.length < 1)
+		return false; 
+	var wrapper = tmp[0];
 	name=uid;
 	wrapper.appendChild(uiToolBar());
 	attachToolBarHandlers();  
@@ -406,7 +413,8 @@ function uiInit(id){
 	evBindCanvas(id);
 	bindSquiggleFns(id);
 	$("canvas[sid='" + id + "']").doubleClick(dblclkCB);  
-	canvasID = id; 
+	canvasID = id;
+	return true;  
 }
 
 

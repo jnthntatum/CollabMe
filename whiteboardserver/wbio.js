@@ -50,9 +50,13 @@ function procAck(message){
 	} else if(ackd.command === "ERASE"){
 		uiErase(); 
 	} else if (ackd.command === "DELETE"){
-		//ignore; 
+		//
 	} else if (ackd.command === "HISTORY"){
-		//TODO: 
+		if (ackd.type === "chat_messages"){
+			//uiReloadMessages(ackd.chat_messages)
+		} else if (ackd.type === "drawables"){
+			uiSetDrawables(ackd.drawables)
+		}
 	}else{
 		console.log("Unhandled ack type")
 	}
