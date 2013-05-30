@@ -15,9 +15,20 @@ x,y		: position to draw at
 text	: text to be drawn
 draw()
 
+Square: a rectangle
+x,y 	: base point
+w,h 	: width/height
+color 	: color to draw on the plane
+
+Circle: a circle (to be implemented)
+
+Image: an image to lay on the canvas
+x,y 	: image corner
+src 	: the source URL for the image.  
+
 Chat Message
-name/title
-message text
+name 	: friendly - user name	
+text 	: text message body
 
 ======================================
 Communication
@@ -29,19 +40,35 @@ All communications take the form
 	(command specific fields)
 } 
 
+
+
 COMMAND is one of 
 CREATE session
-LEAVE session
+	uids -- optional array specifying initial list of users
+	drawing -- optional bool specifying whether to expect drawings
+LEAVE session -- opt out of receiving messages in a given session
 POST post a primative to the user
+	data -- the primative to send to the user
+	sid -- the relevant session
+	idx -- optional replace a drawable on the stack with one
 ADD member(s) to session
+
 STATUS change / update
 ERROR alert sender to error
 ACK acknowledge a packet from the client
-POST an update or a new message to the buffer
+	ack
+	sid -- (Create only) session id that was allocated for the request  
+POST an update or a new message to the buffer if idx is specified, 
+	the drawable in the stack that 
+DELETE remove the specified drawable from the stack -- 
+	this signals all clients to replace this with
+	sid -- the relevant session
+	idx -- the relevant drawing  
 ERASE the drawable buffer
+HISTORY ask for the whole draw stack or whole chat history
+SAVE flatten the image stack into an image 
 
-
-======================================
+=====================================
 resources used 
 ======================================
 
@@ -49,3 +76,25 @@ socket.io
 node.js
 
 davidwalsh.name/websocket -- an actually intuitive descriptios of socket.io and websocket (as opposed to the respective websites of these technologies....)
+
+=====================================
+TODO:
+=====================================
+Image handling
+-flatten
+-save
+canva.toDataURL() /* URL encoded image*/
+-reload:
+function drawEx1() {
+    image1 = new Image();
+    image1.src =
+        "http://jenkov.com/images/screenshots/tutorials-screenshot.png"
+    image1.addEventListener('load', drawImage1);
+}
+
+function drawImage1() {
+    var canvas  = document.getElementById("ex1");
+    var context = canvas.getContext("2d");
+
+    context.drawImage(image1, 10, 10);
+}

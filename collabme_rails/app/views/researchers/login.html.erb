@@ -2,8 +2,9 @@
 <%= render 'shared/show_errors' %>
 <%= form_for :researcher, :method => :post, :url => { :action => 'post_login' } do |f| %>
   <label>Email Address</label>
-  <%= f.text_field :email %> <br />
+  <%= f.text_field :email %>
   <label>Password</label>
-  <%= f.password_field :password %> <br />
+  <%= f.password_field :password %>
+  <br />
   <%= f.submit 'Login' %>
 <% end %> 

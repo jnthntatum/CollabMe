@@ -11,6 +11,7 @@
 	        <% end %>
         </p>
       </div>
+      <p><%= link_to "Edit Project Info", {:controller => "projects", :action => "edit"} %></p>
       <!--<p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>-->
     </div>
   </div>
@@ -53,7 +54,7 @@
   </div>
 </div>
 <div class="span3 well sidebar">
-  <%= render "shared/sidebar" %>
+  <%= render :partial => "shared/sidebar", :locals => { :project => @project} %>
 </div>
 
 

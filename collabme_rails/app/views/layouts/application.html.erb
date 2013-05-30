@@ -16,18 +16,11 @@
   	<%= render "shared/header" %> 
   	<div class="container-fluid contents">
   	  <div class="row-fluid">
-  	    <%= render 'shared/show_errors' %>
-  		  <%= yield %>
+  	    <%= yield %>
   		</div>
   	</div>
     <div class="push"></div>
   </div>
-	<div class="footer banner">
-		<p>Contact: 
-      <a href="mailto:CollabMe@null.net">E-Mail</a>
-      <a href="https://github.com/jnthntatum/CollabMe">GitHub</a>
-      Now powered by bootstrap.
-    </p>
-	</div>
+	<%= render "shared/footer" %>
 </body>
 </html>

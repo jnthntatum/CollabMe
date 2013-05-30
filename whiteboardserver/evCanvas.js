@@ -4,6 +4,8 @@
 *
 */
 
+var evDblClickThreshold = 1000
+
 evBindCanvas= function(id, aux){
 	sm = new StateMachine(aux);
 	jq = $('#'+id )
@@ -18,24 +20,36 @@ evBindCanvas= function(id, aux){
 
 }
 
-function evStartDragfn(id, fn){
+function myGetTime(){
+	var m = getMinutes()
+	var s = getSeconds()
+	var ms = getMilliseconds()
+	return m * 60 * 1000 + s * 1000 + m; 
+}
+
+function evStartDrag(id, fn){
 	sm = getStateMachine(id);
 	sm.startDragfn = fn; 
 }
 
-function evDragfn(id, fn){
+function evDrag(id, fn){
 	sm = getStateMachine(id);
 	sm.dragfn = fn; 
 }
 
-function evStopDragfn(id, fn){
+function evStopDrag(id, fn){
 	sm = getStateMachine(id);
 	sm.stopDragfn = fn; 
 }
 
-function evClickfn(){
+function evClick(id, fn){
 	sm = getStateMachine(id); 
 	sm.clickfn = fn; 
+}
+
+function evDblClick(id, fn ){
+	sm = getStateMachine(id)
+	sm.dblclickfn = fn;
 }
 
 function evSetAux(id, aux){
@@ -94,6 +108,7 @@ function StateMachine(aux){
 	this.drag= false
 	this.disabled= false
 	this.aux = aux;
+	this.lastClick = 0; 
 	this.coords= function (ev){
 		pos = {}
 		pos.y = ev.pageY - sm.top;
@@ -163,8 +178,15 @@ _mouseup= function(ev, sm){
 	pos = sm.coords(ev);
 	if (sm.state == 2){
 		sm.state = 1;
-		if(!sm.drag)
-			testAndFire(sm.clickfn, pos, sm.aux)
+		if(!sm.drag){
+			var t = myGetTime(); 
+			if (t - sm.lastClick < evDblClickThreshold){
+				testAndFire(sm.clickfn, pos, sm.aux)
+			} else{
+				testAndFire(sm.dblclickfn, pos, sm.aux)
+			}
+			sm.lastClick = t;
+		}
 	}
 	if (sm.state == 3){
 		sm.state = 0;

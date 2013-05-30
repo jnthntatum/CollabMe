@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(:version => 20130529064147) do
     t.text     "description"
   end
 
+  create_table "photos", :force => true do |t|
+    t.string   "file_name"
+    t.integer  "researcher_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "posts", :force => true do |t|
     t.string   "desc"
     t.datetime "created_at",          :null => false

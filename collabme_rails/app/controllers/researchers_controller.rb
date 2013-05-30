@@ -1,7 +1,7 @@
 class ResearchersController < ApplicationController
-  #before_filter :authenticate_user 
+  before_filter :authenticate_user, :only => [:email, :edit, :update, :edit_profile_picture, :upload_picture]
 
-	include ResearchersHelper
+  include ResearchersHelper
 	
 	def index
 		@researchers = Researcher.all
@@ -50,20 +50,6 @@ class ResearchersController < ApplicationController
 				end
       end
     end
-  end
-
-  def edit
-    @researcher = Researcher.find(session[:current_user_id])
-    if request.post? and params[:researcher] #should probably make a param_posted method
-      if @researcher.update_attributes(params[:researcher])
-        flash[:notice] = "Email updated."
-        redirect_to :action => "index"
-      end
-    end
-  end
-  
-  def update
-    @researcher
   end
 
 	def new
@@ -142,15 +128,13 @@ class ResearchersController < ApplicationController
   end
 
   def update
-    if params[:id].to_i == session[:current_user_id]
-      @researcher = Researcher.find_by_id(params[:id]) 
-      if @researcher.update_attributes(:email => params[:researcher][:email])
-        flash[:notice] = 'You have successfully changed your email.'
-        redirect_to edit_researcher_path
-      else
-        flash[:error] = 'Email is invalid.'
-        redirect_to edit_researcher_path
-      end
+    @researcher = Researcher.find_by_id(params[:id]) 
+    if @researcher.update_attributes(:email => params[:researcher][:email])
+      flash[:notice] = 'You have successfully changed your email.'
+      redirect_to edit_researcher_path
+    else
+      flash[:error] = 'Email is invalid.'
+      redirect_to edit_researcher_path
     end
   end
 
@@ -191,8 +175,49 @@ class ResearchersController < ApplicationController
   end
 
   def authenticate_user
-    unless params[:id].to_i == session[:current_user_id]
+    if session[:current_user_id].nil?
+      flash[:error] = 'You must be logged in to access this section.' 
+      redirect_to login_researchers_path
+    elsif params[:id].to_i != session[:current_user_id]
       flash.now[:error] = 'You cannot access this section.' 
+      render 'shared/_error'
+    end
+  end
+
+  def edit_profile_picture
+    @user = Researcher.find_by_id(params[:id])
+  end
+
+  def upload_picture
+    upload = params[:photo]
+    if upload
+      time = Time.now.to_i.to_s
+      
+      @user = Researcher.find_by_id(params[:id])
+      if @user.photo
+        @photo = @user.photo
+      else
+        @photo = Photo.new
+        @photo.researcher = @user
+      end
+      p upload
+      p '**********************'
+      p upload[:file].original_filename
+      @photo.file_name = time + '_' + upload[:file].original_filename
+      
+      if @photo.save
+        File.open(Rails.root.join('app/assets', 'images', @photo.file_name), 'wb') do |f|
+          f.write(upload[:file].read)
+        end
+        redirect_to :controller => 'researchers', :action => 'show', :id => session[:current_user_id] 
+      else
+        flash.now[:error] = 'Sorry, file not saved.'
+        render edit_profile_picture_researcher_path
+      end
+    else
+      flash.now[:error] = 'Sorry, file not uploaded.'
+      @user = Researcher.find_by_id(params[:id])
+      render edit_profile_picture_researcher_path
     end
   end
 end

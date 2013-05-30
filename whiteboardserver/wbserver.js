@@ -114,7 +114,9 @@ function procAck(client, message){
 }
 
 function validSid(message){
-	return (typeof message.sid === 'number' && message.sid <= sessions.length && message.sid >= 0)
+	return (typeof message.sid === 'number' &&
+	 	message.sid < sessions.length && message.sid >= 0 &&
+	  	sessions[message.sid] != undefined)
 }
 
 function broadcast(session, message, source){
@@ -147,8 +149,7 @@ function procMessage(client, message){
 		if (typeof message.uids === "object" && message.uids instanceof Array){
 			for (var i = 0; i< message.uids.length ; i++){
 				s.addUser(message.uids[i])
-			}
-			sendAck(client, message);		
+			}	
 		}
 		var m = new Message("ACK", 0)
 		m.sid = sessions.length;
@@ -202,10 +203,66 @@ function procMessage(client, message){
 		}
 		var sid = message.sid; 
 		var s = sessions[sid];
-		var idx = s.drawables.length;
-		s.drawables.push(parse); 
-		message.idx = idx;
+		if (message.idx && typeof message.idx === 'number'){
+			var idx = message.idx; 
+			if (idx < 0 || idx >= s.drawables.length){
+				sendError(client, message, "not a valid index")
+				return
+			}
+
+			if (parse.type==='chat_message')
+				s.messages[idx] = parse
+			else
+				s.drawables[idx] = parse;
+		} else {
+			var idx; 
+			if (parse.type === 'chat_message'){
+				idx = s.messages.length;
+				s.messages.push(parse);
+			}else{
+				idx = s.drawables.length;
+				s.drawables.push(parse);
+			}
+			message.idx = idx;
+		}
 		broadcast(s, message, uid); 
+		sendAck(client, message); 
+	} else if (command == "DELETE"){
+		if(!validSid(message)){
+			sendError(client, message, "not a valid session"); 
+			return;  
+		}
+		if (!(typeof message.idx === 'number' && message.idx >= 0)){
+			sendError(client, message, "invalid drawable index"); 
+			return;
+		}
+		var idx = message.idx; 
+		var sid = message.sid; 
+		var s = sessions[sid];
+		if (idx >= s.drawables.length){
+			sendError(client, message, "invalid drawable index"); 
+			return;
+		}
+		s.drawables[idx] = null; 
+		broadcast(s, message, uid);
+		sendAck(client, message);
+	} else if(command == "HISTORY" ){
+		if(!validSid(message)){
+			sendError(client, message, "not a valid session"); 
+			return;  
+		}
+		if (typeof message.type !== 'string'){
+			sendError(client, message, "no type specified")
+			return; 
+		}
+		var type = message.type;
+		var sid = message.sid; 
+		var s = sessions[sid]; 
+		if (type === "drawables"){
+			message.drawables = s.drawables;
+		} else if (type === "chat_messages"){
+			message.chat_messages = s.messages; 
+		}
 		sendAck(client, message); 
 	} else if (command === "ERASE"){
 		if (!validSid(message)){

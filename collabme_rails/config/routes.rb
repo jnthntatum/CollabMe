@@ -41,6 +41,8 @@ CollabmeRails::Application.routes.draw do
     member do
       get 'email'
       post 'email'
+      get 'edit_profile_picture'
+      post 'upload_picture'
     end
 
     resources :posts
