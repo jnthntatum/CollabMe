@@ -19,8 +19,12 @@
         <%= stylesheet_link_tag "whiteboard" %>
         <script type='text/javascript'>
           var uid = <%= session[:current_user_id] %>;
-          var name = <%= session[:current_user_first_name] %>; 
+          var name = <%= session[:current_user_first_name] %>;
+          $(function(){
+            ioInit(); 
+          }); 
         </script>
+  <% end %>
 </head>
 <body>
   <div class="wrapper">
@@ -32,6 +36,7 @@
   	</div>
     <div class="push"></div>
   </div>
+  <div class="chat_bar"></div>
 	<%= render "shared/footer" %>
 </body>
 </html>
