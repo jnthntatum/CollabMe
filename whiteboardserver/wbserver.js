@@ -102,7 +102,7 @@ function sendMessage(client, message){
 }
 
 function validateMessage(message){
-	if (typeof message.uid === 'number' && message.uid > 0 &&
+	if (typeof parseInt(message.uid) === 'number' && message.uid > 0 &&
 	 	typeof message.command === 'string'){
 		return true;
 	}else 
