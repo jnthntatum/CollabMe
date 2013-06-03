@@ -18,6 +18,21 @@ class ResearchersController < ApplicationController
 	  end
 	  id = params[:id]
 	  @user = Researcher.find_by_id(id)
+	  @isCurrUserFriend = false
+	  @hasRequested = false
+	  if session[:current_user_id]
+	    @user.requests.each do |r|
+	      if r.owner.id == session[:current_user_id]
+	        @hasRequested = true
+	      end
+	    end
+	  end
+	  if session[:current_user_id]
+	    currUser = Researcher.find_by_id(session[:current_user_id])
+	    if currUser.direct_friends.include?(@user)
+	      @isCurrUserFriend = true
+	    end
+	  end
 	  unless @user
 	    flash[:notice] = "No such user with id: #{id}"
 	    redirect_to :action => "index"

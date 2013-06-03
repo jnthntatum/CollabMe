@@ -15,8 +15,7 @@ class Researcher < ActiveRecord::Base
   has_one :photo
   has_many :posts, :as => :post_interface
   
-  has_many :requests, :inverse_of => :owner
-  has_many :pending_requests, :through => :request_interface
+  has_many :requests, :as => :request_interface
 
   # Friends
   def friends

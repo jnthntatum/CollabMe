@@ -33,6 +33,13 @@
 
     #rr = Researcher.new(:first_name => "Radom", :last_name => "McRandomson", :email => "rr@dsl.com")
     
+    ss2 = Researcher.new(:first_name => "Syed", :last_name => "Saleh", :email => "shayonsaleh@yahoo.com", :password => "collabme13", :password_confirmation => "collabme13")
+    
+    r = Request.new()
+    r.owner = ss2
+    ss.requests << r
+    r.save()
+    
     pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
     pj.owner = ss;
     #pj.owner = ss
@@ -52,7 +59,7 @@
 
     p = Post.new(:title=>"comment", :desc => "What an awesome project!!!")
     p.creator = ss
-    pj.posts << p;    
+    pj.posts << p    
     
     p2 = Post.new(:title=>"status", :desc => "I love CollabMe!")
     p2.creator = ss

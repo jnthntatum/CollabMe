@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130530024456) do
+=======
+ActiveRecord::Schema.define(:version => 20130530054111) do
+>>>>>>> Request for friendships works now
 
   create_table "friendships", :id => false, :force => true do |t|
     t.integer  "user_id"
@@ -66,9 +70,14 @@ ActiveRecord::Schema.define(:version => 20130530024456) do
   end
 
   create_table "requests", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.integer  "request_interface_id"
+    t.string   "request_interface_type"
+    t.integer  "owner_id"
   end
+
+  add_index "requests", ["request_interface_id"], :name => "index_requests_on_request_interface_id"
 
   create_table "research_group_members", :id => false, :force => true do |t|
     t.integer  "researcher_id"

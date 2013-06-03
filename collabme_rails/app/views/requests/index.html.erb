@@ -1,0 +1,15 @@
+<h1>List of Requests</h1>
+
+<table>
+  <tbody>
+<% @researcher.requests.each do |r| %>
+  <%= form_tag (researcher_request_path(@researcher, r.id)), :method => :delete, :class => "form-inline" do |f| %>
+    <tr>
+      <td><%= link_to r.owner.first_name + " " + r.owner.last_name, researcher_path(r.owner) %></td>
+      <td><%= select_tag(:request_confirm, options_for_select([['Confirm', 1], ['Deny', 2], ['Ignore', 3]])) %></td>
+      <td><%= submit_tag "Submit" %></td>
+    </tr>
+  <% end %>
+<% end %>
+  </tbody>
+</table>

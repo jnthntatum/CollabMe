@@ -46,18 +46,21 @@ CollabmeRails::Application.routes.draw do
     end
 
     resources :posts
+    resources :requests
 
     resource :projects
   end 
 
   resources :projects do
     resources :posts
+    resources :requests
     member do
       post 'add_member'
     end
   end
 
   resources :groups do
+    resources :requests
     member do
       post 'add_member'
     end
