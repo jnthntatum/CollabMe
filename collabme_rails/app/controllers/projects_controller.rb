@@ -8,6 +8,26 @@ class ProjectsController < ApplicationController
 	    redirect_to :action => "index"
 	    return
 	  end
+	  @currUserIsOwner = false
+	  if session[:current_user_id] == @project.owner.id
+	    @currUserIsOwner = true
+	  end
+	  @currUserIsMember = @currUserIsOwner
+	  if session[:current_user_id] and not @currUserIsMember
+	    @project.members.each do |m|
+	      if m.id == session[:current_user_id]
+	        @currUserIsMember = true
+	      end
+	    end
+	  end
+	  @hasRequested = false
+	  if session[:current_user_id]
+	    @project.requests.each do |r|
+	      if r.owner.id == session[:current_user_id]
+	        @hasRequested = true
+	      end
+	    end
+	  end
 		@posts = @project.posts
 		@tasks = @project.tasks
 		    	  

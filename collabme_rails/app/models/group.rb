@@ -6,5 +6,5 @@ class Group < ActiveRecord::Base
   has_many :researchers, :class_name => "Researcher", :through => :group_memberships, :source => :researcher, :uniq => true
   has_many :posts, :as => :post_interface
   
-  has_many :pending_requests, :as => :request_interface
+  has_many :requests, :as => :request_interface
 end

@@ -35,17 +35,17 @@
     
     ss2 = Researcher.new(:first_name => "Syed", :last_name => "Saleh", :email => "shayonsaleh@yahoo.com", :password => "collabme13", :password_confirmation => "collabme13")
     
-    r = Request.new()
-    r.owner = ss2
-    ss.requests << r
-    r.save()
-    
     pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
     pj.owner = ss;
     #pj.owner = ss
     pj.members << gk << kg << jt;
     #pj.members << ss
     pj.save()
+   
+    r = Request.new()
+    r.owner = ss2
+    pj.requests << r
+    r.save()
    
     ss.direct_friends << kg << gk << jt;
     kg.direct_friends << gk << jt; 

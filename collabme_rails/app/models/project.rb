@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
 	has_many :posts, :as => :post_interface
 	has_many :tasks
 	
-	has_many :pending_requests, :as => :request_interface
+	has_many :requests, :as => :request_interface
 
  	attr_accessible :name, :description, :owner
 end

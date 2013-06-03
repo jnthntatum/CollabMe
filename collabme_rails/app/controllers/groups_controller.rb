@@ -9,6 +9,14 @@ class GroupsController < ApplicationController
     if @currUser and @group.researchers.include?(@currUser)
       @currUserInGroup = true
     end
+    @hasRequested = false
+	  if session[:current_user_id]
+	    @group.requests.each do |r|
+	      if r.owner.id == session[:current_user_id]
+	        @hasRequested = true
+	      end
+	    end
+	  end
 	  unless @group
 	    flash[:notice] = "No such group with id: #{id}"
 	    redirect_to :action => "index"
