@@ -22,10 +22,13 @@ server.listen(8989);
 // Create a Socket.IO instance, passing it our server
 var io = si.listen(server);
 
+var FNs={}
+
 function Session(){
 	this.users = []
 	this.drawables = []
 	this.messages = []
+	this.drawing = false; 
 	this.addUser = function (uid){
 		if (this.users.indexOf(uid) == -1){
 			this.users.push(uid);
@@ -58,6 +61,7 @@ function UserMap(){
 	}
 	this.put = function(uid, client){	
 		this.userToClient[uid] = client;
+
 		this.clientToUser[client] = uid;
 	}
 	this.remove = function (uid){
@@ -109,10 +113,6 @@ function validateMessage(message){
 		return false; 
 }
 
-function procAck(client, message){
-
-}
-
 function validSid(message){
 	return (typeof message.sid === 'number' &&
 	 	message.sid < sessions.length && message.sid >= 0 &&
@@ -131,6 +131,199 @@ function broadcast(session, message, source){
 	}
 }
 
+function HandleAck(client, message, uid){
+	//No op 
+}
+
+function HandleStatus(client, message, uid){
+	if (!message.status){
+			sendError(client, message, 'no status specified')
+			return
+		}
+	if (message.status === 'ONLINE'){
+		users.put(uid, client.id);
+		sendAck(client, message); 
+	} else if (message.status === 'OFFLINE'){
+		users.remove(uid); 
+	}
+}
+
+function HandleCreate(client, message, uid){
+	var s = new Session();
+	s.addUser(uid);
+	if (typeof message.uids === "object" && message.uids instanceof Array){
+		for (var i = 0; i< message.uids.length ; i++){
+			s.addUser(message.uids[i])
+		}	
+	}
+	var m = new Message("ACK", 0)
+	m.sid = sessions.length;
+	m.ack = message; 
+	sendMessage(client, m);  
+	sessions.push(s); 
+}
+
+function HandleLeave(client, message, uid){
+	if (validSid(message)){
+		var s = sessions[message.sid]; 
+		if (s.removeUser(uid)){
+			sendAck(client, message); 
+		}else{
+			sendError(client, message, "user not in session")
+		}
+	}else{
+		sendError(client, message, "not a valid sid")
+	}
+}
+function HandleAdd(client, message, uid){
+	if (!validSid(message)){
+		sendError(client, message, "not a valid sid")
+		return
+	}
+	var s = sessions[message.sid];
+	var uids = message.uids; 
+	if (typeof uids !== 'object' ||  !(uids instanceof Array) ){
+		sendError(client, message, "uids array not valid");
+		return;
+	}
+	var uids2 = []; 
+	for (var i =0; i <uids.length; i ++){	
+		if (s.addUser(uids[i])){
+			uids2.push(uids[i]);  
+		}
+	}
+	message.uids = uids2; 
+	sendAck(client, message);
+}
+
+function HandlePost(client, message, uid){
+	if(!validSid(message)){
+		sendError(client, message, "invalid sid")
+		return;  
+	}
+	if (!(typeof message.data === 'object') || message.data == null){
+		sendError(client, message, "no data supplied");
+		return; 
+	}
+	var parse = prim.parseJSON(message.data); 
+	if (parse == null){
+		sendError(client, message, "data type not recognized");
+		return; 
+	}
+	var sid = message.sid; 
+	var s = sessions[sid];
+	if (message.idx && typeof message.idx === 'number'){
+		var idx = message.idx; 
+		if (idx < 0 || idx >= s.drawables.length){
+			sendError(client, message, "not a valid index")
+			return
+		}
+
+		if (parse.type==='chat_message')
+			s.messages[idx] = parse
+		else
+			s.drawables[idx] = parse;
+	} else {
+		var idx; 
+		if (parse.type === 'chat_message'){
+			idx = s.messages.length;
+			s.messages.push(parse);
+		}else{
+			idx = s.drawables.length;
+			s.drawables.push(parse);
+		}
+		message.idx = idx;
+	}
+	broadcast(s, message, uid); 
+	sendAck(client, message); 
+}
+
+function HandleDelete(client, message, uid){
+	if(!validSid(message)){
+		sendError(client, message, "not a valid session"); 
+		return;  
+	}
+	if (!(typeof message.idx === 'number' && message.idx >= 0)){
+		sendError(client, message, "invalid drawable index"); 
+		return;
+	}
+	var idx = message.idx; 
+	var sid = message.sid; 
+	var s = sessions[sid];
+	if (idx >= s.drawables.length){
+		sendError(client, message, "invalid drawable index"); 
+		return;
+	}
+	s.drawables[idx] = null; 
+	broadcast(s, message, uid);
+	sendAck(client, message);
+}
+
+function HandleErase(client, message, uid){
+	if (!validSid(message)){
+		sendError(client, message, "not a valid session");
+		return;
+	}
+	var s = sessions[message.sid]; 
+	s.drawbles = [];  
+	broadcast(s, message, uid);
+	sendAck(client, message);
+}
+
+function HandleHistory(client, message, uid){
+	if(!validSid(message)){
+		sendError(client, message, "not a valid session"); 
+		return;  
+	}
+	if (typeof message.type !== 'string'){
+		sendError(client, message, "no type specified")
+		return; 
+	}
+	var type = message.type;
+	var sid = message.sid; 
+	var s = sessions[sid]; 
+	if (type === "drawables"){
+		message.drawables = s.drawables;
+	} else if (type === "chat_messages"){
+		message.chat_messages = s.messages; 
+	}
+	sendAck(client, message); 
+}
+
+function HandleGetStatus(client, message, uid){
+	if( ! typeof message.uids === 'object' || ! message.uids instanceof Array){
+		SendError(client, message, "invalid uid list"); 
+		return; 
+	}
+	var reply = {}; 
+	for (var i = 0 ; i < message.uids.length; i ++){
+		var uid = message.uids[i]; 
+		if (users.hasUser(uid))
+			reply[uid] = 'ONLINE'
+		else
+			reply[uid] = 'OFFLINE'
+	}
+	message.uids = reply;
+	sendAck(client, message);
+}
+
+/*function HandleX(client, message, uid){
+
+}*/
+
+function SetUpEventHandles(){
+	FNs["STATUS"] = HandleStatus;
+	FNs["ACK"] = HandleAck; 
+	FNs["CREATE"] = HandleCreate;
+	FNs["LEAVE"] = HandleLeave;  
+	FNs["ADD"] = HandleAdd; 
+	FNs["POST"] = HandlePost; 
+	FNs["DELETE"] = HandleDelete; 
+	FNs["ERASE"] = HandleErase;
+	FNs["GET_STATUS"] = HandleGetStatus;
+	FNs["HISTORY"] = HandleHistory;
+}
+
 function procMessage(client, message){
 	if (!validateMessage(message)){
 		sendError(client, message, "malformed message header"); 
@@ -138,173 +331,19 @@ function procMessage(client, message){
 	}
 	var command = message.command;
 	var uid = message.uid; 
-	if (command === "STATUS"){
-		if (!message.status){
-			sendError(client, message, 'no status specified')
-			return
-		}
-		if (message.status === 'ONLINE'){
-			users.put(uid, client.id);
-			sendAck(client, message); 
-		} else if (message.status === 'OFFLINE'){
-			users.remove(uid); 
-		}
-		//todo: logic for statuses other than here and away
-
-	} else if(command === "CREATE"){
-		var s = new Session();
-		s.addUser(uid);
-		if (typeof message.uids === "object" && message.uids instanceof Array){
-			for (var i = 0; i< message.uids.length ; i++){
-				s.addUser(message.uids[i])
-			}	
-		}
-		var m = new Message("ACK", 0)
-		m.sid = sessions.length;
-		m.ack = message; 
-		sendMessage(client, m);  
-		sessions.push(s); 
-	} else if(command === "LEAVE"){
-		if (validSid(message)){
-			var s = sessions[message.sid]; 
-			if (s.removeUser(uid)){
-				sendAck(client, message); 
-			}else{
-				sendError(client, message, "user not in session")
-			}
-		}else{
-			sendError(client, message, "not a valid sid")
-		}
-	} else if(command === "ADD"){
-		if (validSid(message)){
-			var s = sessions[message.sid];
-			var uids = message.uids; 
-			if (typeof uids === 'object' && uids instanceof Array ){
-				var uids2 = []; 
-				for (var i =0; i <uids.length; i ++){	
-					if (s.addUser(uids[i])){
-						uids2.push(uids[i]);  
-					}
-				}
-				message.uids = uids2; 
-				sendAck(client, message);
-			}else{
-				sendError(client, message, "uids array not valid");
-			}
-
-		}else{
-			sendError(client, message, "not a valid sid")
-		}
-	} else if(command === "POST"){
-		if(!validSid(message)){
-			sendError(client, message, "invalid sid")
-			return;  
-		}
-		if (!(typeof message.data === 'object') || message.data == null){
-			sendError(client, message, "no data supplied");
-			return; 
-		}
-		var parse = prim.parseJSON(message.data); 
-		if (parse == null){
-			sendError(client, message, "data type not recognized");
-			return; 
-		}
-		var sid = message.sid; 
-		var s = sessions[sid];
-		if (message.idx && typeof message.idx === 'number'){
-			var idx = message.idx; 
-			if (idx < 0 || idx >= s.drawables.length){
-				sendError(client, message, "not a valid index")
-				return
-			}
-
-			if (parse.type==='chat_message')
-				s.messages[idx] = parse
-			else
-				s.drawables[idx] = parse;
-		} else {
-			var idx; 
-			if (parse.type === 'chat_message'){
-				idx = s.messages.length;
-				s.messages.push(parse);
-			}else{
-				idx = s.drawables.length;
-				s.drawables.push(parse);
-			}
-			message.idx = idx;
-		}
-		broadcast(s, message, uid); 
-		sendAck(client, message); 
-	} else if (command == "DELETE"){
-		if(!validSid(message)){
-			sendError(client, message, "not a valid session"); 
-			return;  
-		}
-		if (!(typeof message.idx === 'number' && message.idx >= 0)){
-			sendError(client, message, "invalid drawable index"); 
-			return;
-		}
-		var idx = message.idx; 
-		var sid = message.sid; 
-		var s = sessions[sid];
-		if (idx >= s.drawables.length){
-			sendError(client, message, "invalid drawable index"); 
-			return;
-		}
-		s.drawables[idx] = null; 
-		broadcast(s, message, uid);
-		sendAck(client, message);
-	} else if(command == "HISTORY" ){
-		if(!validSid(message)){
-			sendError(client, message, "not a valid session"); 
-			return;  
-		}
-		if (typeof message.type !== 'string'){
-			sendError(client, message, "no type specified")
-			return; 
-		}
-		var type = message.type;
-		var sid = message.sid; 
-		var s = sessions[sid]; 
-		if (type === "drawables"){
-			message.drawables = s.drawables;
-		} else if (type === "chat_messages"){
-			message.chat_messages = s.messages; 
-		}
-		sendAck(client, message); 
-	} else if (command === "ERASE"){
-		if (!validSid(message)){
-			sendError(client, message, "not a valid session");
-			return;
-		}
-		var s = sessions[message.sid]; 
-		s.drawbles = [];  
-		broadcast(s, message, uid);
-		sendAck(client, message);
-	} else if (command === "GET_STATUS"){
-		if( ! typeof message.uids === 'object' || ! message.uids instanceof Array){
-			SendError(client, message, "invalid uid list"); 
-			return; 
-		}
-		var reply = {}; 
-		for (var i = 0 ; i < message.uids.length; i ++){
-			var uid = message.uids[i]; 
-			if (users.hasUser(uid))
-				reply[uid] = 'ONLINE'
-			else
-				reply[uid] = 'OFFLINE'
-		}
-		message.uids = reply;
-		sendAck(client, message);
-
-	}else {
+	if (command in FNs && typeof FNs[command] === 'function'){
+		FNs[command](client, message, uid);	
+	}
+	else {
 		sendError(client, message, "unrecognized command")
 	}
 }
 
+
+SetUpEventHandles();
+
 // Add a connect listener
 io.sockets.on('connection', function(client){ 
-	
 	// Success!  Now listen to messages to be received
 	client.on('message',function(event){
 		console.log("message received: ", event) 
