@@ -273,7 +273,23 @@ function procMessage(client, message){
 		s.drawbles = [];  
 		broadcast(s, message, uid);
 		sendAck(client, message);
-	} else {
+	} else if (command === "GET_STATUS"){
+		if( ! typeof message.uids === 'object' || ! message.uids instanceof Array){
+			SendError(client, message, "invalid uid list"); 
+			return; 
+		}
+		var reply = {}; 
+		for (var i = 0 ; i < message.uids.length; i ++){
+			var uid = message.uids[i]; 
+			if (users.hasUser(uid))
+				reply[uid] = 'ONLINE'
+			else
+				reply[uid] = 'OFFLINE'
+		}
+		message.uids = reply;
+		sendAck(client, message);
+
+	}else {
 		sendError(client, message, "unrecognized command")
 	}
 }

@@ -403,7 +403,8 @@ function uiCanvas(sid){
 	return c; 
 }
 
-function uiCanvasInit(sid){
+function uiCanvasInit(sid, parent){
+	parent = (!parent)? ".canvas_wrapper" : parent;  
 	var tmp = $(".canvas_wrapper"); 
 	if (tmp.length < 1){
 		console.log('no canvas insertion point defined in document')
@@ -417,6 +418,21 @@ function uiCanvasInit(sid){
 	evBindCanvas(canvasID);
 	bindSquiggleFns(canvasID);
 	return true;  
+}
+
+function uiShowWhiteboard(sid){
+	var width = $(window).width();
+	var height = $(window).height(); 
+	$('#whiteboard_flyout').modal().css('width', 1050).css('height', 700).css('left', (width-1050)/2 + 280).css('top', 10);
+	
+	if (sid){
+		uiCanvasInit(sid);
+		$('#whiteboard_flyout').on('shown', function(){evDetectOffset(canvasID);});
+	} 
+}
+
+function uiHideWhiteboard(){
+	$('#whiteboard_flyout').modal('hide');
 }
 
 
@@ -434,7 +450,6 @@ function uiFlattenCanvas(layers){
 		}
 	}
 	return ctx.canvas.toDataURL();  
-
 } 
 
 function uiAddChatMessage(sid, message, idx){
@@ -499,8 +514,45 @@ function uiChatWindow(sid){
 
 function uiCreateChatWindow(sid){
 	var container = $('.chat_bar')[0];
-	var cwind = uiChatWindow(sid); 
-	container.appendChild(cwind); 
+	var cwind = uiChatWindow(sid);
+	container.insertBefore(cwind, $(container).children()[0]); 
 	bindCWListeners(cwind) 
 	return cwind;
 }
+
+function uiShowFriendList(){
+	$('.chat_friend_list').show();
+}
+
+function uiHideFriendList(){
+	$('.chat_friend_list').hide();
+}
+
+function uiTryChat(fid){
+	console.log('trying to start a chat')
+	//TODO:
+}
+
+function uiFriendTag(id, f ){
+	var el = document.createElement('p');
+	el.innerHTML = f.first_name + ' -- ' + f.status;
+	el.setAttribute('class', 'chat friend_listing'); 
+	el.setAttribute('fid', id);
+	el.setAttribute('onClick', 'uiTryChat(' + id + ');');
+
+	return el; 
+}
+
+/*
+array: [fid, name, status]
+*/
+function uiSetFriendList(friends){
+	var obj = $('.chat_friend_list_body'); 
+	obj.empty();
+	for (var fid in friends){
+		var f = friends[fid];
+		if (f.status)
+			obj[0].appendChild(uiFriendTag(fid, f))
+	}  
+}
+

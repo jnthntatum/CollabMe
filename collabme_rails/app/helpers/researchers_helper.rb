@@ -5,13 +5,13 @@ module ResearchersHelper
 		friendsifo=Set.new
 		r.direct_friends.each do |f|
 			friendsifo << {:first_name => f.first_name, 
-				:last_name => f.last_name, :email => f.email} 
+				:last_name => f.last_name, :email => f.email, :id => f.id} 
 		end
 		r.inverse_friends.each do |f|
 			friendsifo << {:first_name =>f.first_name,
-				:last_name => f.last_name, :email => f.email}
+				:last_name => f.last_name, :email => f.email, :id => f.id}
 		end
-		return friendsifo.to_a; 
+		return friendsifo; 
 	end
 
 	def self.Friends(r)

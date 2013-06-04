@@ -43,6 +43,7 @@ CollabmeRails::Application.routes.draw do
       post 'email'
       get 'edit_profile_picture'
       post 'upload_picture'
+      get 'chat_list'
     end
 
     resources :posts

@@ -150,6 +150,7 @@ function parseJSON(message){
 	else
 		return null;
 	return primCopy(template, message);
+
 }
 
 

@@ -7,6 +7,11 @@ var ioMessages = [];
 var ioSocket; 
 var id;
 var ioCanvSid;
+var ioRails = 'http://localhost:3000/'; 
+var ioChatServer = 'http://localhost:8989';
+var ioFriendMap = {}
+var ioPollEvent = null; 
+var ioPolling = false; 
 
 function Message(command, uid){
 	this.command= command;
@@ -15,6 +20,11 @@ function Message(command, uid){
 
 function procError(message){
 	console.log("Received error: ", message); 
+}
+var ioAckCallbacks = {}
+function ioSetAckCallback(command, fn){
+	if (typeof fn === 'function')
+		ioAckCallbacks[command] = fn;
 }
 
 function procPOST(message){
@@ -44,7 +54,9 @@ function procAck(message){
 		
 	} else if (ackd.command === "STATUS") {
 		console.log("now available requesting session")
-		//ioCreateSession(true, [2, 3])
+		if (ackd.status && ackd.status !== 'OFFLINE'){
+			ioGetFriends();
+		} 
 	} else if (ackd.command === "POST") {
 		procPOST(message.ack); 
 	} else if(ackd.command === "ERASE"){
@@ -57,8 +69,13 @@ function procAck(message){
 		} else if (ackd.type === "drawables"){
 			uiSetDrawables(ackd.drawables)
 		}
-	}else{
-		console.log("Unhandled ack type")
+	}else if (ackd.command === "GET_STATUS") { 
+		updateFriends(ackd) 
+	}else if(ackd.command in ioAckCallbacks){
+		var fn = ioAckCallbacks[ackd.command];
+		fn(ackd)
+	} else {
+
 	}
 }
 
@@ -76,6 +93,15 @@ function procMessage(message){
 	}else {
 		console.log("Error, unhandled server command: " + message.command, message);
 	}
+}
+
+function ioSendAdd(uids, sid){
+	if(typeof sid !== 'number')
+		sid=ioCanvSid; 
+	var m = new Message(add, uid); 
+	m.sid = sid;
+	m.uids = uids;
+	sendMessageToServer(m); 
 }
 
 function ioSendDrawable(drawable, idx){
@@ -128,17 +154,51 @@ function sendMessageToServer(message){
 	console.log("sent: ", message.command); 
 }
 
+function ioGetFriendStatus(){
+	if (ioPolling) return;
+	ioPolling = true; 
+	var m = new Message("GET_STATUS", uid);
+	m.uids = []
+	for (var key in ioFriendMap)
+		m.uids.push(key);
+	sendMessageToServer(m);	
+}
+
+function updateFriends(message){
+	if (typeof message.uids === 'object'){
+		for (var fid in message.uids){
+			ioFriendMap[fid].status = message.uids[fid]
+		}
+	}
+	uiSetFriendList(ioFriendMap);
+	ioPolling = false; 
+
+}
+
 function ioInit(){
 	id = 0; 
-	socket = io.connect('http://localhost:8989');
+	socket = io.connect(ioChatServer);
 	socket.on('connect', function(){
 		console.log('connection success!');
-		sendMessageToServer(new Message("STATUS", uid));  
+		var m = new Message("STATUS", uid)
+		m.status = 'ONLINE'; 
+		sendMessageToServer(m);  
 	});
 	socket.on('message', function(data){
 		console.log('Received message from server', data)
 		procMessage(data);  
 	});
+}
+
+function ioGetFriends(){
+	$.getJSON(ioRails+'researchers/'+uid+'/chat_list.json', undefined, function(friends){
+		for (var i = 0; i < friends.length; i++){
+			f = friends[i]; 
+			ioFriendMap[f.id] = f;   
+		}
+		ioPollEvent= window.setTimeout(ioGetFriendStatus, 5000); 
+		ioGetFriendStatus();
+	})
 }
 
 

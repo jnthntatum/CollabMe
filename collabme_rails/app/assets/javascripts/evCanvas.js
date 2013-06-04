@@ -6,11 +6,15 @@
 
 var evDblClickThreshold = 1000
 
+function _offset(sm){
+	sm.top = jq.offset().top
+	sm.left = jq.offset().left
+}
+
 evBindCanvas= function(id, aux){
 	var sm = new StateMachine(aux);
 	jq = $('#'+id )
-	sm.top = jq.offset().top
-	sm.left = jq.offset().left
+	_offset(sm); 
 	jq.mouseenter(_mousein)
 	jq.mouseleave(_mouseout)
 	jq.mousemove(_move)
@@ -70,6 +74,14 @@ function evSetAux(id, aux){
 function evGetAux(id, aux){
 	var sm = getStateMachine(id)
 	sm.aux = aux; 
+}
+
+function evDetectOffset(id){
+	var sm = getStateMachine(id);
+	if (!sm)
+		return false;
+	_offset(getStateMachine(id));
+	return;
 }
 
 //==================================

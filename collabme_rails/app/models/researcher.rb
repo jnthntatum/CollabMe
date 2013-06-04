@@ -22,6 +22,10 @@ class Researcher < ActiveRecord::Base
     ResearchersHelper.Friends(self);
   end
 
+  def chat_info
+    ResearchersHelper.FriendsInfo(self)
+  end; 
+
   def friendships
     return direct_friendships.concat(inverse_friendships);
   end

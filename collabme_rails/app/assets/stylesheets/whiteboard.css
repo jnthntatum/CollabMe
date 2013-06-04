@@ -37,18 +37,26 @@ whiteboard.js
 	border-color: red;
 }
 
-canvas.whiteboard{
+.canvas_wrapper{
 	height: 500;
 	width: 1000;
 	border-width: 2px 2px 2px 2px;
 	border-radius: 2px;
 	border-color:  2px;
-	border-style: solid; 
+	border-style: solid;
+	padding: 0px; 
+}
+
+canvas.whiteboard{
+	height: 500;
+	width: 1000;
+	
 }
 
 .chat{
 
 }
+
 .chat_window{
 	display: block;
 	width: 200px;
@@ -59,6 +67,16 @@ canvas.whiteboard{
 	left: auto;
 
 }
+
+.chat_friend_list{
+	display: block;
+	background-color: white;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(0,0,0,40);
+}
+
 .chat_bar{
 
 	position: fixed;
@@ -77,6 +95,10 @@ canvas.whiteboard{
 	margin-left: 4px; 
 	display:inline-block;
 	min-width: 200px;
+}
+
+.friend_listing{
+
 }
 
 .chat_history{

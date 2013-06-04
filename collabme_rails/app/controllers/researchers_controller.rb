@@ -11,6 +11,17 @@ class ResearchersController < ApplicationController
 		end
 	end	
 
+  def chat_list
+    if !(session[:current_user_id] and session[:current_user_id] == params[:id].to_i)
+      format.html # /404.html
+    end
+    id = params[:id]
+    @user =Researcher.find_by_id(id);
+    respond_to do |format|
+      format.json {render :json => @user.chat_info }
+    end
+  end
+
 	def show
 	  @currentUserPage = false
 	  if session[:current_user_id] and session[:current_user_id] == params[:id].to_i
