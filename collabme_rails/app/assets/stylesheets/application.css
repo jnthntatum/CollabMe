@@ -77,10 +77,6 @@ body {
 
 .border_row {
   min-height: 200px;
-  #max-height: 250px;
-  height: 225px;
-  border: 1px solid black;
-  #overflow: hidden;
 }
 
 /* Contents */
