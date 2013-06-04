@@ -1,4 +1,5 @@
 class ResearchersController < ApplicationController
+  before_filter :require_login, :only => [:email, :edit, :update, :edit_profile_picture, :upload_picture]
   before_filter :authenticate_user, :only => [:email, :edit, :update, :edit_profile_picture, :upload_picture]
 
   include ResearchersHelper
@@ -200,25 +201,13 @@ class ResearchersController < ApplicationController
     redirect_to @researcher
   end
 
-  def authenticate_user
-    if session[:current_user_id].nil?
-      flash[:error] = 'You must be logged in to access this section.' 
-      redirect_to login_researchers_path
-    elsif params[:id].to_i != session[:current_user_id]
-      flash.now[:error] = 'You cannot access this section.' 
-      render 'shared/_error'
-    end
-  end
-
   def edit_profile_picture
     @user = Researcher.find_by_id(params[:id])
   end
 
   def upload_picture
     upload = params[:photo]
-    if upload
-      time = Time.now.to_i.to_s
-      
+    if upload      
       @user = Researcher.find_by_id(params[:id])
       if @user.photo
         @photo = @user.photo
@@ -226,10 +215,8 @@ class ResearchersController < ApplicationController
         @photo = Photo.new
         @photo.researcher = @user
       end
-      p upload
-      p '**********************'
-      p upload[:file].original_filename
-      @photo.file_name = time + '_' + upload[:file].original_filename
+      
+      @photo.file_name = 'profile_pictures/' + Time.now.to_i.to_s + '_' + upload[:file].original_filename
       
       if @photo.save
         File.open(Rails.root.join('app/assets', 'images', @photo.file_name), 'wb') do |f|

@@ -1,3 +1,31 @@
 // Place all the styles related to the Researchers controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#profile_picture {
+  padding-top: 15px;
+}
+
+.tab-pane {
+  padding: 10px;
+}
+
+#post_div {
+  border-top: 1px solid #cccccc;
+}
+
+.post_post {
+  margin-bottom: 10px;
+}
+
+.post_creator {
+  padding-left: 20px;
+}
+
+.post_timestamp {
+  font-size: 12px;
+}
+
+.post_form {
+  margin-top: 20px;
+}
