@@ -1,11 +1,13 @@
 <div class="span9">
   <div class="row-fluid border_row">
     <div class="span3">
-      <% if @user.photo %>
-        <%= link_to image_tag(@user.photo.file_name, :alt => "rss feeds"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
-      <% else %>
-        <%= link_to image_tag("default-profile-pic.png", :alt => "rss feeds"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
-      <% end %>
+      <div id="profile_picture">
+        <% if @user.photo %>
+          <%= link_to image_tag(@user.photo.file_name, :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
+        <% else %>
+          <%= link_to image_tag("default-profile-pic.png", :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
+        <% end %>
+      </div>
     </div>
     <div class="span9">
       <h1><%= @user.first_name + ' ' + @user.last_name %></h1>

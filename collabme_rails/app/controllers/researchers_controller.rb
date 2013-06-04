@@ -196,9 +196,7 @@ class ResearchersController < ApplicationController
 
   def upload_picture
     upload = params[:photo]
-    if upload
-      time = Time.now.to_i.to_s
-      
+    if upload      
       @user = Researcher.find_by_id(params[:id])
       if @user.photo
         @photo = @user.photo
@@ -206,10 +204,8 @@ class ResearchersController < ApplicationController
         @photo = Photo.new
         @photo.researcher = @user
       end
-      p upload
-      p '**********************'
-      p upload[:file].original_filename
-      @photo.file_name = time + '_' + upload[:file].original_filename
+      
+      @photo.file_name = 'profile_pictures/' + Time.now.to_i.to_s + '_' + upload[:file].original_filename
       
       if @photo.save
         File.open(Rails.root.join('app/assets', 'images', @photo.file_name), 'wb') do |f|

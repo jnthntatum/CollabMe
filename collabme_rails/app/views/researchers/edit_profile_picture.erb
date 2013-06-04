@@ -2,17 +2,15 @@
 <%= render 'shared/show_errors' %>
 <div class="row-fluid">
   <div class="span6">
-  <% if @user.photo %>
-    <%= image_tag(@user.photo.file_name, :alt => "rss feeds") %>
-  <% else %>
-    <%= image_tag("default-profile-pic.png", :alt => "rss feeds") %>
-  <% end %>
-  </div>
-  <div class="span3">
+    <% if @user.photo %>
+      <%= image_tag(@user.photo.file_name, :alt => "Profile Picture") %>
+    <% else %>
+      <%= image_tag("default-profile-pic.png", :alt => "Profile Picture") %>
+    <% end %>
     <%= form_for :photo, :method => :post, :url => { :action => 'upload_picture' } do |f| %>
       <%= f.file_field :file %>
       <br />
-      <%= f.submit 'Upload Photo' %>
-    <% end %> 
-  </div>
+      <%= f.submit 'Upload Photo', :class => 'btn btn-primary' %>
+    <% end %>
+  </div> 
 </div>
