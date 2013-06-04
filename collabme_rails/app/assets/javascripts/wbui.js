@@ -435,11 +435,6 @@ function uiHideWhiteboard(){
 	$('#whiteboard_flyout').modal('hide');
 }
 
-
-//=====================================
-// IM functions
-//=====================================
-
 function uiFlattenCanvas(layers){
 	if (!layers)
 		layers = uiDrawables.length
@@ -452,12 +447,28 @@ function uiFlattenCanvas(layers){
 	return ctx.canvas.toDataURL();  
 } 
 
+//=====================================
+// IM functions
+//=====================================
+
+function uiReloadChatMessages(sid, messages){
+	if (!messages){
+		return; 
+	}
+	for (var i = 0; i < messages.length; i++){
+		uiAddChatMessage(sid, messages[i], i )
+	}
+
+function uiGetChatWindowBySid(sid, tmp){
+	return $('.chat_window[sid=' + sid + "']", tmp)
+}
+
 function uiAddChatMessage(sid, message, idx){
 	messageScrollback[idx] = message; 
 	var w = $("div[sid='" + sid + "']");
 	if (w.length == 0){
 		var tmp = uiCreateChatWindow(sid);
-		w = $("div[sid='" + sid + "']", tmp);
+		w = $(".chat_window[sid='" + sid + "']", tmp);
 	}
 	addLine(w, message.name, message.text)
 }

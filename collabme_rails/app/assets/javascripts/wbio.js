@@ -65,7 +65,7 @@ function procAck(message){
 		//yay! we deleted something!
 	} else if (ackd.command === "HISTORY"){
 		if (ackd.type === "chat_messages"){
-			//uiReloadMessages(ackd.chat_messages)
+			uiReloadMessages(ackd.chat_messages)
 		} else if (ackd.type === "drawables"){
 			uiSetDrawables(ackd.drawables)
 		}
@@ -197,6 +197,17 @@ function ioGetFriends(){
 		
 		ioGetFriendStatus();
 	})
+}
+
+function ioSendFlatten(layers){
+	var m = new Message("FLATTEN", uid);
+	m.sid = ioCanvSid(); 
+	m.layers = layers;
+	sendMessageToServer(m);
+}
+
+function ioSaveCanvas(img){
+ 	console.log('send io SaveCanvas -- todo')
 }
 
 
