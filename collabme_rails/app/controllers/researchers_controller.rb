@@ -1,4 +1,5 @@
 class ResearchersController < ApplicationController
+  before_filter :require_login, :only => [:email, :edit, :update, :edit_profile_picture, :upload_picture]
   before_filter :authenticate_user, :only => [:email, :edit, :update, :edit_profile_picture, :upload_picture]
 
   include ResearchersHelper
@@ -187,16 +188,6 @@ class ResearchersController < ApplicationController
       @researcher.save
     end
     redirect_to @researcher
-  end
-
-  def authenticate_user
-    if session[:current_user_id].nil?
-      flash[:error] = 'You must be logged in to access this section.' 
-      redirect_to login_researchers_path
-    elsif params[:id].to_i != session[:current_user_id]
-      flash.now[:error] = 'You cannot access this section.' 
-      render 'shared/_error'
-    end
   end
 
   def edit_profile_picture
