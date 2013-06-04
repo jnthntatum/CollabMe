@@ -139,8 +139,16 @@ function procMessage(client, message){
 	var command = message.command;
 	var uid = message.uid; 
 	if (command === "STATUS"){
-		users.put(uid, client.id);
-		sendAck(client, message); 
+		if (!message.status){
+			sendError(client, message, 'no status specified')
+			return
+		}
+		if (message.status === 'ONLINE'){
+			users.put(uid, client.id);
+			sendAck(client, message); 
+		} else if (message.status === 'OFFLINE'){
+			users.remove(uid); 
+		}
 		//todo: logic for statuses other than here and away
 
 	} else if(command === "CREATE"){
@@ -305,6 +313,7 @@ io.sockets.on('connection', function(client){
 
 	client.on('disconnect',function(){
 		console.log('Server has disconnected from client', client);
+		users.remove(users.getUser(client)); 
 	});
 
 });

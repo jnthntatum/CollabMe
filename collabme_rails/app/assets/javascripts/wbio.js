@@ -49,7 +49,7 @@ function procAck(message){
 		uiCreateChatWindow(message.sid) 
 		if(ackd.drawing === true){
 			ioCanvSid = message.sid;
-			uiSetCanvasSid(ioCanvSid);	
+			uiShowWhiteboard(ioCanvSid);	
 		}
 		
 	} else if (ackd.command === "STATUS") {
@@ -143,7 +143,7 @@ function ioSendDelete(idx, chatMessage, sid){
 function ioCreateSession(drawing, uids){
 	var m = new Message("CREATE", uid);
 	m.uids= uids;
-	m.drawing = true;
+	m.drawing = drawing;
 	sendMessageToServer(m);
 }
 
@@ -155,8 +155,6 @@ function sendMessageToServer(message){
 }
 
 function ioGetFriendStatus(){
-	if (ioPolling) return;
-	ioPolling = true; 
 	var m = new Message("GET_STATUS", uid);
 	m.uids = []
 	for (var key in ioFriendMap)
@@ -171,7 +169,7 @@ function updateFriends(message){
 		}
 	}
 	uiSetFriendList(ioFriendMap);
-	ioPolling = false; 
+	ioPollEvent= window.setTimeout(ioGetFriendStatus, 5000); 
 
 }
 
@@ -196,7 +194,7 @@ function ioGetFriends(){
 			f = friends[i]; 
 			ioFriendMap[f.id] = f;   
 		}
-		ioPollEvent= window.setTimeout(ioGetFriendStatus, 5000); 
+		
 		ioGetFriendStatus();
 	})
 }

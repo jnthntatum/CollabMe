@@ -11,8 +11,8 @@ var count = 0;
 var uiDrawables = []; 
 var messageScrollback = []
 var curDrawable = null; 
-var w = 1000;
-var h = 500;
+var uiCanvWidth = 1000;
+var uiCanvHeight = 325;
 var uiSelection = null;
 var uiMode = "Squiggle"
 var	uiSensitivity = 8
@@ -244,7 +244,7 @@ function uiSetDrawables(arr){
 function uiRedraw(ctx){
 	if(!ctx)
 		ctx = uiCtx; 
-	ctx.clearRect(0, 0, w, h);
+	ctx.clearRect(0, 0, uiCanvWidth, uiCanvHeight);
 	for (var i = 0; i < uiDrawables.length; i ++){
 		var d = uiDrawables[i]
 		if(d){
@@ -397,8 +397,8 @@ function uiCanvas(sid){
 	c.id = 'Sid'+sid;
 	c.setAttribute('sid', sid);
 	c.setAttribute("class", "whiteboard");
-	c.setAttribute("width", "1000");
-	c.setAttribute("height", "500") 
+	c.setAttribute("width", uiCanvWidth);
+	c.setAttribute("height", uiCanvHeight) 
 	uiCtx = c.getContext("2d")
 	return c; 
 }
@@ -530,16 +530,28 @@ function uiHideFriendList(){
 
 function uiTryChat(fid){
 	console.log('trying to start a chat')
+	ioCreateSession(false, [fid]); 
 	//TODO:
+}
+
+function uiTryWb(fid){
+	console.log('trying to start a whiteboarding session')
+	ioCreateSession(true, [fid])
 }
 
 function uiFriendTag(id, f ){
 	var el = document.createElement('p');
-	el.innerHTML = f.first_name + ' -- ' + f.status;
+	var a = document.createElement('a');
+	a.setAttribute('onClick', 'uiTryChat(' + id + ');');
+	a.innerHTML = f.status; 
+	var a2 = document.createElement('a'); 
+	a2.innerHTML = 'Draw'; 
+	a2.setAttribute('onClick', 'uiTryWb(' + id + ');' ); 
+	el.innerHTML = f.first_name + ' -- ';
 	el.setAttribute('class', 'chat friend_listing'); 
 	el.setAttribute('fid', id);
-	el.setAttribute('onClick', 'uiTryChat(' + id + ');');
-
+	el.appendChild(a);
+	el.appendChild(a2);
 	return el; 
 }
 

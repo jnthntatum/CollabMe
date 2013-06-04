@@ -19,13 +19,6 @@
         <%= javascript_include_tag "wbio" %>
         <%= javascript_include_tag "wbui" %>
         <%= stylesheet_link_tag "whiteboard" %>
-  var sm = getStateMachine(id);
-  sm.aux = aux;
-}
-
-function evGetAux(id, aux){
-  var sm = getStateMachine(id)
-  sm.aux = aux; 
         <script type='text/javascript'>
           var uid = '<%= session[:current_user_id] %>';
           var name = '<%= session[:current_user_first_name] %>';
