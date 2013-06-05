@@ -1,0 +1,25 @@
+<!--_whiteboard.html.erb -->
+<%if session[:current_user_id] %>
+<div id="whiteboard_flyout" class="modal hide fade" >
+	<div class="modal-header">
+		<h3>Whiteboard with: </h3> 
+	</div>
+	<div class="modal-body">
+		<!-- insertion point for canvas--> 
+		<div class="canvas_wrapper">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button  class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>  
+</div> 
+<!-- chat insertion point-->
+<div class="chat_bar">
+	<div class="chat chat_nub friend_list_nub" onclick="uiShowFriendList()">
+		<div class="chat chat_friend_list chat_window">
+			<div class="chat chat_title_bar">Loading</div>
+			<div class="chat chat_friend_list_body"></div> 
+		</div> 
+	</div> 
+</div>
+<% end %>
