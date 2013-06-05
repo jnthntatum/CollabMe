@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130530054111) do
+ActiveRecord::Schema.define(:version => 20130605023728) do
+
+  create_table "activities", :force => true do |t|
+    t.integer  "work_experience_id"
+    t.string   "activity"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "friendships", :id => false, :force => true do |t|
     t.integer  "user_id"
@@ -139,5 +146,16 @@ ActiveRecord::Schema.define(:version => 20130530054111) do
   add_index "tasks", ["assignee_id"], :name => "index_tasks_on_assignee_id"
   add_index "tasks", ["creator_id"], :name => "index_tasks_on_creator_id"
   add_index "tasks", ["project_id"], :name => "index_tasks_on_project_id"
+
+  create_table "work_experiences", :force => true do |t|
+    t.integer  "researcher_id"
+    t.string   "title"
+    t.string   "company"
+    t.string   "location"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
 end

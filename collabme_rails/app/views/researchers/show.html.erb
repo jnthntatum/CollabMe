@@ -27,18 +27,37 @@
       <% end %>
     </div>
   </div>
-  <div class="row-fluid border_row">
+  <div class="row-fluid border_row" id="profile_div">
     <div class="tabbable span12" style="height: 100%;"> <!-- Only required for left/right tabs -->
       <ul class="nav nav-tabs" style="margin-bottom: 5px;">
-        <li class="active"><a href="#tab1" data-toggle="tab">Experience</a></li>
-        <li><a href="#tab2" data-toggle="tab">Publications</a></li>
-        <li><a href="#tab3" data-toggle="tab">About Me</a></li>
+        <li class="active">
+          <a href="#tab1" data-toggle="tab">Experience</a>
+        </li>
+        <li>
+          <a href="#tab2" data-toggle="tab">Publications</a>
+        </li>
+        <li>
+          <a href="#tab3" data-toggle="tab">About Me</a>
+        </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
           <p>
-            <% if @user.experience %>
-              <%= @user.experience %>
+            <% if @user.work_experiences %>
+              <% @user.work_experiences.each do |w| %>
+                <div class="work_experience_header">
+                  <h4><%= w.title %></h4>
+                  <p><%= w.company + '  |  ' + w.location %></p>
+                  <p class="work_experience_date">
+                    <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
+                  </p>
+                </div>
+                <% w.activities.each do |a| %> 
+                  <p class="activity">
+                    <%= '-  ' + a.activity %>
+                  </p>
+                <% end %>
+              <% end %>
             <% else %>
               <%= 'Nothing here yet.' %>
             <% end %>
@@ -56,28 +75,31 @@
         <div class="tab-pane" id="tab3">
           <div>
             <p><%= @user.about_me %></p>
+            
             <h6>Interests</h6>
             <% @user.interest_list.each do |interest|%>
               <p><%= interest%></p>
             <% end %>
+            
             <h6>Skills</h6>
             <% @user.skill_list.each do |skill|%>
             <p><%= skill%></p>
             <% end %>
+            
             <div>
-            <%= form_tag({:controller => "researchers", :action => "removeInterest"}, :method => "get") do%>
-              <%= text_field_tag(:tag) %>
-              <%= hidden_field_tag :id, @user.id %>
-              <%= submit_tag "Remove Interest", :class => "btn btn-success" %>
-            <% end %>
-          </div>
+              <%= form_tag({:controller => "researchers", :action => "removeInterest"}, :method => "get") do%>
+                <%= text_field_tag(:tag) %>
+                <%= hidden_field_tag :id, @user.id %>
+                <%= submit_tag "Remove Interest", :class => "btn btn-success" %>
+              <% end %>
+            </div>
             <div>
-            <%= form_tag({:controller => "researchers", :action => "removeSkill"}, :method => "get") do%>
-              <%= text_field_tag(:tag) %>
-              <%= hidden_field_tag :id, @user.id %>
-              <%= submit_tag "Remove Skill",:class => "btn btn-success" %>
-            <% end %>
-          </div>
+              <%= form_tag({:controller => "researchers", :action => "removeSkill"}, :method => "get") do%>
+                <%= text_field_tag(:tag) %>
+                <%= hidden_field_tag :id, @user.id %>
+                <%= submit_tag "Remove Skill",:class => "btn btn-success" %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
