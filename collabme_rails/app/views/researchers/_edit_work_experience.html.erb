@@ -1,35 +1,32 @@
 <%= form_tag({:controller => 'educations', :action => 'add_education'}, {:method => 'post', :class => 'form-horizontal'}) do %>
   <div class="control-group">
-    <label class="control-label" for="school_name">College / University</label>
+    <label class="control-label">Type</label>
     <div class="controls">
-      <%= text_field_tag :school_name %>
+      <select class="input-medium" id="work_experience_type">
+        <option>Company</option>
+        <option>Research Lab</option>
+      </select>
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="degree">Degree</label>
+    <label class="control-label" for="name">Name</label>
     <div class="controls">
-      <%= text_field_tag :degree %>
+      <%= text_field_tag :name %>
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="major">Major</label>
+    <label class="control-label" for="degree">Title</label>
     <div class="controls">
-      <%= text_field_tag :major %>
-    </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="specialization">Specialization</label>
-    <div class="controls">
-      <%= text_field_tag :specialization %>
+      <%= text_field_tag :title %>
     </div>
   </div>
   <div class="control-group">
     <label class="control-label">Start Date</label>
     <div class="controls">
-      <select class="input-medium" id="start_date_month">
+      <select class="input-medium" id="work_experience_start_date_month">
         <%= render 'shared/select_months' %>
       </select>
-      <select class="input-small" id="start_date_year">
+      <select class="input-small" id="work_experience_start_date_year">
         <%= render 'shared/select_years' %>
       </select>
     </div>
@@ -37,10 +34,10 @@
   <div class="control-group">
     <label class="control-label">End Date</label>
     <div class="controls">
-      <select class="input-medium" id="end_date_month">
+      <select class="input-medium" id="work_experience_end_date_month">
         <%= render 'shared/select_months' %>
       </select>
-      <select class="input-small" id="end_date_year">
+      <select class="input-small" id="work_experience_end_date_year">
         <%= render 'shared/select_years' %>
       </select>
     </div>

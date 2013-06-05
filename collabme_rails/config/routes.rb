@@ -58,6 +58,9 @@ CollabmeRails::Application.routes.draw do
     end
   end
 
+  resources :schools do
+  end
+
   resources :projects do
     resources :posts
     resources :requests
