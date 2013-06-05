@@ -47,55 +47,12 @@
 
         <!-- Work Experiences -->
         <div class="tab-pane active" id="tab1">
-          <p>
-            <% if @user.work_experiences %>
-              <% @user.work_experiences.each do |w| %>
-                <div class="experience_header">
-                  <h4><%= w.title %></h4>
-                  <% if w.company %>
-                    <p><%= w.company.name + '  |  ' + w.company.location %></p>
-                  <% elsif w.research_lab %>
-                    <p><%= w.research_lab.name + '  |  ' + w.research_lab.location %></p>
-                  <% end %>
-                  <p class="experience_date">
-                    <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
-                  </p>
-                </div>
-                <% w.activities.each do |a| %> 
-                  <p class="activity">
-                    <%= '-  ' + a.activity %>
-                  </p>
-                <% end %>
-              <% end %>
-            <% else %>
-              <%= 'Nothing here yet.' %>
-            <% end %>
-          </p>
+          <%= render :partial => 'show_work_experiences' %>  
         </div>
 
         <!-- Educations -->
         <div class="tab-pane" id="tab2">
-          <p>
-            <% if @user.educations %>
-              <% @user.educations.each do |e| %>
-                <div class="experience_header">
-                  <h4><%= e.school.name %></h4>
-                  <p><%= e.school.location %></p>
-                  <% if e.degree && e.major %>
-                    <h5><%= e.degree + ', ' + e.major %></h5>
-                  <% end %>
-                  <% if e.specialization %>
-                    <p><%= 'Specialization in ' + e.specialization %></p>
-                  <% end %>
-                  <p class="experience_date">
-                    <%= e.start_date.getlocal.strftime("%B %Y") + ' - ' + e.end_date.getlocal.strftime("%B %Y") %> 
-                  </p>
-                </div>
-              <% end %>
-            <% else %>
-              <%= 'Nothing here yet.' %>
-            <% end %>
-          </p>
+          <%= render :partial => 'show_education' %>
         </div>
 
         <div class="tab-pane" id="tab3">

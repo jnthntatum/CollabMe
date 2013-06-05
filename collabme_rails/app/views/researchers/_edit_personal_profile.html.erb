@@ -1,0 +1,31 @@
+<%= form_for @researcher, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <label class="control-label" for="first_name">First Name</label>
+    <div class="controls">
+      <%= f.text_field :first_name %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="last_name">Last Name</label>
+    <div class="controls">
+      <%= f.text_field :last_name %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="email">Email Address</label>
+    <div class="controls">
+      <%= f.text_field :email %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="about_me">About Me</label>
+    <div class="controls">
+      <%= f.text_area :about_me, :placeholder => @researcher.about_me, :rows => 2 %>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit 'Update Profile', :class => 'btn btn-primary' %>
+    </div>
+  </div>        
+<% end %>

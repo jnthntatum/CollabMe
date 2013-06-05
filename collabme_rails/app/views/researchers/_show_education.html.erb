@@ -1,0 +1,18 @@
+<% if @user.educations %>
+  <% @user.educations.each do |e| %>
+    <div class="experience_header">
+      <h4><%= e.school.name %></h4>
+      <% if e.degree && e.major %>
+        <h5><%= e.degree + ', ' + e.major %></h5>
+      <% end %>
+      <% if e.specialization %>
+        <p><%= 'Specialization in ' + e.specialization %></p>
+      <% end %>
+      <p class="experience_date">
+        <%= e.start_date.getlocal.strftime("%B %Y") + ' - ' + e.end_date.getlocal.strftime("%B %Y") %> 
+      </p>
+    </div>
+  <% end %>
+<% else %>
+  <%= 'Nothing here yet.' %>
+<% end %>
