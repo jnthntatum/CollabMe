@@ -13,9 +13,8 @@ CollabmeRails::Application.routes.draw do
   get "researchers/removeInterest"
   get "researchers/removeSkill"
 
-  #get "home/index"
-
-# You can have the root of your site routed with "root"
+  
+  # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   root :to => 'home#index'
 
@@ -31,6 +30,7 @@ CollabmeRails::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
+
   resources :researchers do
     collection do
       get :login
@@ -48,9 +48,15 @@ CollabmeRails::Application.routes.draw do
 
     resources :posts
     resources :requests
-
+    resources :educations
     resource :projects
   end 
+
+  resources :educations do
+    collection do
+      get :add_education
+    end
+  end
 
   resources :projects do
     resources :posts
@@ -67,25 +73,6 @@ CollabmeRails::Application.routes.draw do
     end
   end
   
-  #resources :profiles
-    
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-   #resources :researchers do
-      #resource :projects
-    #end
 
   # Sample resource route with more complex sub-resources
   #   resources :products do

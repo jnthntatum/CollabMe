@@ -34,10 +34,13 @@
           <a href="#tab1" data-toggle="tab">Experience</a>
         </li>
         <li>
-          <a href="#tab2" data-toggle="tab">Publications</a>
+          <a href="#tab2" data-toggle="tab">Education</a>
         </li>
         <li>
-          <a href="#tab3" data-toggle="tab">About Me</a>
+          <a href="#tab3" data-toggle="tab">Publications</a>
+        </li>
+        <li>
+          <a href="#tab4" data-toggle="tab">About Me</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -45,10 +48,10 @@
           <p>
             <% if @user.work_experiences %>
               <% @user.work_experiences.each do |w| %>
-                <div class="work_experience_header">
+                <div class="experience_header">
                   <h4><%= w.title %></h4>
                   <p><%= w.company + '  |  ' + w.location %></p>
-                  <p class="work_experience_date">
+                  <p class="experience_date">
                     <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
                   </p>
                 </div>
@@ -63,7 +66,31 @@
             <% end %>
           </p>
         </div>
+
         <div class="tab-pane" id="tab2">
+          <p>
+            <% if @user.educations %>
+              <% @user.educations.each do |e| %>
+                <div class="experience_header">
+                  <h4><%= e.school_name %></h4>
+                  <% if e.degree && e.major %>
+                    <h5><%= e.degree + ', ' + e.major %></h5>
+                  <% end %>
+                  <% if e.specialization %>
+                    <p><%= 'Specialization in ' + e.specialization %></p>
+                  <% end %>
+                  <p class="experience_date">
+                    <%= e.start_date.getlocal.strftime("%B %Y") + ' - ' + e.end_date.getlocal.strftime("%B %Y") %> 
+                  </p>
+                </div>
+              <% end %>
+            <% else %>
+              <%= 'Nothing here yet.' %>
+            <% end %>
+          </p>
+        </div>
+
+        <div class="tab-pane" id="tab3">
           <p>
             <% if @user.publications %>
               <%= @user.publications %>
@@ -72,7 +99,7 @@
             <% end %>
           </p>
         </div>
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="tab4">
           <div>
             <p><%= @user.about_me %></p>
             

@@ -74,3 +74,28 @@ a1 = Activity.new
 a1.activity = 'Did some biocomp research on bio stuff.'
 a1.work_experience = w1
 a1.save
+
+# Education
+e1 = Education.new
+e1.school_name = 'Stanford University'
+e1.degree = 'Bachelor of Science'
+e1.major = 'Computer Science'
+e1.specialization = 'Biocomputation'
+e1.start_date = Time.new(2009, 9, 1)
+e1.end_date = Time.now()
+e1.researcher = ss
+e1.save
+
+e2 = Education.new
+e2.school_name = 'James Logan High School'
+e2.start_date = Time.new(2006, 2, 1)
+e2.end_date = Time.new(2009, 6, 1)
+e2.researcher = kg
+e2.save
+
+# Courses
+c1 = Course.new
+c1.course_title = 'CS194'
+c1.description = 'Senior project course.'
+c1.education = e1
+c1.save
