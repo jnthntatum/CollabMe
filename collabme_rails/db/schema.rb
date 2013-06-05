@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(:version => 20130605083116) do
     t.integer  "education_id"
     t.string   "name"
     t.string   "location"
+    t.string   "school_type"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

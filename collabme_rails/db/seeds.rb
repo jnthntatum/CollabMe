@@ -76,11 +76,13 @@ company2.save
 school1 = School.new
 school1.name = 'Stanford University'
 school1.location = 'Palo Alto, CA'
+school1.school_type = 'university'
 school1.save
 
 school2 = School.new
 school2.name = 'James Logan High School'
 school2.location = 'Union City, CA'
+school2.school_type = 'high school'
 school2.save
 
 # Research Labs

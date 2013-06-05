@@ -54,11 +54,21 @@ CollabmeRails::Application.routes.draw do
 
   resources :educations do
     collection do
-      get :add_education
+      post :add_education
+    end
+  end
+
+  resource :work_experiences do
+    collection do
+      post :add_work_experience
     end
   end
 
   resources :schools do
+    collection do
+      get :universities
+      get :high_schools
+    end
   end
 
   resources :projects do

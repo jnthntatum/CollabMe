@@ -8,10 +8,28 @@
       </select>
     </div>
   </div>
-  <div class="control-group">
-    <label class="control-label" for="name">Name</label>
+  <div class="control-group high_school_controls">
+    <label class="control-label" for="high_school_name">High School</label>
     <div class="controls">
-      <%= text_field_tag :name %>
+      <%= text_field_tag :high_school_name %>
+    </div>
+  </div>
+  <div class="control-group high_school_controls">
+    <label class="control-label" for="high_school_location">Location</label>
+    <div class="controls">
+      <%= text_field_tag :high_school_location %>
+    </div>
+  </div>
+  <div class="control-group university_controls">
+    <label class="control-label" for="university_name">College/University</label>
+    <div class="controls">
+      <%= text_field_tag :university_name %>
+    </div>
+  </div>
+  <div class="control-group university_controls">
+    <label class="control-label" for="university_location">Location</label>
+    <div class="controls">
+      <%= text_field_tag :university_location %>
     </div>
   </div>
   <div class="control-group university_controls">
@@ -41,6 +59,8 @@
       <select class="input-small" id="education_start_date_year">
         <%= render 'shared/select_years' %>
       </select>
+      <%= hidden_field_tag :hidden_education_start_date_month, '1' %>
+      <%= hidden_field_tag :hidden_education_start_date_year, @years.last %>
     </div>
   </div>
   <div class="control-group">
@@ -52,8 +72,23 @@
       <select class="input-small" id="education_end_date_year">
         <%= render 'shared/select_years' %>
       </select>
+      <%= hidden_field_tag :hidden_education_end_date_month, '1' %>
+      <%= hidden_field_tag :hidden_education_end_date_year, @years.last %>
     </div>
   </div>
+  <!-- 
+  <div class="control-group university_controls">
+    <label class="control-label">Courses</label>
+    <div class="controls">
+      <div id="courses"></div>
+      <label for="course_title">Course Title</label>
+      <%= text_field_tag :course_title %>
+      <label for="course_description">Course Description</label>
+      <%= text_area_tag :course_description %>
+      <i id="course_plus" class="icon-plus"></i>
+    </div>
+  </div>
+  -->
   <div class="control-group">
     <div class="controls">
       <%= submit_tag 'Add New Education', :class => 'btn btn-primary' %>
