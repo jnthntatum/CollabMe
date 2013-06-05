@@ -34,36 +34,28 @@
           <a href="#tab1" data-toggle="tab">Experience</a>
         </li>
         <li>
-          <a href="#tab2" data-toggle="tab">Publications</a>
+          <a href="#tab2" data-toggle="tab">Education</a>
         </li>
         <li>
-          <a href="#tab3" data-toggle="tab">About Me</a>
+          <a href="#tab3" data-toggle="tab">Publications</a>
+        </li>
+        <li>
+          <a href="#tab4" data-toggle="tab">About Me</a>
         </li>
       </ul>
       <div class="tab-content">
+
+        <!-- Work Experiences -->
         <div class="tab-pane active" id="tab1">
-          <p>
-            <% if @user.work_experiences %>
-              <% @user.work_experiences.each do |w| %>
-                <div class="work_experience_header">
-                  <h4><%= w.title %></h4>
-                  <p><%= w.company + '  |  ' + w.location %></p>
-                  <p class="work_experience_date">
-                    <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
-                  </p>
-                </div>
-                <% w.activities.each do |a| %> 
-                  <p class="activity">
-                    <%= '-  ' + a.activity %>
-                  </p>
-                <% end %>
-              <% end %>
-            <% else %>
-              <%= 'Nothing here yet.' %>
-            <% end %>
-          </p>
+          <%= render :partial => 'show_work_experiences' %>  
         </div>
+
+        <!-- Educations -->
         <div class="tab-pane" id="tab2">
+          <%= render :partial => 'show_education' %>
+        </div>
+
+        <div class="tab-pane" id="tab3">
           <p>
             <% if @user.publications %>
               <%= @user.publications %>
@@ -72,7 +64,7 @@
             <% end %>
           </p>
         </div>
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="tab4">
           <div>
             <p><%= @user.about_me %></p>
             

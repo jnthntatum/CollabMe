@@ -1,0 +1,22 @@
+<% if @user.work_experiences %>
+  <% @user.work_experiences.each do |w| %>
+    <div class="experience_header">
+      <h4><%= w.title %></h4>
+      <% if w.company %>
+        <p><%= w.company.name + '  |  ' + w.company.location %></p>
+      <% elsif w.research_lab %>
+        <p><%= w.research_lab.name + '  |  ' + w.research_lab.location %></p>
+      <% end %>
+      <p class="experience_date">
+        <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
+      </p>
+    </div>
+    <% w.activities.each do |a| %> 
+      <p class="activity">
+        <%= '-  ' + a.activity %>
+      </p>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= 'Nothing here yet.' %>
+<% end %>

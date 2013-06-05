@@ -11,13 +11,41 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605023728) do
+ActiveRecord::Schema.define(:version => 20130605083116) do
 
   create_table "activities", :force => true do |t|
     t.integer  "work_experience_id"
     t.string   "activity"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+  end
+
+  create_table "companies", :force => true do |t|
+    t.integer  "work_experience_id"
+    t.string   "name"
+    t.string   "location"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  create_table "courses", :force => true do |t|
+    t.integer  "education_id"
+    t.string   "course_title"
+    t.string   "description"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "educations", :force => true do |t|
+    t.integer  "researcher_id"
+    t.integer  "school_id"
+    t.string   "degree"
+    t.string   "major"
+    t.string   "specialization"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "friendships", :id => false, :force => true do |t|
@@ -92,6 +120,17 @@ ActiveRecord::Schema.define(:version => 20130605023728) do
   add_index "research_group_members", ["group_id", "researcher_id"], :name => "group_members_index", :unique => true
   add_index "research_group_members", ["researcher_id", "group_id"], :name => "member_groups_index", :unique => true
 
+  create_table "research_labs", :force => true do |t|
+    t.integer  "work_experience_id"
+    t.integer  "school_id"
+    t.integer  "company_id"
+    t.string   "name"
+    t.string   "location"
+    t.string   "focus"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
   create_table "researchers", :force => true do |t|
     t.string   "email"
     t.datetime "created_at",      :null => false
@@ -115,6 +154,14 @@ ActiveRecord::Schema.define(:version => 20130605023728) do
   end
 
   add_index "resources", ["resource_interface_id"], :name => "index_resources_on_resource_interface_id"
+
+  create_table "schools", :force => true do |t|
+    t.integer  "education_id"
+    t.string   "name"
+    t.string   "location"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
@@ -149,13 +196,13 @@ ActiveRecord::Schema.define(:version => 20130605023728) do
 
   create_table "work_experiences", :force => true do |t|
     t.integer  "researcher_id"
+    t.integer  "company_id"
+    t.integer  "research_lab_id"
     t.string   "title"
-    t.string   "company"
-    t.string   "location"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
 end

@@ -11,16 +11,22 @@
 }
 
 // Experience
-.work_experience_header h4 {
-  margin-bottom: 4px;
+.experience_header h4 {
+  margin-bottom: 3px;
   font-weight: bold;
 }
 
-.work_experience_header p {
+.experience_header h5 {
+  margin: 2px 0;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.experience_header p {
   margin: 2px 0;
 }
 
-.work_experience_date {
+.experience_date {
   color: #999999;
 }
 
@@ -29,6 +35,7 @@
 }
 
 
+// Posts
 #post_div {
   border-top: 1px solid #cccccc;
 }

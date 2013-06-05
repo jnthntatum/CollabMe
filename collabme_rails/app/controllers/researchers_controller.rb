@@ -156,11 +156,11 @@ class ResearchersController < ApplicationController
 
   def update
     @researcher = Researcher.find_by_id(params[:id]) 
-    if @researcher.update_attributes(:email => params[:researcher][:email])
-      flash[:notice] = 'You have successfully changed your email.'
+    if @researcher.update_attributes(params[:researcher])
+      flash[:notice] = 'You have successfully changed your profile.'
       redirect_to edit_researcher_path
     else
-      flash[:error] = 'Email is invalid.'
+      flash[:error] = 'Something is wrong in your profile.'
       redirect_to edit_researcher_path
     end
   end
