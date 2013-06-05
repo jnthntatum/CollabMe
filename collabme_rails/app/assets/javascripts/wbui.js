@@ -17,6 +17,7 @@ var uiSelection = null;
 var uiMode = "Squiggle"
 var	uiSensitivity = 8
 var name = "unset";
+var uiCanvOffset; 
 //====================================
 //EVENT HANDLING
 //====================================
@@ -59,7 +60,7 @@ function bindSquiggleFns(id){
 function sTextDragFunction(pos){
 	console.log("curDrawable is a new Text Box")
 	curDrawable = new TextBox(pos.oldX, pos.oldY, pos.x-pos.oldX, pos.oldY);
-	curDrawable.resizing = true; 
+	curDrawable.editing = true; 
 	uiRedraw()
 }
 
@@ -74,7 +75,7 @@ function textDragFunction(pos){
 function eTextDragFunction(pos){
 	
 	curDrawable.text = "Click to add Text";  
-	curDrawable.resizing = false; 
+	curDrawable.editing = false; 
 	ioSendDrawable(curDrawable);
 	curDrawable = null;
 	
@@ -95,13 +96,28 @@ function textBoxHit(pos){
 	return -1; 
 }
 
-function createEditBox(idx){
+function saveText(idx){
+	var tb = uiDrawables[idx]; 
+	var elem = $('#tbid'+idx);
+	tb.text = elem.val();
+	ioSendDrawable(tb, idx);
+	elem.remove();
+	uiRedraw(); 
+}
+
+function createEditBox(idx, container){
 	var tb = uiDrawables[idx]
 	var el = document.createElement('textarea');
+	el.setAttribute('class', "textbox_edit")
 	var style = "position: absolute; width: " + tb.w; + "px;"
-	style += "height: " tb.h + "px;"  
+	var offset = container.offset();
+	style += "height: " + tb.h + "px;"
+	style += "left: " + (tb.x + uiCanvOffset.left - offset.left) + "px;"; 
+	style += "top: " + (tb.y + uiCanvOffset.top - offset.top) + "px;"; 
+	style += 'zindex: ' + 1000 + ';';
 	el.setAttribute('style', style);
-
+	el.id = "tbid" + idx;  
+	el.setAttribute('onBlur', 'saveText('+idx+');')
 	return el; 
 }
 
@@ -111,7 +127,8 @@ function textClickFunction(pos){
 	if (idx == -1 )
 		return;
 	console.log('hit a textBox! woo', pos)
-	document.appendChild(createEditBox(idx))
+	var container = $('#whiteboard_flyout');
+	container[0].appendChild(createEditBox(idx, container))
 }
 
 function bindTextFns(id){
@@ -463,12 +480,13 @@ function uiShowWhiteboard(sid){
 	
 	if (sid){
 		uiCanvasInit(sid);
-		$('#whiteboard_flyout').on('shown', function(){evDetectOffset(canvasID);});
+		$('#whiteboard_flyout').on('shown', function(){uiCanvOffset = evDetectOffset(canvasID); $("body").css("overflow", "hidden");});
 	} 
 }
 
 function uiHideWhiteboard(){
 	$('#whiteboard_flyout').modal('hide');
+	$("body").css('overflow', 'auto');
 }
 
 function uiFlattenCanvas(layers, image){

@@ -48,15 +48,15 @@ function TextBox(x, y, w, h){
 TextBox.prototype = new Drawable();
 
 TextBox.prototype.draw = function ( canvas ){	
-	if (this.resizing){
+	if (this.editing){
 		canvas.lineWidth = '2'
 		canvas.strokeStyle = 'rgba(0,0,0,128)'
 		canvas.strokeRect(this.x, this.y, this.w, this.h); 
-	}else{
-		canvas.font = '10px sans-serif'
-		canvas.fillStyle = this.style;
-		canvas.fillText(this.text, this.x, this.y); 
 	}	
+	canvas.font = '10px sans-serif'
+	canvas.fillStyle = this.style;
+	//var metrics = canvas.measureText(this.text);  
+	canvas.fillText(this.text, this.x, this.y + 10); 	
 }
 
 function Circle(x, y, r){
@@ -92,12 +92,9 @@ Square.prototype.draw = function( canvas ){
 }
 
 function DImage(x, y, src){
-	if(typeof x !== 'number')
-		x = 0;
-	if(typeof y !== 'number')
-		y = 0; 
 	Drawable.call(this, x, y)
 	this.src = src; 
+	this.type="dimage"
 }
 
 DImage.prototype = new Drawable();
@@ -147,8 +144,8 @@ function parseJSON(message){
 		template =  new Circle(0, 0, 0)
 	else if(t === "square")
 		template = new Square(0, 0, 0, 0)
-	else if(t === "image")
-		template = new Image("", 0, 0); 
+	else if(t === "dimage")
+		template = new DImage(0, 0, ""); 
 	else
 		return null;
 	return primCopy(template, message);

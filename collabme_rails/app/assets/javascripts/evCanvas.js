@@ -9,6 +9,7 @@ var evDblClickThreshold = 1000
 function _offset(sm){
 	sm.top = jq.offset().top
 	sm.left = jq.offset().left
+	return {'top': sm.top, 'left': sm.left};  
 }
 
 evBindCanvas= function(id, aux){
@@ -80,8 +81,8 @@ function evDetectOffset(id){
 	var sm = getStateMachine(id);
 	if (!sm)
 		return false;
-	_offset(getStateMachine(id));
-	return;
+	return _offset(getStateMachine(id));
+	
 }
 
 //==================================

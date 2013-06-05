@@ -313,7 +313,7 @@ function HandleFlatten(client, message, uid){
 		sendError(client, message, 'Invalid sid');
 		return;
 	}
-	var img = prim.parse(message.img)
+	var img = prim.parseJSON(message.img)
 	if (!message.img || !img){
 		sendError(client, message, 'No valid flattened image received');
 		return;
