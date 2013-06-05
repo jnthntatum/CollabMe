@@ -17,6 +17,8 @@ class Researcher < ActiveRecord::Base
   
   has_many :requests, :as => :request_interface
 
+  has_many :work_experiences
+
   # Friends
   def friends
     ResearchersHelper.Friends(self);
