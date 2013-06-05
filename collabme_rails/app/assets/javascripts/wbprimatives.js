@@ -37,6 +37,8 @@ Squiggle.prototype.draw = function(	canvas ){
 
 function TextBox(x, y, w, h){ 
 	Drawable.call(this, x, y)
+	this.w = w; 
+	this.h = h;
 	this.type = "text_box"
 	this.style = "black"
 	this.text = ""
@@ -89,7 +91,7 @@ Square.prototype.draw = function( canvas ){
 	canvas.fillRect(this.x, this.y, this.w, this.h); 
 }
 
-function DImage(src, x, y){
+function DImage(x, y, src){
 	if(typeof x !== 'number')
 		x = 0;
 	if(typeof y !== 'number')
@@ -103,9 +105,9 @@ DImage.prototype = new Drawable();
 DImage.prototype.draw = function (canvas, reload){
 	if (!this.img || reload){
 		this.img = new Image(); 
-		img.src= this.src
+		this.img.src= this.src
 	} 
-	canvas.drawImage(img, this.x, this.y)
+	canvas.drawImage(this.img, this.x, this.y)
 }
 
 function ChatMessage (name, text){

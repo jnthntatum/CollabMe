@@ -81,11 +81,45 @@ function eTextDragFunction(pos){
 	uiRedraw();
 }
 
+function textBoxHit(pos){
+	for (var i = 0; i < uiDrawables.length; i ++){
+		var d = uiDrawables[i]; 
+		if (d instanceof TextBox){
+			console.log('looking at a textBox',d)
+			console.log('pos', pos)
+
+			if (pos.x >= d.x && pos.y >= d.y && pos.x <= d.x + d.w && pos.y <= d.y + d.h)
+				return i;   
+		}
+	}
+	return -1; 
+}
+
+function createEditBox(idx){
+	var tb = uiDrawables[idx]
+	var el = document.createElement('textarea');
+	var style = "position: absolute; width: " + tb.w; + "px;"
+	style += "height: " tb.h + "px;"  
+	el.setAttribute('style', style);
+
+	return el; 
+}
+
+function textClickFunction(pos){
+	//hit boxing
+	var idx = textBoxHit(pos); 
+	if (idx == -1 )
+		return;
+	console.log('hit a textBox! woo', pos)
+	document.appendChild(createEditBox(idx))
+}
+
 function bindTextFns(id){
 	evClearCallbacks(id); 
 	evStartDrag(id, sTextDragFunction)
 	evDrag(id, textDragFunction)
 	evStopDrag(id, eTextDragFunction)
+	evClick(id, textClickFunction)
 	uiRedraw()
 }
 
@@ -364,7 +398,9 @@ function attachToolBarHandlers(){
 		}
 	});
 	$('.flatten').click(function(){
-		//todo 
+		var layers = uiDrawables.length;
+		var img = uiFlattenCanvas(layers)
+		ioSendFlatten(layers, img) 
 	})
 
 }
@@ -435,16 +471,23 @@ function uiHideWhiteboard(){
 	$('#whiteboard_flyout').modal('hide');
 }
 
-function uiFlattenCanvas(layers){
+function uiFlattenCanvas(layers, image){
 	if (!layers)
 		layers = uiDrawables.length
-	for (var i = 0; i < layers; i ++){
-		var d = drawables[i]; 
-		if(d){
-			d.draw(ctx); 
+	if (! (image instanceof DImage)){
+		for (var i = 0; i < layers; i ++){
+			var d = uiDrawables[i]; 
+			if(d){
+				d.draw(uiCtx); 
+			}
 		}
 	}
-	return ctx.canvas.toDataURL();  
+	var enc_url = uiCtx.canvas.toDataURL()
+	var img = new DImage(0,0,enc_url);
+	
+	tmp = uiDrawables.slice(layers); 
+	uiDrawables = [img].concat(tmp);  
+	return img;  
 } 
 
 //=====================================
@@ -458,6 +501,7 @@ function uiReloadChatMessages(sid, messages){
 	for (var i = 0; i < messages.length; i++){
 		uiAddChatMessage(sid, messages[i], i )
 	}
+}
 
 function uiGetChatWindowBySid(sid, tmp){
 	return $('.chat_window[sid=' + sid + "']", tmp)

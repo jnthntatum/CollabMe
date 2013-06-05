@@ -71,12 +71,14 @@ function procAck(message){
 		}
 	}else if (ackd.command === "GET_STATUS") { 
 		updateFriends(ackd) 
+	}else if(ackd.command === 'FLATTEN'){
+		//send a saved copy to the server
+		var imgData = ackd.img;
+		ioSaveCanvas(imgData); 
 	}else if(ackd.command in ioAckCallbacks){
 		var fn = ioAckCallbacks[ackd.command];
 		fn(ackd)
-	} else {
-
-	}
+	} 
 }
 
 function procMessage(message){
@@ -90,7 +92,9 @@ function procMessage(message){
 		uiErase(); 
 	} else if (message.command === "DELETE"){
 		uiDeleteDrawable(message.idx);
-	}else {
+	}else if (message.command === "FLATTEN"){
+		uiFlattenCanvas(message.layers, parse(message.img))
+	}else{
 		console.log("Error, unhandled server command: " + message.command, message);
 	}
 }
@@ -199,10 +203,11 @@ function ioGetFriends(){
 	})
 }
 
-function ioSendFlatten(layers){
+function ioSendFlatten(layers, img){
 	var m = new Message("FLATTEN", uid);
-	m.sid = ioCanvSid(); 
+	m.sid = ioCanvSid; 
 	m.layers = layers;
+	m.img = img
 	sendMessageToServer(m);
 }
 

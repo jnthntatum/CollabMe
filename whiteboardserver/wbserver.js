@@ -307,6 +307,28 @@ function HandleGetStatus(client, message, uid){
 	sendAck(client, message);
 }
 
+
+function HandleFlatten(client, message, uid){
+	if (!validSid(message)){
+		sendError(client, message, 'Invalid sid');
+		return;
+	}
+	var img = prim.parse(message.img)
+	if (!message.img || !img){
+		sendError(client, message, 'No valid flattened image received');
+		return;
+	}
+	var s = sessions[message.sid];
+	if (!message.layers)
+		message.layers = s.drawables.length; 
+
+	broadcast(s, message, uid);
+	sendAck(client, message);
+	var tmp = [img]; 
+	tmp.concat(s.drawables.slice(message.layers)) 
+	s.drawables = tmp; 
+}
+
 /*function HandleX(client, message, uid){
 
 }*/
@@ -322,6 +344,7 @@ function SetUpEventHandles(){
 	FNs["ERASE"] = HandleErase;
 	FNs["GET_STATUS"] = HandleGetStatus;
 	FNs["HISTORY"] = HandleHistory;
+	FNs["FLATTEN"] = HandleFlatten; 
 }
 
 function procMessage(client, message){
