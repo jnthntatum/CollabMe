@@ -53,7 +53,34 @@
           </div>
         </div>
         <div class="tab-pane" id="tab2">
-          <p>Howdy, I'm in Section 2.</p>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Creator</th>
+                <th>Assignee</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% counter = 1 %>
+              <% @tasks.each do |t| %>
+                <%= content_tag :tr do %>
+                  <%= content_tag :td, counter.to_s %>
+                  <%= content_tag :td, t.desc %>
+                  <%= content_tag :td, t.creator.first_name + ' ' + t.creator.last_name %>
+                  <% if t.assignee %>
+                    <%= content_tag :td, t.assignee.first_name + ' ' + t.assignee.last_name %>
+                  <% else %>
+                    <%= content_tag :td, 'Unassigned' %>
+                  <% end %>
+                  <%= content_tag :td, t.category.to_s %>
+                <% end %>
+                <% counter += 1 %>
+              <% end %>
+            </tbody>
+          </table>
         </div>
         <div class="tab-pane" id="tab3">
           <p>Hello, I'm in Section 3.</p>
@@ -61,7 +88,7 @@
       </div>
     </div>
   </div>
-  <div class="row-fluid border_row">
+  <div class="row-fluid border_row" style="border-top: 1px solid #cccccc;">
     Put project stats here possibly.
   </div>
 </div>

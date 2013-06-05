@@ -44,7 +44,14 @@ gk.direct_friends << jt;
 t = Task.new(:desc => "Woo a task!!!", :category => 1);
 t.project=pj;
 t.category = 1; 
-t.creator = jt; 
+t.creator = jt;
+t.assignee = ss; 
+t.save();
+
+t = Task.new(:desc => "Woo another task!!!", :category => 2);
+t.project=pj;
+t.category = 2; 
+t.creator = ss;
 t.save();
 
 # Posts
