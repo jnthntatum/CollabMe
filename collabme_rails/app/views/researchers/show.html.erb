@@ -43,8 +43,21 @@
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">
           <p>
-            <% if @user.experience %>
-              <%= @user.experience %>
+            <% if @user.work_experiences %>
+              <% @user.work_experiences.each do |w| %>
+                <div class="work_experience_header">
+                  <h4><%= w.title %></h4>
+                  <p><%= w.company + '  |  ' + w.location %></p>
+                  <p class="work_experience_date">
+                    <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
+                  </p>
+                </div>
+                <% w.activities.each do |a| %> 
+                  <p class="activity">
+                    <%= '-  ' + a.activity %>
+                  </p>
+                <% end %>
+              <% end %>
             <% else %>
               <%= 'Nothing here yet.' %>
             <% end %>
