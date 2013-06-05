@@ -44,13 +44,19 @@
         </li>
       </ul>
       <div class="tab-content">
+
+        <!-- Work Experiences -->
         <div class="tab-pane active" id="tab1">
           <p>
             <% if @user.work_experiences %>
               <% @user.work_experiences.each do |w| %>
                 <div class="experience_header">
                   <h4><%= w.title %></h4>
-                  <p><%= w.company + '  |  ' + w.location %></p>
+                  <% if w.company %>
+                    <p><%= w.company.name + '  |  ' + w.company.location %></p>
+                  <% elsif w.research_lab %>
+                    <p><%= w.research_lab.name + '  |  ' + w.research_lab.location %></p>
+                  <% end %>
                   <p class="experience_date">
                     <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
                   </p>
@@ -67,12 +73,14 @@
           </p>
         </div>
 
+        <!-- Educations -->
         <div class="tab-pane" id="tab2">
           <p>
             <% if @user.educations %>
               <% @user.educations.each do |e| %>
                 <div class="experience_header">
-                  <h4><%= e.school_name %></h4>
+                  <h4><%= e.school.name %></h4>
+                  <p><%= e.school.location %></p>
                   <% if e.degree && e.major %>
                     <h5><%= e.degree + ', ' + e.major %></h5>
                   <% end %>

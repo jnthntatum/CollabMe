@@ -13,9 +13,11 @@ ss.save()
 kg = Researcher.new(:first_name => "Kristian", :last_name => "Gampong", :email => "kgampong@stanford.edu", :password => "collabme13", :password_confirmation => "collabme13")
 kg.password="collabme13"
 kg.save()
+
 gk = Researcher.new(:first_name => "Gavin", :last_name => "Kho", :email => "gdykho@stanford.edu", :password => "collabme13", :password_confirmation => "collabme13")
 gk.password="collabme13"
 gk.save(:validate => false)
+
 jt = Researcher.new(:first_name => "Jonathan", :last_name => "Tatum", :email => "jdtatum@stanford.edu", :password => "collabme13", :password_confirmation => "collabme13")
 jt.password="collabme13"
 jt.save(:validate => false)
@@ -59,43 +61,85 @@ g = Group.new(:name => "cs194", :email => "don't_email@me.com")
 g.researchers << ss
 g.save();
 
+# Companies
+company1 = Company.new
+company1.name = 'Google'
+company1.location = 'Mountain View, CA'
+company1.save
+
+company2 = Company.new
+company2.name = 'Facebook'
+company2.location = 'Menlo Park, CA'
+company2.save
+
+# Schools
+school1 = School.new
+school1.name = 'Stanford University'
+school1.location = 'Palo Alto, CA'
+school1.save
+
+school2 = School.new
+school2.name = 'James Logan High School'
+school2.location = 'Union City, CA'
+school2.save
+
+# Research Labs
+research_lab1 = ResearchLab.new
+research_lab1.name = 'Batzoglou Lab'
+research_lab1.school = school1
+research_lab1.location = 'Stanford, CA'
+research_lab1.save
+
+research_lab2 = ResearchLab.new
+research_lab2.name = 'Stanford AI Lab (SAIL)'
+research_lab2.school = school1
+research_lab2.location = 'Stanford, CA'
+research_lab2.save
+
 # Work Experience
-w1 = WorkExperience.new
-w1.title = 'Research Assistant'
-w1.company = 'Batzoglou Lab'
-w1.location = 'Stanford University'
-w1.start_date = Time.new(2012, 1, 1)
-w1.end_date = Time.now()
-w1.researcher = ss
-w1.save
+work_experience1 = WorkExperience.new
+work_experience1.title = 'Research Assistant'
+work_experience1.start_date = Time.new(2012, 1, 1)
+work_experience1.end_date = Time.now()
+work_experience1.researcher = ss
+work_experience1.research_lab = research_lab1
+work_experience1.save
+
+work_experience2 = WorkExperience.new
+work_experience2.title = 'Research Assistant'
+work_experience2.start_date = Time.new(2012, 10, 1)
+work_experience2.end_date = Time.new(2013, 1, 1)
+work_experience2.researcher = kg
+work_experience2.research_lab = research_lab2
+work_experience2.save
 
 # Activities
-a1 = Activity.new
-a1.activity = 'Did some biocomp research on bio stuff.'
-a1.work_experience = w1
-a1.save
+activity1 = Activity.new
+activity1.activity = 'Did some biocomp research on bio stuff.'
+activity1.work_experience = work_experience1
+activity1.save
 
 # Education
-e1 = Education.new
-e1.school_name = 'Stanford University'
-e1.degree = 'Bachelor of Science'
-e1.major = 'Computer Science'
-e1.specialization = 'Biocomputation'
-e1.start_date = Time.new(2009, 9, 1)
-e1.end_date = Time.now()
-e1.researcher = ss
-e1.save
+education1 = Education.new
+education1.school = school1
+education1.degree = 'Bachelor of Science'
+education1.major = 'Computer Science'
+education1.specialization = 'Biocomputation'
+education1.start_date = Time.new(2009, 9, 1)
+education1.end_date = Time.now()
+education1.researcher = ss
+education1.save
 
-e2 = Education.new
-e2.school_name = 'James Logan High School'
-e2.start_date = Time.new(2006, 2, 1)
-e2.end_date = Time.new(2009, 6, 1)
-e2.researcher = kg
-e2.save
+education2 = Education.new
+education2.school = school2
+education2.start_date = Time.new(2006, 2, 1)
+education2.end_date = Time.new(2009, 6, 1)
+education2.researcher = kg
+education2.save
 
 # Courses
-c1 = Course.new
-c1.course_title = 'CS194'
-c1.description = 'Senior project course.'
-c1.education = e1
-c1.save
+course1 = Course.new
+course1.course_title = 'CS194'
+course1.description = 'Senior project course.'
+course1.education = education1
+course1.save

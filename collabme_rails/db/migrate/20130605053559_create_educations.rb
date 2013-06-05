@@ -2,7 +2,7 @@ class CreateEducations < ActiveRecord::Migration
   def change
     create_table :educations do |t|
       t.integer  :researcher_id
-      t.string   :school_name
+      t.integer  :school_id
       t.string   :degree
       t.string   :major
       t.string   :specialization
