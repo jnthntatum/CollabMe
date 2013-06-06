@@ -34,5 +34,4 @@ module ResearchersHelper
 		return ResearchersHelper.FriendsInfo(r)
 	end
 
-
 end

@@ -86,6 +86,8 @@ CollabmeRails::Application.routes.draw do
     end
   end
   
+  resources :tasks
+  
 
   # Sample resource route with more complex sub-resources
   #   resources :products do
