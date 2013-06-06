@@ -205,6 +205,38 @@ class ResearchersController < ApplicationController
     @user = Researcher.find_by_id(params[:id])
   end
 
+  def publications
+    @researcher = Researcher.find_by_id(params[:id])
+    name = @researcher.first_name + " " + @researcher.last_name
+    @potential_publications = Google::Scholar::Base.search_author(name)
+  end
+
+  def validate
+    @researcher = Researcher.find_by_id(params[:id])
+    name = @researcher.first_name + " " + @researcher.last_name
+    @potential_publications = Google::Scholar::Base.search_author(name)
+    realId = params[:authorid]
+    @potential_publications.authors.each do |author|
+      if author.id == realId
+        @researcher.citations = author.citations
+        articles = author.articles
+        articles.each do |article|
+          art = Article.new
+          art.title = article.title
+          art.publisher = article.publisher
+          art.citations = article.citations
+          art.year = article.year
+          art.full_article_url = article.full_article_url
+          art.authors = article.authors
+          art.authorid = @researcher.id
+          art.save
+        end
+      end
+      redirect_to @researcher
+    end
+
+  end
+
   def upload_picture
     upload = params[:photo]
     if upload      

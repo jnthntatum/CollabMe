@@ -12,6 +12,9 @@ CollabmeRails::Application.routes.draw do
   get "researchers/addSkill"
   get "researchers/removeInterest"
   get "researchers/removeSkill"
+  get "researchers/publications"
+  get "researchers/email"
+  get "researchers/validate"
 
   
   # You can have the root of your site routed with "root"

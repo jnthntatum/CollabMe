@@ -43,7 +43,17 @@
               <%= @researcher.publications %>
             <% else %>
               <%= 'Nothing here yet.' %>
+              <%= link_to "Add Publications by Verifying Identity", {:controller => "researchers", :action => "publications", :id => @researcher} %>
+              <br>
+              
+              <% articles = Article.find_all_by_authorid(@researcher.id) %>
+              <% articles.each do |article|%>
+                <br>
+                <% linkname = article.title + " by " + article.authors%>
+                <%= link_to linkname, article.full_article_url%>
+              <% end%>
             <% end %>
+            <br>
           </p>
         </div>
         <div class="tab-pane" id="tab4">
