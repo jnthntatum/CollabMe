@@ -87,18 +87,20 @@
               <% if @currUserIsMember %>
                 <%= content_tag :tr, :style => "width: 100%;" do %>
                   <%= content_tag :td, counter.to_s %>
-                  <%= form_for @newTask, :url => {:action => 'create'}, :html => {:class => 'form-inline'} do |f| %>
+                  <%= form_for @newTask, :url => {:controller => :tasks, :action => 'create'}, :html => {:class => 'form-inline'} do |f| %>
                       <%= content_tag :td do %>
                         <%= f.text_area(:desc, :rows => 3, :class => 'input-small') %>
                       <% end %>
                       <%= content_tag(:td, @newTask.creator.first_name + ' ' + @newTask.creator.last_name) %>
                       <%= content_tag :td do %>
-                        <%= f.collection_select(:assignee, Array.new(@project.members) << @project.owner, :id, :full_name, {}, {:class => "input-small"}) %>
+                        <%= f.collection_select(:assignee_id, Array.new(@project.members) << @project.owner, :id, :full_name, {:include_blank => true}, {:class => "input-small"}) %>
                       <% end %>
                       <%= content_tag :td do %>
                         <%= f.select(:category, options_for_select(0..9), {}, :class => 'input-small') %>
                       <% end %>
                       <%= content_tag :td do %>
+                        <%= f.hidden_field(:creator_id, :value => @newTask.creator_id) %>
+                        <%= f.hidden_field(:project_id, :value => @newTask.project_id) %>
                         <%= f.submit("Create") %>
                       <% end %>
                   <% end %>
