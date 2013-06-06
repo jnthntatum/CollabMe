@@ -21,7 +21,10 @@ jt = Researcher.new(:first_name => "Jonathan", :last_name => "Tatum", :email => 
 jt.password="collabme13"
 jt.save(:validate => false)
 
-ss2 = Researcher.new(:first_name => 'Syed', :last_name => 'Saleh', :email => 'ssaleh2@stanford.edu', :password => "collabme13", :password_confirmation => "collabme13")
+ss2 = Researcher.new(:first_name => 'Syed', :last_name => 'Saleh', :email => 'shayonsaleh@yahoo.com', :password => "collabme13", :password_confirmation => "collabme13")
+ss2.save()
+
+####################
 
 #
 # Bunch of Stanford Researchers
@@ -80,6 +83,53 @@ jw = Researcher.new(:first_name => 'Jennifer', :last_name => 'Widom', :email => 
 rw = Researcher.new(:first_name => 'Ryan', :last_name => 'Williams', :email => 'rrw@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 tw = Researcher.new(:first_name => 'Terry', :last_name => 'Winograd', :email => 'winograd@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 
+#
+# Researcher Schools and Education
+#
+
+bowling_green = School.new
+bowling_green.name = 'Bowling Green State University'
+bowling_green.location = 'Bowling Green, OH'
+bowling_green.school_type = 'university'
+bowling_green.save
+
+cornell = School.new
+cornell.name = 'Cornell University'
+cornell.location = 'Ithaca, NY'
+cornell.school_type = 'university'
+cornell.save
+
+education_aa = Education.new
+education_aa.school = bowling_green
+education_aa.degree = 'Bachelor of Science'
+education_aa.major = 'Computer Science & Music'
+education_aa.start_date = Time.new(1979, 9, 1)
+education_aa.end_date = Time.new(1983, 6, 1)
+education_aa.researcher = aa
+education_aa.save
+
+education_aa2 = Education.new
+education_aa2.school = cornell
+education_aa2.degree = 'Ph.D.'
+education_aa2.major = 'Computer Science'
+education_aa2.start_date = Time.new(1983, 9, 1)
+education_aa2.end_date = Time.new(1988, 6, 1)
+education_aa2.researcher = aa
+education_aa2.save
+
+#
+# Researcher Groups
+#
+
+g = Group.new(:name => "The Batzoglou Lab", :email => "serafim@estanfor.edu", :description => "We develop and apply methods for the analysis of cancer genomes. Currently we have two ongoing collaborative projects, on breast cancer and medulloblastoma.")
+g.researchers << sb << ss;
+g.save();
+
+#
+# Researcher Info
+#
+gb.about_me = "Only 2-3% of the 3 billion bases in the human genome is used to encode the genome's 20-25,000 protein coding genes. Recent genomics advances have revealed a multitude of cis-regulatory regions that occupy at least 3-5 times more of the genome. These roughly 1,000,000 promoters, enhancers, silencers and insulators regulate gene expression in every cell in our body, allowing different cells to express very different protein repertoires. We study this fascinating 'control layer' of the human genome, with an aim to: identify cis-regulatory elements in the human genome and annotate them for function; map the cis-regulatory architecture controlling early limb, forebrain and placenta development, and understand its contribution to human disease; study the origins and evolution of regulatory genomic regions and reveal their contribution to vertebrate, mammalian and human specific evolution.
+To address these challenges we use a potent combination of computational and experimental approaches. We write computational tools to discover cis-regulatory codes and trace their evolution; we run our tools on massive genomic datasets to generate testable hypotheses; and we perform molecular biology experiments to validate our hypotheses and generate novel ones. We work in small teams of experimentalists and computational tool users, who interact directly with our computational tool builders."
 
 aa.save()
 sb.save()
@@ -133,6 +183,13 @@ lt.save()
 gv.save()
 jw.save()
 rw.save()
+
+#
+# Researcher Friends
+#
+sb.direct_friends << gb; 
+
+##################################
 
 # Projects
 pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
