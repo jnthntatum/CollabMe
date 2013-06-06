@@ -4,6 +4,8 @@
   <% creator_full_name = creator.first_name + ' ' + creator.last_name %>
   <div class="row-fluid post_post">
     <div class="span3 post_creator">
+      <% @entity = creator %>
+      <%= render :partial => 'shared/show_thumbnail' %>
       <%= link_to creator_full_name, creator %>
     </div>
     <div class="span9">

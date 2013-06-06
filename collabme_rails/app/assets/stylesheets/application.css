@@ -99,3 +99,9 @@ body {
 .footer {
 	background-color: #333333;
 }
+
+.img-circle {
+	height: 50px !important;
+	width: 50px !important;
+	margin-right: 5px;
+}

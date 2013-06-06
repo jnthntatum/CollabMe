@@ -1,0 +1,25 @@
+<div class="span9">
+  <h1><%= @group.name %></h1>
+  <div id="friends">
+    <p>Researchers   
+      <% @group.researchers.each do |member| %> 
+      <%= "#{member.first_name},"%>
+      <% end %>
+    </p>
+  <% if @currUserInGroup %>
+    <table class="table table-hover" style="max-width:300px;">
+      <tbody>
+        <tr>
+          <td>Email: <%= @group.email %></td>
+        </tr>
+        <tr>
+          <td><%= link_to "Edit Group Info", {:controller => "groups", :action => "edit"} %></td>
+          <td><%= link_to "Check Requests", group_requests_path(@group) %></td>
+        </tr>
+      </tbody>
+    </table>
+  <% elsif session[:current_user_id] and not @hasRequested %>
+    <p><%= button_to "Request Connection", group_requests_path(@group), :class => "btn btn-primary" %></p>
+  <% end %>
+  </div>
+</div>
