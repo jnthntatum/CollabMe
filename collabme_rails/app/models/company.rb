@@ -1,6 +1,5 @@
 class Company < ActiveRecord::Base
-  attr_accessible :name, :location, :work_experience_id
+  attr_accessible :name, :location
 
-  belongs_to :work_experience
-  has_many :research_labs
+  has_many :work_experiences
 end

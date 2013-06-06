@@ -1,4 +1,5 @@
 <h1>Edit User</h1>
+<%= render :partial => 'back_to_profile', :id => params[:id] %> 
 <%= render 'shared/show_errors' %>
 
 <div class="tabbable">
@@ -28,12 +29,26 @@
 
     <!-- Education -->
     <div class="tab-pane" id="tab2">
-      <%= render :partial => 'edit_education' %>
+      <div class="row-fluid">
+        <div class="span7">
+          <%= render :partial => 'edit_education' %>
+        </div>
+        <div class="span4">
+          <%= render :partial => 'show_education' %>
+        </div>
+      </div>
     </div>
 
     <!-- Work Experience -->
     <div class="tab-pane" id="tab3">
-      <%= render :partial => 'edit_work_experience' %>
+      <div class="row-fluid">
+        <div class="span7">      
+          <%= render :partial => 'edit_work_experience' %>
+        </div>
+        <div class="span4">
+          <%= render :partial => 'show_work_experiences' %>
+        </div>
+      </div>
     </div>
 
     <div class="tab-pane" id="tab4">

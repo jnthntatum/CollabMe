@@ -32,6 +32,10 @@ class Researcher < ActiveRecord::Base
   def friendships
     return direct_friendships.concat(inverse_friendships);
   end
+  
+  def full_name
+    self.first_name + ' ' + self.last_name
+  end 
 
   validates_presence_of :first_name
   validates_presence_of :last_name

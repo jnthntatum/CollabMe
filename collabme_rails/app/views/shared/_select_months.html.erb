@@ -1,4 +1,6 @@
-<% months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] %>
-<% months.each do |m| %>
-  <option><%= m %></option>              
+<% @months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] %>
+<% count = 1 %>
+<% @months.each do |m| %>
+  <option value="<%= count %>"><%= m %></option>
+  <% count += 1 %>              
 <% end %>              

@@ -2,26 +2,26 @@
   <div class="row-fluid border_row">
     <div class="span3">
       <div id="profile_picture">
-        <% if @user.photo %>
-          <%= link_to image_tag(@user.photo.file_name, :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
+        <% if @researcher.photo %>
+          <%= link_to image_tag(@researcher.photo.file_name, :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
         <% else %>
           <%= link_to image_tag("default-profile-pic.png", :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
         <% end %>
       </div>
     </div>
     <div class="span9">
-      <h1><%= @user.first_name + ' ' + @user.last_name %></h1>
+      <h1><%= @researcher.first_name + ' ' + @researcher.last_name %></h1>
       <% if @currentUserPage %>
-        <p><%= @user.email %></p>
+        <p><%= @researcher.email %></p>
         <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
-        <p><%= link_to "Check Requests", researcher_requests_path(@user) %></p>
+        <p><%= link_to "Check Requests", researcher_requests_path(@researcher) %></p>
         <p><%= link_to "Create A Project", {:controller => "projects", :action => "new"} %></p>
         <p><%= link_to "Create A Group", {:controller => "groups", :action => "new"} %></p>
       <% else %>
-        <p><%= link_to @user.email, {:controller =>"researchers", :action => "email"} %></p>
+        <p><%= link_to @researcher.email, {:controller =>"researchers", :action => "email"} %></p>
         <% if session[:current_user_id] and not @hasRequested and not @isCurrUserFriend %>
           <p>
-            <%= button_to "Request Connection", researcher_requests_path(@user), :class => "btn btn-primary" %>
+            <%= button_to "Request Connection", researcher_requests_path(@researcher), :class => "btn btn-primary" %>
           </p>
         <% end %>
       <% end %>
@@ -57,8 +57,8 @@
 
         <div class="tab-pane" id="tab3">
           <p>
-            <% if @user.publications %>
-              <%= @user.publications %>
+            <% if @researcher.publications %>
+              <%= @researcher.publications %>
             <% else %>
               <%= 'Nothing here yet.' %>
             <% end %>
@@ -66,29 +66,29 @@
         </div>
         <div class="tab-pane" id="tab4">
           <div>
-            <p><%= @user.about_me %></p>
+            <p><%= @researcher.about_me %></p>
             
             <h6>Interests</h6>
-            <% @user.interest_list.each do |interest|%>
+            <% @researcher.interest_list.each do |interest|%>
               <p><%= interest%></p>
             <% end %>
             
             <h6>Skills</h6>
-            <% @user.skill_list.each do |skill|%>
+            <% @researcher.skill_list.each do |skill|%>
             <p><%= skill%></p>
             <% end %>
             
             <div>
               <%= form_tag({:controller => "researchers", :action => "removeInterest"}, :method => "get") do%>
                 <%= text_field_tag(:tag) %>
-                <%= hidden_field_tag :id, @user.id %>
+                <%= hidden_field_tag :id, @researcher.id %>
                 <%= submit_tag "Remove Interest", :class => "btn btn-success" %>
               <% end %>
             </div>
             <div>
               <%= form_tag({:controller => "researchers", :action => "removeSkill"}, :method => "get") do%>
                 <%= text_field_tag(:tag) %>
-                <%= hidden_field_tag :id, @user.id %>
+                <%= hidden_field_tag :id, @researcher.id %>
                 <%= submit_tag "Remove Skill",:class => "btn btn-success" %>
               <% end %>
             </div>
@@ -99,7 +99,7 @@
   </div>
   <div class="row-fluid border_row" id="post_div">
     <h4>Posts</h4>
-    <% @user.posts.each do |p| %>
+    <% @researcher.posts.each do |p| %>
       <% creator = Researcher.find_by_id(p.creator_id)%>
       <% creator_full_name = creator.first_name + ' ' + creator.last_name %>
       <div class="row-fluid post_post">
@@ -116,7 +116,7 @@
         </div>
       </div>    
     <% end %>
-    <% if @user.posts.empty? %>
+    <% if @researcher.posts.empty? %>
       <div class="row-fluid">
         Nothing here yet.
       </div>
@@ -127,7 +127,7 @@
          placeholder = 'Write something...'
        end %>
     <div class="row-fluid post_form">
-      <%= form_for([@user, Post.new], :html => {}) do |p| %>
+      <%= form_for([@researcher, Post.new], :html => {}) do |p| %>
         <%= p.text_area(:desc, {:placeholder => placeholder, :class => "span12 input-block-level", :rows => 2}) %>
         <%= p.hidden_field(:creator_id, :value => session[:current_user_id]) %> 
         <br />
@@ -140,6 +140,6 @@
   </div>
 </div>
 <div class="span3 well sidebar">
-  <%= render :partial => "shared/sidebar", :locals => { :user => @user} %>
+  <%= render :partial => "shared/sidebar", :locals => { :user => @researcher} %>
 </div>
 

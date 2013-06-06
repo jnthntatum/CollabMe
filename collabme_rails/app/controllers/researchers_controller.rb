@@ -29,11 +29,11 @@ class ResearchersController < ApplicationController
 	    @currentUserPage = true
 	  end
 	  id = params[:id]
-	  @user = Researcher.find_by_id(id)
+	  @researcher = Researcher.find_by_id(id)
 	  @isCurrUserFriend = false
 	  @hasRequested = false
 	  if session[:current_user_id]
-	    @user.requests.each do |r|
+	    @researcher.requests.each do |r|
 	      if r.owner.id == session[:current_user_id]
 	        @hasRequested = true
 	      end
@@ -41,19 +41,19 @@ class ResearchersController < ApplicationController
 	  end
 	  if session[:current_user_id]
 	    currUser = Researcher.find_by_id(session[:current_user_id])
-	    if currUser.direct_friends.include?(@user)
+	    if currUser.direct_friends.include?(@researcher)
 	      @isCurrUserFriend = true
 	    end
 	  end
-	  unless @user
+	  unless @researcher
 	    flash[:notice] = "No such user with id: #{id}"
 	    redirect_to :action => "index"
 	    return
 	  end
-	  @friends = @user.friends
+	  @friends = @researcher.friends
 	  respond_to do |format|
 	    format.html  # show.html.erb
-	    format.json  { render :json => @user }
+	    format.json  { render :json => @researcher }
 	  end
 	end
 

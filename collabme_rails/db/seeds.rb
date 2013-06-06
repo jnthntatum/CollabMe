@@ -44,7 +44,14 @@ gk.direct_friends << jt;
 t = Task.new(:desc => "Woo a task!!!", :category => 1);
 t.project=pj;
 t.category = 1; 
-t.creator = jt; 
+t.creator = jt;
+t.assignee = ss; 
+t.save();
+
+t = Task.new(:desc => "Woo another task!!!", :category => 2);
+t.project=pj;
+t.category = 2; 
+t.creator = ss;
 t.save();
 
 # Posts
@@ -76,24 +83,26 @@ company2.save
 school1 = School.new
 school1.name = 'Stanford University'
 school1.location = 'Palo Alto, CA'
+school1.school_type = 'university'
 school1.save
 
 school2 = School.new
 school2.name = 'James Logan High School'
 school2.location = 'Union City, CA'
+school2.school_type = 'high school'
 school2.save
 
 # Research Labs
 research_lab1 = ResearchLab.new
 research_lab1.name = 'Batzoglou Lab'
-research_lab1.school = school1
 research_lab1.location = 'Stanford, CA'
+research_lab1.focus = 'Biocomputation'
 research_lab1.save
 
 research_lab2 = ResearchLab.new
 research_lab2.name = 'Stanford AI Lab (SAIL)'
-research_lab2.school = school1
 research_lab2.location = 'Stanford, CA'
+research_lab2.focus = 'Artificial Intelligence'
 research_lab2.save
 
 # Work Experience

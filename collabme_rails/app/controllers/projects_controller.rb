@@ -20,6 +20,11 @@ class ProjectsController < ApplicationController
 	      end
 	    end
 	  end
+	  if @currUserIsMember
+	    @newTask = Task.new()
+	    @newTask.project = @project
+	    @newTask.creator = Researcher.find_by_id(session[:current_user_id])
+	  end
 	  @hasRequested = false
 	  if session[:current_user_id]
 	    @project.requests.each do |r|
