@@ -228,8 +228,10 @@ class ResearchersController < ApplicationController
           art.year = article.year
           art.full_article_url = article.full_article_url
           art.authors = article.authors
-          art.authorid = @researcher.id
+          art.aid = @researcher.id
           art.save
+          @researcher.published = true
+          @researcher.save
         end
       end
       redirect_to @researcher

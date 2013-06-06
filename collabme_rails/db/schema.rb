@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130606070156) do
+ActiveRecord::Schema.define(:version => 20130606215831) do
 
   create_table "activities", :force => true do |t|
     t.integer  "work_experience_id"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20130606070156) do
     t.string   "full_article_url"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.integer  "aid"
   end
 
   create_table "chat_sessions", :force => true do |t|
@@ -166,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20130606070156) do
     t.text     "experience"
     t.text     "publications"
     t.integer  "citations"
+    t.boolean  "published"
   end
 
   create_table "resources", :force => true do |t|
