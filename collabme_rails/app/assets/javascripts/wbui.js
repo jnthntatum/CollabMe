@@ -554,8 +554,8 @@ function uiGetChatWindowBySid(sid, tmp){
 }
 
 function uiAddChatMessage(sid, message, idx){
-	messageScrollback[idx] = message; 
-	var w = uiGetChatWindowBySid(id);
+	//messageScrollback[idx] = message; 
+	var w = uiGetChatWindowBySid(sid);
 	if (w.length == 0){
 		var tmp = uiCreateChatWindow(sid);
 		w = uiGetChatWindowBySid(sid,  tmp)

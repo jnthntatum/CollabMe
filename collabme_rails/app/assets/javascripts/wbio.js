@@ -59,8 +59,9 @@ function procPOST(message){
 	var sid = message.sid; 
 	var s;
 	if (sid in ioSessions){
-		s = ioSessions[s];
+		s = ioSessions[sid];
 	} else {
+		console.log('creating new session', sid);
 		s = new Session(sid); 
 		ioSessions[sid] = s;
 	}
