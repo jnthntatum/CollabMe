@@ -51,14 +51,14 @@ function eSquiggleDragFn(pos){
 }
 
 function bindSquiggleFns(id){
-	evClearCallbacks(id); 
+	evClearCallbacks(id);
+	uiRedraw(); 
 	evStartDrag(id, sSquiggleDragFn)
 	evDrag(id, squiggleDragFn)
 	evStopDrag(id, eSquiggleDragFn)
 }
 
 function sTextDragFunction(pos){
-	console.log("curDrawable is a new Text Box")
 	curDrawable = new TextBox(pos.oldX, pos.oldY, pos.x-pos.oldX, pos.oldY);
 	curDrawable.editing = true; 
 	uiRedraw()
@@ -73,7 +73,6 @@ function textDragFunction(pos){
 }
 
 function eTextDragFunction(pos){
-	
 	curDrawable.text = "Click to add Text";  
 	curDrawable.editing = false; 
 	ioSendDrawable(curDrawable);
@@ -86,9 +85,6 @@ function textBoxHit(pos){
 	for (var i = 0; i < uiDrawables.length; i ++){
 		var d = uiDrawables[i]; 
 		if (d instanceof TextBox){
-			console.log('looking at a textBox',d)
-			console.log('pos', pos)
-
 			if (pos.x >= d.x && pos.y >= d.y && pos.x <= d.x + d.w && pos.y <= d.y + d.h)
 				return i;   
 		}
@@ -277,7 +273,8 @@ function sCircleDragFn(pos){
 	curDrawable = new Circle(pos.oldX, pos.oldY);
 	curDrawable.color = uiCurColor;
 	curDrawable.editing = true; 
-	circleDragFn(pos); 
+	circleDragFn(pos);
+
 }		
 
 function circleDragFn(pos){
@@ -298,6 +295,7 @@ function bindCircleFns(id){
 	evStartDrag(id, sCircleDragFn)
 	evDrag(id, circleDragFn)
 	evStopDrag(id, eCircleDragFn)
+	uiRedraw();
 }
 
 //==================================
