@@ -209,14 +209,11 @@ class ResearchersController < ApplicationController
     upload = params[:photo]
     if upload      
       @user = Researcher.find_by_id(params[:id])
-      if @user.photo
-        @photo = @user.photo
-      else
-        @photo = Photo.new
-        @photo.researcher = @user
-      end
       
+      @photo = Photo.new
       @photo.file_name = 'profile_pictures/' + Time.now.to_i.to_s + '_' + upload[:file].original_filename
+
+      @user.photo = @photo
       
       if @photo.save
         File.open(Rails.root.join('app/assets', 'images', @photo.file_name), 'wb') do |f|

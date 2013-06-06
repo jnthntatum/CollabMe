@@ -1,6 +1,6 @@
 class School < ActiveRecord::Base
-  attr_accessible :name, :location, :education_id, :school_type
+  attr_accessible :name, :location, :school_type
 
-  belongs_to :education
+  has_many :educations
   has_many :research_labs
 end

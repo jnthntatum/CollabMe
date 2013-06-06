@@ -1,0 +1,17 @@
+<h1><%= @project.name %></h1>
+<p>Owner: <%= @project.owner.first_name %></p>
+<div class="members">
+  <p>Members:   
+    <% @project.members.each do |member| %> 
+    <%= "#{member.first_name},"%>
+    <% end %>
+  </p>
+</div>
+<% if @currUserIsOwner %>
+  <p><%= link_to "Edit Project Info", {:controller => "projects", :action => "edit"} %></p>
+  <p><%= link_to "Check Requests", project_requests_path(@project) %></p>
+<% else %>
+  <% if session[:current_user_id] and not @hasRequested and not @currUserIsMember %>
+    <p><%= button_to "Request Connection", project_requests_path(@project), :class => "btn btn-primary" %></p>
+  <% end %>
+<% end %>

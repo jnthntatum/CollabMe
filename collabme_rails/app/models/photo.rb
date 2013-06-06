@@ -1,6 +1,7 @@
 class Photo < ActiveRecord::Base
-  attr_accessible :user_id, :file_name
+  attr_accessible :file_name
 
-  belongs_to :researcher
+  belongs_to :photo_interface, :polymorphic => true
+
   validates :file_name, :presence => true
 end

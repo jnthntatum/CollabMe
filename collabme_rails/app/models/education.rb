@@ -4,6 +4,6 @@ class Education < ActiveRecord::Base
   default_scope order('start_date DESC')
 
   belongs_to :researcher
-  has_one :school
+  belongs_to :school
   has_many :courses
 end

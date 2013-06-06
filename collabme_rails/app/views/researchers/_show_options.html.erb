@@ -1,0 +1,15 @@
+<h1><%= @researcher.first_name + ' ' + @researcher.last_name %></h1>
+<% if @currentUserPage %>
+  <p><%= @researcher.email %></p>
+  <p><%= link_to "Edit My Info", {:controller => "researchers", :action => "edit"} %></p>
+  <p><%= link_to "Check Requests", researcher_requests_path(@researcher) %></p>
+  <p><%= link_to "Create A Project", {:controller => "projects", :action => "new"} %></p>
+  <p><%= link_to "Create A Group", {:controller => "groups", :action => "new"} %></p>
+<% else %>
+  <p><%= link_to @researcher.email, {:controller =>"researchers", :action => "email"} %></p>
+  <% if session[:current_user_id] and not @hasRequested and not @isCurrUserFriend %>
+    <p>
+      <%= button_to "Request Connection", researcher_requests_path(@researcher), :class => "btn btn-primary" %>
+    </p>
+  <% end %>
+<% end %>

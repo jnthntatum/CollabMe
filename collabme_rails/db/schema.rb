@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605083116) do
+ActiveRecord::Schema.define(:version => 20130606070156) do
 
   create_table "activities", :force => true do |t|
     t.integer  "work_experience_id"
@@ -67,10 +67,13 @@ ActiveRecord::Schema.define(:version => 20130605083116) do
 
   create_table "photos", :force => true do |t|
     t.string   "file_name"
-    t.integer  "researcher_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "photo_interface_id"
+    t.string   "photo_interface_type"
   end
+
+  add_index "photos", ["photo_interface_id"], :name => "index_photos_on_photo_interface_id"
 
   create_table "posts", :force => true do |t|
     t.string   "desc"
@@ -152,12 +155,11 @@ ActiveRecord::Schema.define(:version => 20130605083116) do
   add_index "resources", ["resource_interface_id"], :name => "index_resources_on_resource_interface_id"
 
   create_table "schools", :force => true do |t|
-    t.integer  "education_id"
     t.string   "name"
     t.string   "location"
     t.string   "school_type"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "taggings", :force => true do |t|

@@ -6,7 +6,10 @@ class Project < ActiveRecord::Base
 		:join_table => "projects_researchers", 
 		:association_foreign_key => "researcher_id",
 		:foreign_key => "project_id"	
-	has_many :posts, :as => :post_interface
+	
+  has_one :photo, :as => :photo_interface
+
+  has_many :posts, :as => :post_interface
 	has_many :tasks
 	
 	has_many :requests, :as => :request_interface
