@@ -2,9 +2,9 @@
   <% @researcher.work_experiences.each do |w| %>
     <div class="experience_header">
       <h4><%= w.title %></h4>
-      <% if w.company %>
+      <% if ! w.company.nil? %>
         <p><%= w.company.name + '  |  ' + w.company.location %></p>
-      <% elsif w.research_lab %>
+      <% elsif ! w.research_lab.nil? %>
         <p><%= w.research_lab.name + '  |  ' + w.research_lab.location %></p>
       <% end %>
       <p class="experience_date">

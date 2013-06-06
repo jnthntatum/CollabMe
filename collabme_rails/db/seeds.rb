@@ -95,14 +95,14 @@ school2.save
 # Research Labs
 research_lab1 = ResearchLab.new
 research_lab1.name = 'Batzoglou Lab'
-research_lab1.school = school1
 research_lab1.location = 'Stanford, CA'
+research_lab1.focus = 'Biocomputation'
 research_lab1.save
 
 research_lab2 = ResearchLab.new
 research_lab2.name = 'Stanford AI Lab (SAIL)'
-research_lab2.school = school1
 research_lab2.location = 'Stanford, CA'
+research_lab2.focus = 'Artificial Intelligence'
 research_lab2.save
 
 # Work Experience

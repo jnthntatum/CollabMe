@@ -59,6 +59,50 @@ $(document).ready(function() {
     });
   });
 
+  $.getJSON('/companies/companies', function(data) {
+    var company_names = [];
+    var company_locations = [];
+
+    $.each(data, function(key, val) {
+      company_names.push(val['name']);
+      company_locations.push(val['location']);
+    });
+
+    $('#company_name').typeahead({source: company_names});
+
+    $('#company_name').change(function() {
+      var company_name = $('#company_name').val();
+      var company_index = $.inArray(company_name, company_names);
+
+      if (company_index != -1) {
+        $('#company_location').val(company_locations[company_index]);
+      } 
+
+    });
+  });
+
+  $.getJSON('/research_labs/research_labs', function(data) {
+    var research_lab_names = [];
+    var research_lab_locations = [];
+
+    $.each(data, function(key, val) {
+      research_lab_names.push(val['name']);
+      research_lab_locations.push(val['location']);
+    });
+
+    $('#research_lab_name').typeahead({source: research_lab_names});
+
+    $('#research_lab_name').change(function() {
+      var research_lab_name = $('#research_lab_name').val();
+      var research_lab_index = $.inArray(research_lab_name, research_lab_names);
+
+      if (research_lab_index != -1) {
+        $('#research_lab_location').val(research_lab_locations[research_lab_index]);
+      } 
+
+    });
+  });
+
   $('#course_plus').click(function() {
     var course_title = escapeHtml($('#course_title').val());
     var course_description = escapeHtml($('#course_description').val());
