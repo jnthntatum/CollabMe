@@ -15,10 +15,15 @@
 </div> 
 <!-- chat insertion point-->
 <div class="chat_bar">
-	<div class="chat chat_nub friend_list_nub" onclick="uiShowFriendList()">
+	<div class="chat chat_nub friend_list_nub" >
 		<div class="chat chat_friend_list chat_window">
-			<div class="chat chat_title_bar">Loading</div>
-			<div class="chat chat_friend_list_body"></div> 
+			<div class="chat chat_title_bar">
+				<span class="chat friend_list_title">Loading...</span>
+				<span class="chat friend_list_toggle chat_btn" onClick="uiHideFriendList()">-</span>
+			</div>
+			<div class="chat chat_body_wrapper">
+				<div class="chat chat_friend_list_body"></div>
+			</div> 
 		</div> 
 	</div> 
 </div>
