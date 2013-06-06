@@ -1,5 +1,8 @@
 class ChatSessionsController < ApplicationController
 	before_filter :require_login
+
+	#Snippets
+	#ChatSessions.order("created_at DESC")
 	def save
 		uid1 = session[:current_user_id].to_i
 		uid2 = params[:uid].to_i
@@ -10,22 +13,24 @@ class ChatSessionsController < ApplicationController
 			uid2 = uid1;
 			uid1 = tmp;
 		end
-		sessions = ChatSession.where('userA_id = ? AND userA_id = ?', uid1, uid2)
+		sessions = ChatSession.where('userA_id = ? AND userB_id = ?', uid1, uid2)
 		sess = nil; 
-		if sessions
+		if sessions and sessions.any?
 			sess = sessions[0]
 		else
 			sess = ChatSession.new; 
 		end
-		sess.message_blob = message_blob
-		sess.drawable_blob = drawable_blob
+		sess.messages_blob = message_blob
+		sess.drawables_blob = drawable_blob
+		sess.userA_id = uid1
+		sess.userB_id = uid2
 		if (sess.save)
 			respond_to do |f|
-				f.json {render :json => {"success" => true}}
+				f.json {render :json => {"success" => true, "reflect" => sess}}
 			end
 		else
 			respond_to do |f|
-				f.json {render :json => {"success" => false}}
+				f.json {render :json => {"error" => "couldn't save / update record"}}
 			end
 		end
 	end
@@ -38,15 +43,15 @@ class ChatSessionsController < ApplicationController
 			uid2 = uid1;
 			uid1 = tmp;
 		end
-		sessions = ChatSession.where('userA_id = ? AND userB_id = ?', uid1, uid2)[0]
-		if sessions
+		sessions = ChatSession.where('userA_id = ? AND userB_id = ?', uid1, uid2)
+		if sessions and sessions.any?
 			sess = sessions[0]
 			respond_to do |f|
 				f.json {render :json => sess.chat_info }			
 			end
 		else
 			respond_to do |f|
-				f.json {render :json => {"success" => false, "reason" => "not found"} }
+				f.json {render :json => {"error" => "not found"} }
 			end
 		end
 	end

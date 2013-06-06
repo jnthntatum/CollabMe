@@ -576,7 +576,7 @@ function addLine(context, author, value){
 }
 
 function chatKeyupCB(ev){
-	var chat_window = $(this).parent()
+	var chat_window = $(this).closest('.chat_window')
 	var mSid = chat_window.attr('sid')
 	if (ev.keyCode === 13){
 		//enter so send a message!

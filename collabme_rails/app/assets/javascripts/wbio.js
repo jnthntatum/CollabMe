@@ -3,7 +3,6 @@ wbio.js
 io functions for client
 */
 
-var ioMessages = []; 
 var ioSocket; 
 var id;
 var ioCanvSid;
@@ -11,8 +10,33 @@ var ioRails = 'http://localhost:3000/';
 var ioChatServer = 'http://localhost:8989';
 var ioFriendMap = {}
 var ioPollEvent = null; 
-var ioPolling = false; 
+var ioStatusPollTO = 5000;
+var ioSaveStateTO = 10000;
 var ioConnectRetries = 0; 
+var ioSessions = {}
+
+function Session(sid){
+	this.sid = sid
+	this.drawables = []
+	this.messages = []
+	this.uids = []
+	this.hasUser = function (uid){
+		if (this.uids.indexOf(uid) == -1)
+			return false; 
+		else 
+			return true;
+	}
+	this.addUser = function (uid){
+		if (this.hasUser(uid))
+			return false
+		uids.push(uid)
+		return true;
+	}
+	this.noUsers = function (){
+		return uids.length == 0;
+	}
+	
+}
 
 function Message(command, uid){
 	this.command= command;
@@ -32,27 +56,46 @@ function procPOST(message){
 	var idx = message.idx;
 	var d = parseJSON(message.data); 
 	console.log("parsed d", d)
+	var sid = message.sid; 
+	var s;
+	if (sid in ioSessions){
+		s = ioSessions[s];
+	} else {
+		s = new Session(sid); 
+		ioSessions[sid] = s;
+	}
 	if (d.type === 'chat_message'){
 		if (message.uid != uid){
-			uiAddChatMessage(message.sid, d, idx); 
+			uiAddChatMessage(sid, d, idx); 
+			s.messages[idx] = d; 
 		}
 	}
 	else{
-		uiAddDrawable(message.sid, d, idx) 
+		uiAddDrawable(sid, d, idx)
+		s.drawables[idx] = d;
 	}
+}
+
+function procCreate(message){
+		console.log ("session Created. id: " + message.sid, message);
+		var sid = message.sid;
+		if (sid in ioSessions){
+			console.log('session collision')
+		}
+		var s = new Session(sid);
+		s.uids = message.uids;
+		ioSessions[sid] = s;   
+		uiCreateChatWindow(sid) 
+		if(message.drawing === true){
+			ioCanvSid = sid; 
+			uiShowWhiteboard(ioCanvSid);	
+		}
 }
 
 function procAck(message){
 	var ackd = message.ack; 
 	if (ackd.command === "CREATE"){
-		console.log ("session Created", message);
-		console.log("id: ", message.sid);
-		uiCreateChatWindow(message.sid) 
-		if(ackd.drawing === true){
-			ioCanvSid = message.sid;
-			uiShowWhiteboard(ioCanvSid);	
-		}
-		
+		procCreate(ackd) 
 	} else if (ackd.command === "STATUS") {
 		console.log("now available requesting session")
 		if (ackd.status && ackd.status !== 'OFFLINE'){
@@ -121,6 +164,7 @@ function ioSendChatMessage(message, lSid){
 	var m = new Message("POST", uid);
 	m.sid = parseInt(lSid);
 	m.data = message;
+	console.log("Sending Chat message: " + m);
 	sendMessageToServer(m);  
 }
 
@@ -175,35 +219,9 @@ function updateFriends(message){
 	}
 	uiSetFriendList(ioFriendMap);
 	ioPollEvent= window.setTimeout(ioGetFriendStatus, 5000); 
-
 }
 
-function ioInit(){
-	id = 0; 
-	socket = io.connect(ioChatServer);
-	socket.on('connect', function(){
-		ioConnectRetries = 0; 
-		console.log('connection success!');
-		var m = new Message("STATUS", uid)
-		m.status = 'ONLINE'; 
-		sendMessageToServer(m);  
-	});
-	socket.on('connect_failed', function () {
-		if (ioRetries > 2)
-			uiSetFriendListTitle('There seems to be trouble connecting to the chat server')
-		else
-			uiSetFriendListTitle('Waiting for connection to server')
-		window.setTimeout(ioInit, 5000)
-		ioRetries ++; 
-	});
-	socket.on('message', function(data){
-		console.log('Received message from server', data)
-		procMessage(data);  
-	});
-	socket.on('disconect', function (){
 
-	}); 
-}
 
 function ioGetFriends(){
 	$.getJSON(ioRails+'researchers/'+uid+'/chat_list.json', undefined, function(friends){
@@ -211,7 +229,6 @@ function ioGetFriends(){
 			f = friends[i]; 
 			ioFriendMap[f.id] = f;   
 		}
-		
 		ioGetFriendStatus();
 	})
 }
@@ -224,6 +241,16 @@ function ajaxError(err){
 	console.log('cause unknown');
 }
 
+function saveAll(){
+	for (var sid in ioSessions){
+		var s = ioSessions[sid]; 
+		if (s.uids.length == 1){
+			ioSaveState(s.messages, s.drawables, s.uids[0]) 
+		}
+	} 
+	window.setTimeout(saveAll, ioSaveStateTO)
+}
+
 function saveResponse(data){
 	console.log('save success!')
 }
@@ -231,12 +258,12 @@ function saveResponse(data){
 function ioSaveState(messages, drawables, uid, group){
 	$.ajax(
 		{ 	type: "POST",
-			url: ioRails + '/chat_sessions/read',
-			contentType: "spplication/json",
-			dataType: "json"
-			data: JSON.stringify({"message_blob": messages, "drawables_blob":drawables, "uid" : uid}),
+			url: ioRails + '/chat_sessions/save.json',
+			contentType: "application/json",
+			dataType: "json",
+			data: JSON.stringify({"messages_blob": messages, "drawables_blob": drawables, "uid" : uid} ),
 			success: saveResponse,
-			failure: ajaxError
+			failure: ajaxError}
 		);
 }
 
@@ -248,12 +275,12 @@ function restoreState(data){
 function ioReadState(uid1, uid2, group){
 		$.ajax(
 		{ 	type: "POST",
-			url: ioRails + '/chat_sessions/read',
-			contentType: "spplication/json",
-			dataType: "json"
+			url: ioRails + '/chat_sessions/read.json',
+			contentType: "application/json",
+			dataType: "json",
 			data: JSON.stringify({"uid" : uid}),
 			success: restoreState,
-			failure: ajaxError
+			failure: ajaxError }
 		);
 }
 
@@ -268,5 +295,35 @@ function ioSendFlatten(layers, img){
 function ioSaveCanvas(img){
  	console.log('send io SaveCanvas -- todo')
 }
+
+function ioInit(){
+	id = 0; 
+	socket = io.connect(ioChatServer);
+	socket.on('connect', function(){
+		ioConnectRetries = 0; 
+		console.log('connection success!');
+		var m = new Message("STATUS", uid)
+		m.status = 'ONLINE'; 
+		sendMessageToServer(m);
+		window.setTimeout(saveAll, ioSaveStateTO);  
+	});
+	socket.on('connect_failed', function () {
+		if (ioRetries > 2)
+			uiSetFriendListTitle('There seems to be trouble connecting to the chat server')
+		else
+			uiSetFriendListTitle('Waiting for connection to server')
+		window.setTimeout(ioInit, 5000)
+		ioRetries ++; 
+	});
+	socket.on('message', function(data){
+		console.log('Received message from server', data)
+		procMessage(data);  
+	});
+	socket.on('disconnect', function (){
+		console.log('disconnected from the server')
+	}); 
+}
+
+
 
 
