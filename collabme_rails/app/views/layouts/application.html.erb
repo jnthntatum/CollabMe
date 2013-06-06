@@ -10,23 +10,8 @@
   <%= javascript_include_tag "jquery-2.0.0.min" %>
   <%= javascript_include_tag "bootstrap.min" %>
   <%= javascript_include_tag :defaults %>
+  <%= stylesheet_link_tag "whiteboard" %>
   <%= csrf_meta_tags %>
-  <% if session[:current_user_id] %>
-        <!-- init chat --> 
-        <%= javascript_include_tag "socket.io.min" %>
-        <%= javascript_include_tag "evCanvas" %>
-        <%= javascript_include_tag "wbprimatives" %>
-        <%= javascript_include_tag "wbio" %>
-        <%= javascript_include_tag "wbui" %>
-        <%= stylesheet_link_tag "whiteboard" %>
-        <script type='text/javascript'>
-          var uid = '<%= session[:current_user_id] %>';
-          var name = '<%= session[:current_user_first_name] %>';
-          $(function(){
-            ioInit(); 
-          }); 
-        </script>
-  <% end %>
 </head>
 <body>
   <div class="wrapper">

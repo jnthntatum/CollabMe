@@ -1,13 +1,12 @@
 class ChatSessionsController < ApplicationController
 	before_filter :require_login
-
 	#Snippets
 	#ChatSessions.order("created_at DESC")
 	def save
 		uid1 = session[:current_user_id].to_i
 		uid2 = params[:uid].to_i
-		message_blob = params[:message_blob]
-		drawable_blob = params[:drawable_blob]
+		message_blob = params[:messages_blob]
+		drawable_blob = params[:drawables_blob]
 		if(uid1 > uid2)
 			tmp = uid2;
 			uid2 = uid1;

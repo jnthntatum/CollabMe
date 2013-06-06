@@ -64,6 +64,7 @@ function procPOST(message){
 		s = new Session(sid); 
 		ioSessions[sid] = s;
 	}
+	s.dirty=true; 
 	if (d.type === 'chat_message'){
 		if (message.uid != uid){
 			uiAddChatMessage(sid, d, idx); 
@@ -118,7 +119,6 @@ function procAck(message){
 	}else if(ackd.command === 'FLATTEN'){
 		//send a saved copy to the server
 		var imgData = ackd.img;
-		ioSaveCanvas(imgData); 
 	}else if(ackd.command in ioAckCallbacks){
 		var fn = ioAckCallbacks[ackd.command];
 		fn(ackd)
@@ -244,8 +244,9 @@ function ajaxError(err){
 function saveAll(){
 	for (var sid in ioSessions){
 		var s = ioSessions[sid]; 
-		if (s.uids.length == 1){
+		if (s.uids.length == 1 && sid.dirty){
 			ioSaveState(s.messages, s.drawables, s.uids[0]) 
+			s.dirty = false; 
 		}
 	} 
 	window.setTimeout(saveAll, ioSaveStateTO)
@@ -258,7 +259,7 @@ function saveResponse(data){
 function ioSaveState(messages, drawables, uid, group){
 	$.ajax(
 		{ 	type: "POST",
-			url: ioRails + '/chat_sessions/save.json',
+			url: ioRails + 'chat_sessions/save.json',
 			contentType: "application/json",
 			dataType: "json",
 			data: JSON.stringify({"messages_blob": messages, "drawables_blob": drawables, "uid" : uid} ),
@@ -305,6 +306,7 @@ function ioInit(){
 		var m = new Message("STATUS", uid)
 		m.status = 'ONLINE'; 
 		sendMessageToServer(m);
+		$.ajaxSetup({headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}});
 		window.setTimeout(saveAll, ioSaveStateTO);  
 	});
 	socket.on('connect_failed', function () {
