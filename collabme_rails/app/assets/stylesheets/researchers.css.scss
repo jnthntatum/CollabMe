@@ -2,6 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#back_to_profile {
+  padding-left: 2px;
+  margin-top: -5px;
+  margin-bottom: 20px;
+}
+
 #profile_picture {
   padding-top: 15px;
 }
@@ -12,6 +18,10 @@
 }
 
 // Experience
+.experience_header {
+  padding-bottom: 20px;
+}
+
 .experience_header h4 {
   margin-bottom: 3px;
   font-weight: bold;
@@ -29,7 +39,6 @@
 
 .experience_date {
   color: #999999;
-  padding-bottom: 20px;
 }
 
 .activity {

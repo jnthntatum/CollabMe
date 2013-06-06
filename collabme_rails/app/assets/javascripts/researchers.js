@@ -59,6 +59,53 @@ $(document).ready(function() {
     });
   });
 
+  $.getJSON('/companies/companies', function(data) {
+    var company_names = [];
+    var company_locations = [];
+
+    $.each(data, function(key, val) {
+      company_names.push(val['name']);
+      company_locations.push(val['location']);
+    });
+
+    $('#company_name').typeahead({source: company_names});
+
+    $('#company_name').change(function() {
+      var company_name = $('#company_name').val();
+      var company_index = $.inArray(company_name, company_names);
+
+      if (company_index != -1) {
+        $('#company_location').val(company_locations[company_index]);
+      } 
+
+    });
+  });
+
+  $.getJSON('/research_labs/research_labs', function(data) {
+    var research_lab_names = [];
+    var research_lab_locations = [];
+    var research_lab_focuses = [];
+
+    $.each(data, function(key, val) {
+      research_lab_names.push(val['name']);
+      research_lab_locations.push(val['location']);
+      research_lab_focuses.push(val['focus']);
+    });
+
+    $('#research_lab_name').typeahead({source: research_lab_names});
+
+    $('#research_lab_name').change(function() {
+      var research_lab_name = $('#research_lab_name').val();
+      var research_lab_index = $.inArray(research_lab_name, research_lab_names);
+
+      if (research_lab_index != -1) {
+        $('#research_lab_location').val(research_lab_locations[research_lab_index]);
+        $('#research_lab_focus').val(research_lab_focuses[research_lab_index]);
+      } 
+
+    });
+  });
+
   $('#course_plus').click(function() {
     var course_title = escapeHtml($('#course_title').val());
     var course_description = escapeHtml($('#course_description').val());
@@ -85,11 +132,28 @@ $(document).ready(function() {
   $('#education_end_date_month').change(function () {
     $('#hidden_education_end_date_year').val($('#education_end_date_year').val());
   });
+
   $('#work_experience_plus').click(function() {
     var activity = escapeHtml($('#activity').val());
     $('#activities').append('<p>-  ' + activity + '</p>');
     $('#activities').append('<input type="hidden" name="activity_' + activity_count + '" value="' + activity + '" />');
     $('#activity').val('');
     activity_count++;
+  });
+
+  $('#work_experience_start_date_month').change(function () {
+    $('#hidden_work_experience_start_date_month').val($('#work_experience_start_date_month').val());
+  });
+
+  $('#work_experience_start_date_year').change(function () {
+    $('#hidden_work_experience_start_date_year').val($('#work_experience_start_date_year').val());
+  });
+
+  $('#work_experience_end_date_month').change(function () {
+    $('#hidden_work_experience_end_date_month').val($('#work_experience_end_date_month').val());
+  });
+
+  $('#work_experience_end_date_month').change(function () {
+    $('#hidden_work_experience_end_date_year').val($('#work_experience_end_date_year').val());
   });
 });

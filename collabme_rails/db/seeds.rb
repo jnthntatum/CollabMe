@@ -22,7 +22,7 @@ jt = Researcher.new(:first_name => "Jonathan", :last_name => "Tatum", :email => 
 jt.password="collabme13"
 jt.save(:validate => false)
 
-ss2 = Researcher.new(:first_name => "Syed", :last_name => "Saleh", :email => "shayonsaleh@yahoo.com", :password => "collabme13", :password_confirmation => "collabme13")
+ss2 = Researcher.new(:first_name => 'Syed', :last_name => 'Saleh', :email => 'ssaleh2@stanford.edu', :password => "collabme13", :password_confirmation => "collabme13")
 
 # Projects
 pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
@@ -69,41 +69,51 @@ g.researchers << ss
 g.save();
 
 # Companies
-company1 = Company.new
-company1.name = 'Google'
-company1.location = 'Mountain View, CA'
-company1.save
+google = Company.new
+google.name = 'Google'
+google.location = 'Mountain View, CA'
+google.save
 
-company2 = Company.new
-company2.name = 'Facebook'
-company2.location = 'Menlo Park, CA'
-company2.save
+facebook = Company.new
+facebook.name = 'Facebook'
+facebook.location = 'Menlo Park, CA'
+facebook.save
+
+microsoft = Company.new
+microsoft.name = 'Microsoft'
+microsoft.location = 'Sunnyvale, CA'
+microsoft.save
+
+amazon = Company.new
+amazon.name = 'Amazon'
+amazon.location = 'Seattle, WA'
+amazon.save
 
 # Schools
-school1 = School.new
-school1.name = 'Stanford University'
-school1.location = 'Palo Alto, CA'
-school1.school_type = 'university'
-school1.save
+stanford = School.new
+stanford.name = 'Stanford University'
+stanford.location = 'Palo Alto, CA'
+stanford.school_type = 'university'
+stanford.save
 
-school2 = School.new
-school2.name = 'James Logan High School'
-school2.location = 'Union City, CA'
-school2.school_type = 'high school'
-school2.save
+logan = School.new
+logan.name = 'James Logan High School'
+logan.location = 'Union City, CA'
+logan.school_type = 'high school'
+logan.save
 
 # Research Labs
-research_lab1 = ResearchLab.new
-research_lab1.name = 'Batzoglou Lab'
-research_lab1.school = school1
-research_lab1.location = 'Stanford, CA'
-research_lab1.save
+batzoglou_lab = ResearchLab.new
+batzoglou_lab.name = 'Batzoglou Lab'
+batzoglou_lab.location = 'Stanford, CA'
+batzoglou_lab.focus = 'Biocomputation'
+batzoglou_lab.save
 
-research_lab2 = ResearchLab.new
-research_lab2.name = 'Stanford AI Lab (SAIL)'
-research_lab2.school = school1
-research_lab2.location = 'Stanford, CA'
-research_lab2.save
+sail_lab = ResearchLab.new
+sail_lab.name = 'Stanford AI Lab (SAIL)'
+sail_lab.location = 'Stanford, CA'
+sail_lab.focus = 'Artificial Intelligence'
+sail_lab.save
 
 # Work Experience
 work_experience1 = WorkExperience.new
@@ -111,7 +121,7 @@ work_experience1.title = 'Research Assistant'
 work_experience1.start_date = Time.new(2012, 1, 1)
 work_experience1.end_date = Time.now()
 work_experience1.researcher = ss
-work_experience1.research_lab = research_lab1
+work_experience1.research_lab = batzoglou_lab
 work_experience1.save
 
 work_experience2 = WorkExperience.new
@@ -119,18 +129,36 @@ work_experience2.title = 'Research Assistant'
 work_experience2.start_date = Time.new(2012, 10, 1)
 work_experience2.end_date = Time.new(2013, 1, 1)
 work_experience2.researcher = kg
-work_experience2.research_lab = research_lab2
+work_experience2.research_lab = sail_lab
 work_experience2.save
+
+work_experience3 = WorkExperience.new
+work_experience3.title = 'Research Assistant'
+work_experience3.start_date = Time.new(2013, 6, 1)
+work_experience3.end_date = Time.new(2013, 9, 1)
+work_experience3.researcher = kg
+work_experience3.company = microsoft
+work_experience3.save
 
 # Activities
 activity1 = Activity.new
-activity1.activity = 'Did some biocomp research on bio stuff.'
+activity1.activity = 'Did some biocomputation research.'
 activity1.work_experience = work_experience1
 activity1.save
 
+activity2 = Activity.new
+activity2.activity = 'Going to work on Bing.'
+activity2.work_experience = work_experience3
+activity2.save
+
+activity3 = Activity.new
+activity3.activity = 'Worked on mlcomp, a machine learning website.'
+activity3.work_experience = work_experience2
+activity3.save
+
 # Education
 education1 = Education.new
-education1.school = school1
+education1.school = stanford
 education1.degree = 'Bachelor of Science'
 education1.major = 'Computer Science'
 education1.specialization = 'Biocomputation'
@@ -140,15 +168,23 @@ education1.researcher = ss
 education1.save
 
 education2 = Education.new
-education2.school = school2
+education2.school = logan
 education2.start_date = Time.new(2006, 2, 1)
 education2.end_date = Time.new(2009, 6, 1)
 education2.researcher = kg
 education2.save
 
-# Courses
-course1 = Course.new
-course1.course_title = 'CS194'
-course1.description = 'Senior project course.'
-course1.education = education1
-course1.save
+education3 = Education.new
+education3.school = stanford
+education3.degree = 'Bachelor of Science'
+education3.major = 'Computer Science'
+education3.specialization = 'Artificial Intelligence'
+education3.start_date = Time.new(2009, 9, 1)
+education3.end_date = Time.now()
+education3.researcher = kg
+education3.save
+
+# Profile Picture
+kristian_profile_pic = Photo.new(:file_name => 'profile_pictures/1370497688_Me.jpg')
+kristian_profile_pic.researcher = kg
+kristian_profile_pic.save

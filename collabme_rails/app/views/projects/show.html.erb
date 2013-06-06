@@ -65,40 +65,63 @@
             </thead>
             <tbody>
               <% counter = 1 %>
-              <% @tasks.each do |t| %>
-                <%= content_tag :tr, :style => "width: 100%;" do %>
-                  <%= content_tag :td, counter.to_s %>
-                  <%= content_tag :td, t.desc %>
-                  <%= content_tag :td, t.creator.first_name + ' ' + t.creator.last_name %>
-                  <% if t.assignee %>
-                    <%= content_tag :td, t.assignee.first_name + ' ' + t.assignee.last_name %>
-                  <% else %>
-                    <%= content_tag :td, 'Unassigned' %>
-                  <% end %>
-                  <%= content_tag :td, t.category.to_s %>
-                  <% if @currUserIsMember %>
-                    <%= content_tag :td do %>
-                      <%= button_to "Edit", edit_task_path(t) %>
+              <% if @currUserIsMember %>
+                <% @tasks.each do |t| %>
+                  <%= content_tag :tr, :style => "width: 100%;" do %>
+                    <%= content_tag :td, counter.to_s %>
+                    <%= form_for t, :url => {:controller => :tasks, :action => 'update', :id => t.id}, :html => {:method => :put, :class => 'form-inline'} do |f| %>
+                        <%= content_tag :td do %>
+                          <%= f.text_area(:desc, :rows => 3, :class => 'input-small') %>
+                        <% end %>
+                        <%= content_tag(:td, t.creator.full_name) %>
+                        <%= content_tag :td do %>
+                          <%= f.collection_select(:assignee_id, Array.new(@project.members) << @project.owner, :id, :full_name, {:include_blank => true}, {:class => "input-small"}) %>
+                        <% end %>
+                        <%= content_tag :td do %>
+                          <%= f.select(:category, options_for_select((0..9).map{|x| [x.to_s, x.to_i]}, t.category), {}, :class => 'input-small') %>
+                        <% end %>
+                        <%= content_tag :td do %>
+                          <%= f.hidden_field(:creator_id, :value => t.creator_id) %>
+                          <%= f.hidden_field(:project_id, :value => t.project_id) %>
+                          <%= f.submit("Update") %>
+                        <% end %>
                     <% end %>
                   <% end %>
+                  <% counter += 1 %>
                 <% end %>
-                <% counter += 1 %>
+              <% else %>
+                <% @tasks.each do |t| %>
+                  <%= content_tag :tr, :style => "width: 100%;" do %>
+                    <%= content_tag :td, counter.to_s %>
+                    <%= content_tag :td, t.desc %>
+                    <%= content_tag :td, t.creator.full_name %>
+                    <% if t.assignee %>
+                      <%= content_tag :td, t.assignee.full_name %>
+                    <% else %>
+                      <%= content_tag :td, 'Unassigned' %>
+                    <% end %>
+                    <%= content_tag :td, t.category.to_s %>
+                  <% end %>
+                  <% counter += 1 %>
+                <% end %>
               <% end %>
               <% if @currUserIsMember %>
                 <%= content_tag :tr, :style => "width: 100%;" do %>
                   <%= content_tag :td, counter.to_s %>
-                  <%= form_for @newTask, :url => {:action => 'create'}, :html => {:class => 'form-inline'} do |f| %>
+                  <%= form_for @newTask, :url => {:controller => :tasks, :action => 'create'}, :html => {:class => 'form-inline'} do |f| %>
                       <%= content_tag :td do %>
                         <%= f.text_area(:desc, :rows => 3, :class => 'input-small') %>
                       <% end %>
                       <%= content_tag(:td, @newTask.creator.first_name + ' ' + @newTask.creator.last_name) %>
                       <%= content_tag :td do %>
-                        <%= f.collection_select(:assignee, Array.new(@project.members) << @project.owner, :id, :full_name, {}, {:class => "input-small"}) %>
+                        <%= f.collection_select(:assignee_id, Array.new(@project.members) << @project.owner, :id, :full_name, {:include_blank => true}, {:class => "input-small"}) %>
                       <% end %>
                       <%= content_tag :td do %>
                         <%= f.select(:category, options_for_select(0..9), {}, :class => 'input-small') %>
                       <% end %>
                       <%= content_tag :td do %>
+                        <%= f.hidden_field(:creator_id, :value => @newTask.creator_id) %>
+                        <%= f.hidden_field(:project_id, :value => @newTask.project_id) %>
                         <%= f.submit("Create") %>
                       <% end %>
                   <% end %>

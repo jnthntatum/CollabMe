@@ -74,6 +74,18 @@ CollabmeRails::Application.routes.draw do
     end
   end
 
+  resources :companies do
+    collection do
+      get :companies
+    end
+  end
+
+  resources :research_labs do
+    collection do
+      get :research_labs
+    end
+  end
+
   resources :projects do
     resources :posts
     resources :requests
@@ -90,7 +102,7 @@ CollabmeRails::Application.routes.draw do
   end
   
   resources :tasks
-  
+
 
   # Sample resource route with more complex sub-resources
   #   resources :products do

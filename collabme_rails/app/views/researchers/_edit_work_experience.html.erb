@@ -14,10 +14,28 @@
       <%= text_field_tag :company_name %>
     </div>
   </div>
+  <div class="control-group company_controls">
+    <label class="control-label" for="company_location">Location</label>
+    <div class="controls">
+      <%= text_field_tag :company_location %>
+    </div>
+  </div>
   <div class="control-group research_lab_controls">
     <label class="control-label" for="research_lab_name">Research Lab Name</label>
     <div class="controls">
       <%= text_field_tag :research_lab_name %>
+    </div>
+  </div>
+  <div class="control-group research_lab_controls">
+    <label class="control-label" for="research_lab_location">Location</label>
+    <div class="controls">
+      <%= text_field_tag :research_lab_location %>
+    </div>
+  </div>
+    <div class="control-group research_lab_controls">
+    <label class="control-label" for="research_lab_focus">Research Lab Focus</label>
+    <div class="controls">
+      <%= text_field_tag :research_lab_focus %>
     </div>
   </div>
   <div class="control-group">
@@ -35,6 +53,8 @@
       <select class="input-small" id="work_experience_start_date_year">
         <%= render 'shared/select_years' %>
       </select>
+      <%= hidden_field_tag :hidden_work_experience_start_date_month, '1' %>
+      <%= hidden_field_tag :hidden_work_experience_start_date_year, @years.last %>
     </div>
   </div>
   <div class="control-group">
@@ -46,6 +66,8 @@
       <select class="input-small" id="work_experience_end_date_year">
         <%= render 'shared/select_years' %>
       </select>
+      <%= hidden_field_tag :hidden_work_experience_end_date_month, '1' %>
+      <%= hidden_field_tag :hidden_work_experience_end_date_year, @years.last %>
     </div>
   </div>
   <div class="control-group">

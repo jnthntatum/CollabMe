@@ -8,6 +8,7 @@
       <%= image_tag("default-profile-pic.png", :alt => "Profile Picture") %>
     <% end %>
     <%= form_for :photo, :method => :post, :url => { :action => 'upload_picture' } do |f| %>
+      <br />
       <%= f.file_field :file %>
       <br />
       <%= f.submit 'Upload Photo', :class => 'btn btn-primary' %>

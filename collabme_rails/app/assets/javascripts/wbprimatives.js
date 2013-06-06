@@ -73,7 +73,12 @@ Circle.prototype.draw = function( canvas ){
 	var r = this.r
 	var y = this.y 
 	canvas.fillStyle = this.color; 
-	canvas.fillRect(x - r, y - r, 2 * r, 2 * r);
+	canvas.beginPath(); 
+	canvas.arc(x, y, r, 0, 2 * Math.PI)
+	if (this.editing)
+		canvas.stroke();
+	else
+		canvas.fill();
 }
 
 function Square(x, y, w, h){

@@ -273,6 +273,33 @@ function bindSelectorFns(id){
 	uiRedraw()
 }
 
+function sCircleDragFn(pos){
+	curDrawable = new Circle(pos.oldX, pos.oldY);
+	curDrawable.color = uiCurColor;
+	curDrawable.editing = true; 
+	circleDragFn(pos); 
+}		
+
+function circleDragFn(pos){
+	curDrawable.r = dist(pos.x, pos.y, curDrawable.x, curDrawable.y);
+	uiRedraw();
+}
+
+function eCircleDragFn(pos){
+	circleDragFn(pos);
+	curDrawable.editing = false; 
+	ioSendDrawable(curDrawable);
+	curDrawable = null;
+
+}
+
+function bindCircleFns(id){
+	evClearCallbacks(id); 
+	evStartDrag(id, sCircleDragFn)
+	evDrag(id, circleDragFn)
+	evStopDrag(id, eCircleDragFn)
+}
+
 //==================================
 // drawing functions
 //==================================
@@ -368,18 +395,19 @@ function uiToolBar(){
 	return tb 
 }
 
-function attachToolBarHandlers(){
-	$(".color_option").click(function(){
-		uiCurColor = $(this).attr('color'); 
-		$(".color_selected").removeClass("color_selected")
-		$(this).addClass("color_selected")
-	});
+function colorOptionCB(){
+	uiCurColor = $(this).attr('color'); 
+	$(".color_selected").removeClass("color_selected")
+	$(this).addClass("color_selected")
+}
 
+function attachToolBarHandlers(){
+	$(".color_option").click(colorOptionCB);
+	$(".color_option[color=blue]").addClass('color_selected')
 	$('.tool').click(function(){
 		$(".tool_selected").removeClass("tool_selected")
 		$(this).addClass("tool_selected")
 	});
-
 	$('.squiggle').click(function(){
 		if(uiMode != "Squiggle"){
 			uiMode = "Squiggle"
@@ -405,7 +433,7 @@ function attachToolBarHandlers(){
 	$('.circle').click(function(){
 		if (uiMode != "Circle"){
 			uiMode = "Circle"
-			bindSquiggleFns(canvasID)
+			bindCircleFns(canvasID)
 		}
 	}); 
 	$('.selector').click(function(){
@@ -481,12 +509,14 @@ function uiShowWhiteboard(sid){
 	if (sid){
 		uiCanvasInit(sid);
 		$('#whiteboard_flyout').on('shown', function(){uiCanvOffset = evDetectOffset(canvasID); $("body").css("overflow", "hidden");});
+		$('#whiteboard_flyout').on('hidden', uiHideWhiteboard);
 	} 
 }
 
 function uiHideWhiteboard(){
 	$('#whiteboard_flyout').modal('hide');
 	$("body").css('overflow', 'auto');
+	$('.canvas_wrapper').empty();
 }
 
 function uiFlattenCanvas(layers, image){
@@ -522,15 +552,15 @@ function uiReloadChatMessages(sid, messages){
 }
 
 function uiGetChatWindowBySid(sid, tmp){
-	return $('.chat_window[sid=' + sid + "']", tmp)
+	return $(".chat_window[sid='" + sid + "']", tmp)
 }
 
 function uiAddChatMessage(sid, message, idx){
 	messageScrollback[idx] = message; 
-	var w = $("div[sid='" + sid + "']");
+	var w = uiGetChatWindowBySid(id);
 	if (w.length == 0){
 		var tmp = uiCreateChatWindow(sid);
-		w = $(".chat_window[sid='" + sid + "']", tmp);
+		w = uiGetChatWindowBySid(sid,  tmp)
 	}
 	addLine(w, message.name, message.text)
 }
@@ -564,6 +594,22 @@ function bindCWListeners(context){
 	$('.chat_input_wrapper', context).keyup(chatKeyupCB)
 } 
 
+function uiMinimizeChatWindow(sid){
+	var node=  uiGetChatWindowBySid(sid) 
+	var body= $( ".chat_body", node);
+	if (body.hasClass('hidden')){
+		body.removeClass('hidden')
+		$(".chat_hide_button", node)[0].innerHTML = '-'
+	}else {
+		body.addClass('hidden'); 
+		$(".chat_hide_button", node)[0].innerHTML = '+'
+	}
+}
+
+function uiCloseChatWindow(sid){
+	uiGetChatWindowBySid(sid).parent().remove();
+}
+
 function uiChatWindow(sid){
 	var nub = document.createElement("div")
 	nub.setAttribute("class", "chat chat_nub");
@@ -571,14 +617,38 @@ function uiChatWindow(sid){
 	var wind = document.createElement("div")
 	wind.setAttribute("class", "chat chat_window")
 	wind.setAttribute("sid", sid)
+	var titleBar = document.createElement("div")
+	titleBar.setAttribute("class", 'chat chat_title_bar');
+	var title = document.createElement("span")
+	title.setAttribute("class", "chat chat_title"); 
+	title.innerHTML = "Loading... "
+	var btn = document.createElement("span");
+	btn.setAttribute("class", "chat chat_close_button chat_button")
+	btn.setAttribute("onClick", "uiCloseChatWindow(" + sid  + ")")
+	btn.innerHTML = 'x' 
+	var btn2 = document.createElement("span");
+	btn2.setAttribute("class", "chat chat_hide_button chat_button")
+	btn2.setAttribute("onClick", "uiMinimizeChatWindow(" + sid  + ")")
+	btn2.innerHTML = '-' 
+
+	titleBar.appendChild(title); 
+	titleBar.appendChild(btn);
+	titleBar.appendChild(btn2); 
+	var chatWrapper = document.createElement("div"); 
+	chatWrapper.setAttribute("class", "chat chat_body"); 
 	var hist = document.createElement("div")
 	hist.setAttribute("class", "chat chat_history")
 	var inpDiv = document.createElement("div")
 	inpDiv.setAttribute("class", "chat chat_input_wrapper")
 	var inp = document.createElement("textarea")
 	inpDiv.appendChild(inp);
-	wind.appendChild(hist)
-	wind.appendChild(inpDiv);
+
+	chatWrapper.appendChild(hist);
+	chatWrapper.appendChild(inpDiv);
+
+	wind.appendChild(titleBar); 
+	wind.appendChild(chatWrapper);
+
 	nub.appendChild(wind);
 	return nub; 
 	//inp.setAttribute() 
@@ -593,12 +663,13 @@ function uiCreateChatWindow(sid){
 	return cwind;
 }
 
-function uiShowFriendList(){
-	$('.chat_friend_list').show();
-}
-
 function uiHideFriendList(){
-	$('.chat_friend_list').hide();
+	var node = $('.chat_body_wrapper', $('.chat_friend_list'));
+	if (node.hasClass('hidden')){
+		node.removeClass('hidden')
+	}else{
+		node.addClass('hidden')
+	}
 }
 
 function uiTryChat(fid){

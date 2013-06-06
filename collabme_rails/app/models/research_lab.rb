@@ -1,7 +1,5 @@
 class ResearchLab < ActiveRecord::Base
-  attr_accessible :name, :location, :focus, :school_id, :company_id, :work_experience_id
+  attr_accessible :name, :location, :focus
 
-  belongs_to :work_experience
-  belongs_to :company
-  belongs_to :school
+  has_many :work_experiences
 end
