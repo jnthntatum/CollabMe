@@ -11,26 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20130606063236) do
-=======
-ActiveRecord::Schema.define(:version => 20130606064834) do
->>>>>>> f9138566ad9e3fc7b77e93dd33dae645efb7fdf9
+ActiveRecord::Schema.define(:version => 20130606070156) do
 
   create_table "activities", :force => true do |t|
     t.integer  "work_experience_id"
     t.string   "activity"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
-  end
-
-  create_table "chat_sessions", :force => true do |t|
-    t.integer  "userA_id"
-    t.integer  "userB_id"
-    t.string   "messages_blob"
-    t.string   "drawables_blob"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
   end
 
   create_table "articles", :force => true do |t|
@@ -42,7 +29,15 @@ ActiveRecord::Schema.define(:version => 20130606064834) do
     t.string   "full_article_url"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.integer  "authorid"
+  end
+
+  create_table "chat_sessions", :force => true do |t|
+    t.integer  "userA_id"
+    t.integer  "userB_id"
+    t.string   "messages_blob"
+    t.string   "drawables_blob"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "companies", :force => true do |t|
@@ -189,8 +184,8 @@ ActiveRecord::Schema.define(:version => 20130606064834) do
     t.string   "name"
     t.string   "location"
     t.string   "school_type"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "taggings", :force => true do |t|
