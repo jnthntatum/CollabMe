@@ -4,7 +4,7 @@ class WorkExperience < ActiveRecord::Base
   default_scope order('start_date DESC')
 
   has_many :activities
-  has_one :company
-  has_one :research_lab
+  belongs_to :company
+  belongs_to :research_lab
   belongs_to :researcher
 end

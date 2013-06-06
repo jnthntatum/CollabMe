@@ -10,12 +10,12 @@
       <p class="experience_date">
         <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
       </p>
-    </div>
     <% w.activities.each do |a| %> 
       <p class="activity">
         <%= '-  ' + a.activity %>
       </p>
     <% end %>
+    </div>
   <% end %>
 <% else %>
   <%= 'Nothing here yet.' %>

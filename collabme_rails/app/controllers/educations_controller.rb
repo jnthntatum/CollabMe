@@ -5,7 +5,7 @@ class EducationsController < ApplicationController
     education.start_date = Time.new(params[:hidden_education_start_date_year], params[:hidden_education_start_date_month], 1)
     education.end_date = Time.new(params[:hidden_education_end_date_year], params[:hidden_education_end_date_month], 1)
       
-    if params[:university_name]
+    if !params[:university_name].empty?
       education.degree = params[:degree]
       education.major = params[:major]
       education.specialization = params[:specialization]
@@ -44,7 +44,7 @@ class EducationsController < ApplicationController
         redirect_to :controller => :researchers, :action => :edit, :id => session[:current_user_id]
       end
 
-    elsif params[:high_school_name]
+    elsif !params[:high_school_name].empty?
       high_school = School.find_by_name_and_location(params[:high_school_name], params[:high_school_location])
 
       if high_school
@@ -58,6 +58,14 @@ class EducationsController < ApplicationController
         if high_school.save
           education.school = high_school
         end
+      end
+
+      if education.save
+        flash[:notice] = 'New education saved.'
+        redirect_to :controller => :researchers, :action => :edit, :id => session[:current_user_id]   
+      else
+        flash[:error] = 'New education not saved.'
+        redirect_to :controller => :researchers, :action => :edit, :id => session[:current_user_id]
       end
     end
   end
