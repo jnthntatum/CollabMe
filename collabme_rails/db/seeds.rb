@@ -186,3 +186,6 @@ education3.save
 # Profile Picture
 kristian_profile_pic = Photo.new(:file_name => 'profile_pictures/1370497688_Me.jpg')
 kg.photo = kristian_profile_pic
+
+shayon_profile_pic = Photo.new(:file_name => 'profile_pictures/1370556442_profile.jpg')
+ss.photo = shayon_profile_pic
