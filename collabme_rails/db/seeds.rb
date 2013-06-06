@@ -7,7 +7,6 @@ ss = Researcher.new(:first_name => "Shayon", :last_name => "Saleh", :email => "s
 ss.password = "collabme13"
 ss.about_me = "I love research collaboration!"
 ss.experience = "Java, C++, Python, Rails"
-ss.publications = "Inference of Tumor Phylogenies with Improved Somatic Mutation Discovery"
 ss.save()
 
 kg = Researcher.new(:first_name => "Kristian", :last_name => "Gampong", :email => "kgampong@stanford.edu", :password => "collabme13", :password_confirmation => "collabme13")
@@ -133,7 +132,7 @@ work_experience2.research_lab = sail_lab
 work_experience2.save
 
 work_experience3 = WorkExperience.new
-work_experience3.title = 'Research Assistant'
+work_experience3.title = 'Software Engineering Intern'
 work_experience3.start_date = Time.new(2013, 6, 1)
 work_experience3.end_date = Time.new(2013, 9, 1)
 work_experience3.researcher = kg
