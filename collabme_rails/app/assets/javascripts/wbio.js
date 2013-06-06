@@ -12,6 +12,7 @@ var ioChatServer = 'http://localhost:8989';
 var ioFriendMap = {}
 var ioPollEvent = null; 
 var ioPolling = false; 
+var ioConnectRetries = 0; 
 
 function Message(command, uid){
 	this.command= command;
@@ -181,15 +182,27 @@ function ioInit(){
 	id = 0; 
 	socket = io.connect(ioChatServer);
 	socket.on('connect', function(){
+		ioConnectRetries = 0; 
 		console.log('connection success!');
 		var m = new Message("STATUS", uid)
 		m.status = 'ONLINE'; 
 		sendMessageToServer(m);  
 	});
+	socket.on('connect_failed', function () {
+		if (ioRetries > 2)
+			uiSetFriendListTitle('There seems to be trouble connecting to the chat server')
+		else
+			uiSetFriendListTitle('Waiting for connection to server')
+		window.setTimeout(ioInit, 5000)
+		ioRetries ++; 
+	});
 	socket.on('message', function(data){
 		console.log('Received message from server', data)
 		procMessage(data);  
 	});
+	socket.on('disconect', function (){
+
+	}); 
 }
 
 function ioGetFriends(){
@@ -201,6 +214,47 @@ function ioGetFriends(){
 		
 		ioGetFriendStatus();
 	})
+}
+
+function ajaxError(err){
+	console.log('ajax error')
+	if (err){
+		console.log('cause: ', err)
+	}
+	console.log('cause unknown');
+}
+
+function saveResponse(data){
+	console.log('save success!')
+}
+
+function ioSaveState(messages, drawables, uid, group){
+	$.ajax(
+		{ 	type: "POST",
+			url: ioRails + '/chat_sessions/read',
+			contentType: "spplication/json",
+			dataType: "json"
+			data: JSON.stringify({"message_blob": messages, "drawables_blob":drawables, "uid" : uid}),
+			success: saveResponse,
+			failure: ajaxError
+		);
+}
+
+function restoreState(data){
+	console.log('got db message state -- updating scrollback')
+	console.log('todo--')
+}
+
+function ioReadState(uid1, uid2, group){
+		$.ajax(
+		{ 	type: "POST",
+			url: ioRails + '/chat_sessions/read',
+			contentType: "spplication/json",
+			dataType: "json"
+			data: JSON.stringify({"uid" : uid}),
+			success: restoreState,
+			failure: ajaxError
+		);
 }
 
 function ioSendFlatten(layers, img){

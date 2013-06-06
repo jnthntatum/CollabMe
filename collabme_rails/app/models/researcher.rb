@@ -1,7 +1,7 @@
 class Researcher < ActiveRecord::Base
   acts_as_taggable
   acts_as_taggable_on :skills, :interests
-  attr_accessible :email, :first_name, :last_name, :about_me
+  attr_accessible :email, :first_name, :last_name, :about_me, :citations
   has_many :owned_projects, :class_name => "Project", :foreign_key => "researcher_id" 
   has_and_belongs_to_many :memberof, :class_name => "Project", :association_foreign_key => "project_id", :foreign_key => "researcher_id"
   has_many :direct_friendships, :class_name => "Friendship", :foreign_key => "user_id"
@@ -12,9 +12,9 @@ class Researcher < ActiveRecord::Base
   has_many :group_memberships, :class_name => "ResearchGroupMember", :foreign_key => "researcher_id"  
   has_many :groups, :class_name => "Group", :through => :group_memberships, :source => :group, :uniq => true
   
-  has_one :photo
+  has_one :photo, :as => :photo_interface
   has_many :posts, :as => :post_interface
-  
+
   has_many :requests, :as => :request_interface
 
   has_many :work_experiences

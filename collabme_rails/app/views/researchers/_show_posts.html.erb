@@ -1,0 +1,36 @@
+<h4>Posts</h4>
+<% @researcher.posts.each do |p| %>
+  <% creator = Researcher.find_by_id(p.creator_id)%>
+  <% creator_full_name = creator.first_name + ' ' + creator.last_name %>
+  <div class="row-fluid post_post">
+    <div class="span3 post_creator">
+      <%= link_to creator_full_name, creator %>
+    </div>
+    <div class="span9">
+      <div class="post_desc">
+        <%= p.desc %>
+      </div>
+      <div class="post_timestamp">
+        <%= p.created_at.getlocal.strftime("%B %d, %Y at %I:%M %p") %>
+      </div>
+    </div>
+  </div>    
+<% end %>
+<% if @researcher.posts.empty? %>
+  <div class="row-fluid">
+    Nothing here yet.
+  </div>
+<% end %>        
+<% if @currentUserPage
+     placeholder = 'Update your status...'
+   else
+     placeholder = 'Write something...'
+   end %>
+<div class="row-fluid post_form">
+  <%= form_for([@researcher, Post.new], :html => {}) do |p| %>
+    <%= p.text_area(:desc, {:placeholder => placeholder, :class => "span12 input-block-level", :rows => 2}) %>
+    <%= p.hidden_field(:creator_id, :value => session[:current_user_id]) %> 
+    <br />
+    <%= p.submit 'Post', :class => 'btn btn-link btn-small btn-block' %>
+  <% end %> 
+</div>

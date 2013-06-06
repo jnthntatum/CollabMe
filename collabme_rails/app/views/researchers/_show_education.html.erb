@@ -3,10 +3,14 @@
     <div class="experience_header">
       <h4><%= e.school.name %></h4>
       <% if e.degree && e.major %>
-        <h5><%= e.degree + ', ' + e.major %></h5>
+        <% if !e.degree.empty? && !e.major.empty? %>
+          <h5><%= e.degree + ', ' + e.major %></h5>
+        <% end %>
       <% end %>
       <% if e.specialization %>
-        <p><%= 'Specialization in ' + e.specialization %></p>
+        <% if !e.specialization.empty? %>
+          <p><%= 'Specialization in ' + e.specialization %></p>
+        <% end %>
       <% end %>
       <p class="experience_date">
         <%= e.start_date.getlocal.strftime("%B %Y") + ' - ' + e.end_date.getlocal.strftime("%B %Y") %> 

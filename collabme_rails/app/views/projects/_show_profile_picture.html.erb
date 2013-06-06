@@ -1,0 +1,6 @@
+<% if @project.photo %>
+  <%= link_to image_tag(@project.photo.file_name, :alt => "Profile Picture"), {:controller => 'projects', :action => 'edit_profile_picture', :id => params[:id]} %>
+<% else %>
+  <%= link_to image_tag("default-profile-pic.png", :alt => "Profile Picture"), {:controller => 'projects', :action => 'edit_profile_picture', :id => params[:id]} %>
+<% end %>
+    

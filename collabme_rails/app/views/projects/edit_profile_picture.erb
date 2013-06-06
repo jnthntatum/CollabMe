@@ -1,0 +1,17 @@
+<h1>Profile Picture</h1>
+<%= render 'shared/show_errors' %>
+<div class="row-fluid">
+  <div class="span6">
+    <% if @project.photo %>
+      <%= image_tag(@project.photo.file_name, :alt => "Profile Picture") %>
+    <% else %>
+      <%= image_tag("default-profile-pic.png", :alt => "Profile Picture") %>
+    <% end %>
+    <%= form_for :photo, :method => :post, :url => { :action => 'upload_picture' } do |f| %>
+      <br />
+      <%= f.file_field :file %>
+      <br />
+      <%= f.submit 'Upload Photo', :class => 'btn btn-primary' %>
+    <% end %>
+  </div> 
+</div>

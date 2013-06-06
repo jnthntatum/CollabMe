@@ -12,6 +12,9 @@ CollabmeRails::Application.routes.draw do
   get "researchers/addSkill"
   get "researchers/removeInterest"
   get "researchers/removeSkill"
+  get "researchers/publications"
+  get "researchers/email"
+  get "researchers/validate"
 
   get "chat_sessions/read"
   post "chat_sessions/save"
@@ -50,8 +53,8 @@ CollabmeRails::Application.routes.draw do
 
     resources :posts
     resources :requests
-    resources :educations
-    resource :projects
+    resources :projects
+    resource :photo
   end 
 
   resources :educations do
@@ -88,13 +91,19 @@ CollabmeRails::Application.routes.draw do
   resources :projects do
     resources :posts
     resources :requests
+    resource :photo
+    
     member do
       post 'add_member'
+      get 'edit_profile_picture'
+      post 'upload_picture'
     end
   end
 
   resources :groups do
     resources :requests
+    resource :photo
+
     member do
       post 'add_member'
     end

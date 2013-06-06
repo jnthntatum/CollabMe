@@ -1,5 +1,4 @@
-class ProjectsController < ApplicationController
-	
+class ProjectsController < ApplicationController	
 	def show
 	  id = params[:id]
 		@project = Project.find_by_id(id)
@@ -119,5 +118,34 @@ class ProjectsController < ApplicationController
 			end
 		end
 	end
+
+	def edit_profile_picture
+    @project = Project.find_by_id(params[:id])
+  end
+
+  def upload_picture
+    upload = params[:photo]
+    if upload      
+      @project = Project.find_by_id(params[:id])
+      
+      @photo = Photo.new
+      @photo.file_name = 'profile_pictures/' + Time.now.to_i.to_s + '_' + upload[:file].original_filename
+      @project.photo = @photo
+      
+      if @photo.save
+        File.open(Rails.root.join('app/assets', 'images', @photo.file_name), 'wb') do |f|
+          f.write(upload[:file].read)
+        end
+        redirect_to :controller => 'projects', :action => 'show', :id => params[:id]
+      else
+        flash.now[:error] = 'Sorry, file not saved.'
+        render edit_profile_picture_project_path
+      end
+    else
+      flash.now[:error] = 'Sorry, file not uploaded.'
+      @project = Project.find_by_id(params[:id])
+      render edit_profile_picture_project_path
+    end
+  end
 
 end

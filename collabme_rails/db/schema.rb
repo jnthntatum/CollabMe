@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130606063236) do
+=======
+ActiveRecord::Schema.define(:version => 20130606064834) do
+>>>>>>> f9138566ad9e3fc7b77e93dd33dae645efb7fdf9
 
   create_table "activities", :force => true do |t|
     t.integer  "work_experience_id"
@@ -27,6 +31,18 @@ ActiveRecord::Schema.define(:version => 20130606063236) do
     t.string   "drawables_blob"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "articles", :force => true do |t|
+    t.string   "title"
+    t.string   "authors"
+    t.string   "publisher"
+    t.integer  "citations"
+    t.integer  "year"
+    t.string   "full_article_url"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "authorid"
   end
 
   create_table "companies", :force => true do |t|
@@ -77,10 +93,13 @@ ActiveRecord::Schema.define(:version => 20130606063236) do
 
   create_table "photos", :force => true do |t|
     t.string   "file_name"
-    t.integer  "researcher_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "photo_interface_id"
+    t.string   "photo_interface_type"
   end
+
+  add_index "photos", ["photo_interface_id"], :name => "index_photos_on_photo_interface_id"
 
   create_table "posts", :force => true do |t|
     t.string   "desc"
@@ -151,6 +170,7 @@ ActiveRecord::Schema.define(:version => 20130606063236) do
     t.text     "about_me"
     t.text     "experience"
     t.text     "publications"
+    t.integer  "citations"
   end
 
   create_table "resources", :force => true do |t|
@@ -168,8 +188,9 @@ ActiveRecord::Schema.define(:version => 20130606063236) do
     t.integer  "education_id"
     t.string   "name"
     t.string   "location"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.string   "school_type"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "taggings", :force => true do |t|
