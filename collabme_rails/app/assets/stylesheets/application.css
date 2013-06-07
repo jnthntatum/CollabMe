@@ -100,6 +100,12 @@ body {
 	background-color: #333333;
 }
 
+.footer p {
+	color: #cccccc;
+	text-align: center;
+}
+
+/* Thumbnails */
 .img-circle {
 	display: inline-block;
 	height: 50px !important;
