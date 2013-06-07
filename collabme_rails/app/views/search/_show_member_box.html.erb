@@ -1,0 +1,61 @@
+<% if @entity.class.name == 'Researcher' %>
+  <div class="member_box">
+    <% @researcher = @entity %>
+    <% w = @researcher.work_experiences.first %>
+    <% if w %>
+      <div class="experience_header">
+        <h4><%= w.title %></h4>
+        <% if ! w.company.nil? %>
+          <p><%= w.company.name + '  |  ' + w.company.location %></p>
+        <% elsif ! w.research_lab.nil? %>
+          <p><%= w.research_lab.name + '  |  ' + w.research_lab.location %></p>
+        <% end %>
+        <% if w.start_date and w.end_date %>
+        <p class="experience_date">
+          <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
+        </p>
+        <% end %>
+      </div>
+    <% end %>
+    <% e = @researcher.educations.first %>
+    <% if e %>
+      <div class="experience_header">
+        <h4><%= e.school.name %></h4>
+        <% if e.degree && e.major %>
+          <% if !e.degree.empty? && !e.major.empty? %>
+            <h5><%= e.degree + ', ' + e.major %></h5>
+          <% end %>
+        <% end %>
+        <% if e.specialization %>
+          <% if !e.specialization.empty? %>
+            <p><%= 'Specialization in ' + e.specialization %></p>
+          <% end %>
+        <% end %>
+        <% if e.start_date and e.end_date %>
+        <p class="experience_date">
+          <%= e.start_date.getlocal.strftime("%B %Y") + ' - ' + e.end_date.getlocal.strftime("%B %Y") %> 
+        </p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% elsif @entity.class.name == 'Project' %>
+  <div class="member_box">
+    <% @project = @entity %>
+    <% @entity = @project.owner %>    
+    <%= render :partial => 'shared/show_medium_thumbnail' %> 
+
+    <% @project.members.each do |m| %>
+      <% @entity = m %>
+      <%= render :partial => 'shared/show_medium_thumbnail' %> 
+    <% end %>
+  </div>
+<% elsif @entity.class.name == 'Group' %>
+  <div class="member_box">
+    <% @group = @entity %>
+    <% @group.researchers.each do |r| %>
+      <% @entity = r %>
+      <%= render :partial => 'shared/show_medium_thumbnail' %> 
+    <% end %>
+  </div>
+<% end %>
