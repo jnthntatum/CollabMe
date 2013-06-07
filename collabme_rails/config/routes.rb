@@ -1,6 +1,6 @@
 CollabmeRails::Application.routes.draw do
 
-  get "about/index"
+  get "about" => 'about#index' 
 
   get "profile/index"
 
