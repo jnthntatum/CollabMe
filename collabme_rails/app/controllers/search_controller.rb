@@ -1,4 +1,7 @@
 class SearchController < ApplicationController
+
+  Appearance = Struct.new(:researcherID, :priority)
+
   def search
   	type = params[:type]
   	type = type.to_i
@@ -19,6 +22,7 @@ class SearchController < ApplicationController
     searchTerms = @query.split
     @results = []
     searchTerms.each do |term|
+      term = '%' + term + '%'
       researchersFirstName = Researcher.where("first_name LIKE ?", term)
       unless researchersFirstName.empty?
         @results += researchersFirstName
@@ -31,6 +35,41 @@ class SearchController < ApplicationController
       unless @tagged.empty?
         @results += @tagged
       end
+      schools = School.where("name LIKE ?", term)
+      schools.each do |school|
+        @results += school.researchers
+      end
+
+      schools = School.where("name LIKE ?", term)
+      schools.each do |school|
+        @results += school.researchers
+      end
+
+      schools = School.where("location LIKE ?", term)
+      schools.each do |school|
+        @results += school.researchers
+      end
+
+      companies = Company.where("name LIKE ?", term)
+      companies.each do |company|
+        @results += company.researchers
+      end
+
+      companies = Company.where("location LIKE ?", term)
+      companies.each do |company|
+        @results += company.researchers
+      end
+
+      labs = ResearchLab.where("name LIKE ?", term)
+      labs.each do |lab|
+        @results += lab.researchers
+      end
+
+      labs = ResearchLab.where("location LIKE ?", term)
+      labs.each do |lab|
+        @results += lab.researchers
+      end
+
     end
 
     @researchers = @results
@@ -39,7 +78,16 @@ class SearchController < ApplicationController
     @researchers.each do |researcher|
       unique[researcher.id] += 1
     end
+    require 'pqueue'
 
+    arrayForPQ = []
+    unique.each do | key, value|
+      version = Appearance.new(key, value)
+      arrayForPQ += [version] 
+    end
+
+
+    @pq = PQueue.new(arrayForPQ){ |a,b| a[:priority] > b[:priority] }
     
   end
 

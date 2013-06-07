@@ -2,7 +2,10 @@
 
 <p>Searched for <%= @query%></p>
 
-<%@researchers.each do |researcher|%>
+<%while @pq.empty? == false%>
+	<% app = @pq.pop%>
+	<% id = app[:researcherID] %>
+	<% researcher = Researcher.find_by_id(id)%>
 	<% researcher_name = researcher.first_name + " " + researcher.last_name%>
 	<%= link_to researcher_name, :controller => "researchers", :action => "show", :id => researcher%><br>
 <%end%>
