@@ -45,8 +45,8 @@ mg = Researcher.new(:first_name => 'Michael', :last_name => 'Genesereth', :email
 lg = Researcher.new(:first_name => 'Leonidas', :last_name => 'Guibas', :email => 'guibas@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ph = Researcher.new(:first_name => 'Patrick', :last_name => 'Hanrahan', :email => 'hanrahan@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 jh = Researcher.new(:first_name => 'Jeff', :last_name => 'Heer', :email => 'jheer@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-john_hennessy= Researcher.new(:first_name => 'John', :last_name => 'Hennessy', :email => 'the_hennessy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-mh= Researcher.new(:first_name => 'Mark', :last_name => 'Horowitz', :email => 'horowitz@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+john_hennessy = Researcher.new(:first_name => 'John', :last_name => 'Hennessy', :email => 'the_hennessy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+mh = Researcher.new(:first_name => 'Mark', :last_name => 'Horowitz', :email => 'horowitz@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 sachin_katti = Researcher.new(:first_name => 'Sachin', :last_name => 'Katti', :email => 'skatti@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ok = Researcher.new(:first_name => 'Oussama', :last_name => 'Khatib', :email => 'khatib@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 sk = Researcher.new(:first_name => 'Scott', :last_name => 'Klemmer', :email => 'srk@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
@@ -202,11 +202,21 @@ Students working in CSL are admitted to either the Electrical Engineering or the
 cs_lab.researchers << aa << db << dc << bd << dd << de << rf << hg << lg << ph << john_hennessy << mh << sk << monica_lam << pl << ml << dm << nm << tm << sm << ko << jo << bp << mr << jw << tw
 cs_lab.save()
 
+graphics_lab = Group.new(:name => "Stanford Computer Graphics Laboratory", :email => "graphics@estanfor.edu", :description => "Stanford Computer Graphics Laboratory")
+graphics_lab.researchers << rf << lg << ph << jh << sk << vk << ml
+graphics_lab.save()
+
+vis_lab = Group.new(:name => "The Stanford Visualization Group", :email => "viz_group@estanfor.edu", :description => "As digital information becomes increasingly cheap and ubiquitous, how will we keep abreast with the rising tide of data? We investigate the perceptual, cognitive, and social factors involved in making sense of large data collections, and develop novel interactive systems for visual analysis and communication.")
+vis_lab.researchers << ph << jh
+vis_lab.save()
+
 #
 # Researcher Info
 #
 gb.about_me = "Only 2-3% of the 3 billion bases in the human genome is used to encode the genome's 20-25,000 protein coding genes. Recent genomics advances have revealed a multitude of cis-regulatory regions that occupy at least 3-5 times more of the genome. These roughly 1,000,000 promoters, enhancers, silencers and insulators regulate gene expression in every cell in our body, allowing different cells to express very different protein repertoires. We study this fascinating 'control layer' of the human genome, with an aim to: identify cis-regulatory elements in the human genome and annotate them for function; map the cis-regulatory architecture controlling early limb, forebrain and placenta development, and understand its contribution to human disease; study the origins and evolution of regulatory genomic regions and reveal their contribution to vertebrate, mammalian and human specific evolution.
 To address these challenges we use a potent combination of computational and experimental approaches. We write computational tools to discover cis-regulatory codes and trace their evolution; we run our tools on massive genomic datasets to generate testable hypotheses; and we perform molecular biology experiments to validate our hypotheses and generate novel ones. We work in small teams of experimentalists and computational tool users, who interact directly with our computational tool builders."
+
+lg.about_me = "Professor Guibas heads the Geometric Computation group in the Computer Science Department of Stanford University and is a member of the Computer Graphics and Artificial Intelligence Laboratories. He works on algorithms for sensing, modeling, reasoning, rendering, and acting on the physical world. Professor Guibas' interests span computational geometry, geometric modeling, computer graphics, computer vision, sensor networks, robotics, and discrete algorithms --- all areas in which he has published and lectured extensively."
 
 #
 # Researcher Experience
@@ -230,6 +240,11 @@ stanford_cs.name = 'Stanford Computer Science Depatrment'
 stanford_cs.location = 'Stanford, CA'
 stanford_cs.save
 
+stanford_ee = Company.new
+stanford_ee.name = 'Stanford Electrical Engineering Depatrment'
+stanford_ee.location = 'Stanford, CA'
+stanford_ee.save
+
 work_experience_dd = WorkExperience.new
 work_experience_dd.title = 'Professor of Computer Science'
 work_experience_dd.start_date = Time.new(1987, 1, 1)
@@ -237,6 +252,37 @@ work_experience_dd.end_date = Time.now()
 work_experience_dd.researcher = dd
 work_experience_dd.company = stanford_cs
 work_experience_dd.save
+
+work_experience_mg = WorkExperience.new
+work_experience_mg.title = 'Associate Professor of Computer Science'
+work_experience_mg.end_date = Time.now()
+work_experience_mg.researcher = mg
+work_experience_mg.company = stanford_cs
+work_experience_mg.save
+
+work_experience_mh = WorkExperience.new
+work_experience_mh.title = 'Chairman'
+work_experience_mh.start_date = Time.new(1984, 1, 1)
+work_experience_mh.end_date = Time.now()
+work_experience_mh.researcher = mh
+work_experience_mh.company = stanford_ee
+work_experience_mh.save
+
+work_experience_sachin_katti = WorkExperience.new
+work_experience_sachin_katti.title = 'Associate Professor'
+work_experience_sachin_katti.start_date = Time.new(2010, 1, 1)
+work_experience_sachin_katti.end_date = Time.now()
+work_experience_sachin_katti.researcher = sachin_katti
+work_experience_sachin_katti.company = stanford_ee
+work_experience_sachin_katti.save
+
+work_experience_sachin_katti2 = WorkExperience.new
+work_experience_sachin_katti2.title = 'Associate Professor'
+work_experience_sachin_katti2.start_date = Time.new(2010, 1, 1)
+work_experience_sachin_katti2.end_date = Time.now()
+work_experience_sachin_katti2.researcher = sachin_katti
+work_experience_sachin_katti2.company = stanford_cs
+work_experience_sachin_katti2.save
 
 aa.save()
 sb.save()
@@ -301,6 +347,9 @@ sb.direct_friends << gb;
 #
 de_profile_pic = Photo.new(:file_name => 'profile_pictures/1370573979_d_engler_profile.jpg')
 de.photo = de_profile_pic
+
+hg_profile_pic = Photo.new(:file_name => 'profile_pictures/1370574737_hector.jpg')
+hg.photo = hg_profile_pic
 
 ##################################
 

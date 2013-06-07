@@ -7,9 +7,11 @@
       <% elsif ! w.research_lab.nil? %>
         <p><%= w.research_lab.name + '  |  ' + w.research_lab.location %></p>
       <% end %>
+      <% if w.start_date and w.end_date %>
       <p class="experience_date">
         <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
       </p>
+      <% end %>
     <% w.activities.each do |a| %> 
       <p class="activity">
         <%= '-  ' + a.activity %>
