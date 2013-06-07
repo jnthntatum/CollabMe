@@ -22,7 +22,13 @@
           <a href="#tab3" data-toggle="tab">Publications</a>
         </li>
         <li>
-          <a href="#tab4" data-toggle="tab">About Me</a>
+          <a href="#tab4" data-toggle="tab">Skills</a>
+        </li>
+        <li>
+          <a href="#tab5" data-toggle="tab">Interests</a>
+        </li>
+        <li>
+          <a href="#tab6" data-toggle="tab">About Me</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -37,25 +43,23 @@
           <%= render :partial => 'show_education' %>
         </div>
 
+        <!-- Publications -->
         <div class="tab-pane" id="tab3">
-          <p>
-            <% if @researcher.published %>
-              <% articles = Article.find_all_by_aid(@researcher.id) %>
-              <% articles.each do |article|%>
-                <br>
-                <% linkname = article.title + " by " + article.authors %>
-                <%= link_to linkname, article.full_article_url %>
-              <% end%>
-            <% else %>
-              <%= 'Nothing here yet.' %>
-              <br>
-              <%= link_to "Add Publications by Verifying Identity", {:controller => "researchers", :action => "publications", :id => @researcher} %>
-              <br>
-            <% end %>
-            <br>
-          </p>
+          <%= render :partial => 'show_publications' %>
         </div>
+
+        <!-- Skills -->
         <div class="tab-pane" id="tab4">
+          <%= render :partial => 'show_skills' %>
+        </div>
+
+        <!-- Interests -->
+        <div class="tab-pane" id="tab5">
+          <%= render :partial => 'show_interests' %>
+        </div>
+
+        <!-- About Me -->
+        <div class="tab-pane" id="tab6">
           <div>
             <p><%= @researcher.about_me %></p>
             
