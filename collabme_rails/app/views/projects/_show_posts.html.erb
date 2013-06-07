@@ -1,0 +1,28 @@
+<h4>Bulletin Board</h4>
+<% @project.posts.each do |p| %>
+  <% creator = Researcher.find_by_id(p.creator_id)%>
+  <% creator_full_name = creator.first_name + ' ' + creator.last_name %>
+  <div class="row-fluid post_post">
+    <div class="span3 post_creator">
+      <% @entity = creator %>
+      <%= render :partial => 'shared/show_thumbnail' %>
+      <%= link_to creator_full_name, creator %>
+    </div>
+    <div class="span9">
+      <div class="post_desc">
+        <%= p.desc %>
+      </div>
+      <div class="post_timestamp">
+        <%= p.created_at.getlocal.strftime("%B %d, %Y at %I:%M %p") %>
+      </div>
+    </div>
+  </div>    
+<% end %>
+<div class="row-fluid post_form">
+  <%= form_for([@project, Post.new], :html => {}) do |p| %>
+    <%= p.text_area(:desc, {:placeholder => 'Write new post...', :class => "span12 input-block-level", :rows => 2}) %>
+    <%= p.hidden_field(:creator_id, :value => session[:current_user_id]) %> 
+    <br />
+    <%= p.submit 'Post', :class => 'btn btn-link btn-small btn-block' %>
+  <% end %> 
+</div>

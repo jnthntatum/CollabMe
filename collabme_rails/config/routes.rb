@@ -104,6 +104,7 @@ CollabmeRails::Application.routes.draw do
   end
 
   resources :groups do
+    resources :posts
     resources :requests
     resource :photo
 

@@ -100,8 +100,19 @@ body {
 	background-color: #333333;
 }
 
+.footer p {
+	color: #cccccc;
+	text-align: center;
+}
+
+/* Thumbnails */
 .img-circle {
+	display: inline-block;
 	height: 50px !important;
 	width: 50px !important;
 	margin-right: 5px;
+}
+
+.small_profile {
+	margin: 2px auto;
 }

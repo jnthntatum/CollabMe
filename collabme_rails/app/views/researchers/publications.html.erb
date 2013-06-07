@@ -10,10 +10,12 @@
       </div>
     </div>
     <div class="span9">
+      <h1>Click the profile that is actually yours</h1>
       <h1><%= @researcher.first_name + ' ' + @researcher.last_name %></h1>
         <% profilePresent = false%>
         <%= @potential_publications.authors.each do |author| %>
           <%= link_to author.name, {:controller => "researchers", :action => "validate", :id => params[:id], :authorid =>  author.id, :citations => author.citations} %>
+          <%= link_to "Google Scholar Profile", author.author_url%>
         <%end%>
         <%@potential_publications.authors do |pub|%>
           <%=pub%>

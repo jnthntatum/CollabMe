@@ -47,16 +47,16 @@ ph = Researcher.new(:first_name => 'Patrick', :last_name => 'Hanrahan', :email =
 jh = Researcher.new(:first_name => 'Jeff', :last_name => 'Heer', :email => 'jheer@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 john_hennessy= Researcher.new(:first_name => 'John', :last_name => 'Hennessy', :email => 'the_hennessy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 mh= Researcher.new(:first_name => 'Mark', :last_name => 'Horowitz', :email => 'horowitz@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-sk = Researcher.new(:first_name => 'Sachin', :last_name => 'Katti', :email => 'skatti@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+sachin_katti = Researcher.new(:first_name => 'Sachin', :last_name => 'Katti', :email => 'skatti@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ok = Researcher.new(:first_name => 'Oussama', :last_name => 'Khatib', :email => 'khatib@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 sk = Researcher.new(:first_name => 'Scott', :last_name => 'Klemmer', :email => 'srk@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 don_knuth = Researcher.new(:first_name => 'Don', :last_name => 'Knuth', :email => 'realmailonly@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 dk = Researcher.new(:first_name => 'Daphne', :last_name => 'Koller', :email => 'koller@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 vk = Researcher.new(:first_name => 'Vladlen', :last_name => 'Koltun', :email => 'vladlen@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ck = Researcher.new(:first_name => 'Christos', :last_name => 'Kozyrakis', :email => 'the_hennessy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-ml = Researcher.new(:first_name => 'Monica', :last_name => 'Lam', :email => 'lam@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+monica_lam = Researcher.new(:first_name => 'Monica', :last_name => 'Lam', :email => 'lam@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 jl = Researcher.new(:first_name => 'Jure', :last_name => 'Leskovec', :email => 'jure@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-pl = Researcher.new(:first_name => 'Philip', :last_name => 'Levis', :email => 'philip.levis@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+philip_levis = Researcher.new(:first_name => 'Philip', :last_name => 'Levis', :email => 'philip.levis@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ml = Researcher.new(:first_name => 'Marc', :last_name => 'Levoy', :email => 'levoy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 fl = Researcher.new(:first_name => 'Fei-Fei', :last_name => 'Li', :email => 'feifeili@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 pl = Researcher.new(:first_name => 'Percy', :last_name => 'Liang', :email => 'pliang@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
@@ -117,19 +117,126 @@ education_aa2.end_date = Time.new(1988, 6, 1)
 education_aa2.researcher = aa
 education_aa2.save
 
+syracuse = School.new
+syracuse.name = 'Syracuse University'
+syracuse.location = 'Syracuse, NY'
+syracuse.school_type = 'university'
+syracuse.save
+
+education_sc2 = Education.new
+education_sc2.school = cornell
+education_sc2.degree = 'B.S.'
+education_sc2.major = 'Computer Science'
+education_sc2.researcher = sc
+education_sc2.save
+
+education_sc = Education.new
+education_sc.school = syracuse
+education_sc.degree = 'M.S.'
+education_sc.major = 'Computer Science'
+education_sc.researcher = sc
+education_sc.save
+
+education_sc3 = Education.new
+education_sc3.school = syracuse
+education_sc3.degree = 'Ph.D.'
+education_sc3.major = 'Computer Science'
+education_sc3.researcher = sc
+education_sc3.save
+
+ucla = School.new
+ucla.name = 'University of California - Los Angeles'
+ucla.location = 'Los Angeles, CA'
+ucla.school_type = 'university'
+ucla.save
+
+education_rf = Education.new
+education_rf.school = ucla
+education_rf.degree = 'Ph.D.'
+education_rf.major = 'Mathematics'
+education_rf.start_date = Time.new(1990, 9, 1)
+education_rf.end_date = Time.new(1996, 6, 1)
+education_rf.researcher = rf
+education_rf.save
+
+#
+# Researcher Projects
+#
+ddos_pj = Project.new(:name => "Defense against Distributed Denial of Service Attacks", :description => "Distributed Denial-of-Service (DDoS) attacks are an acute contemporary problem with few practical solutions available today. One key-reason why such attacks are hard to block is the large number of attack sources, which can be orders of magnitude higher than the number of filters available at the victim's firewall -- wire-speed filters are typically stored in expensive, power-hungry TCAM; today, the most sophisticated hardware router accommodates a few hundred thousand filters, while an attack can involve millions of attack sources, evenly distributed across Internet prefixes. If the victim's firewall cannot block attack traffic by itself, the straightforward solution is to push filtering of attack traffic back into the Internet core. Unfortunately, this approach does not scale, because it introduces end-to-end filtering state into core routers. Yet, there are enough filtering resources in the Internet to block large-scale attacks; they are located close to the attack sources. Active Internet Traffic Filtering (AITF) leverages this observation and enables the victim to (i) identify routers located close to the attack sources and (ii) make them block their misbehaving clients.
+
+We use a hardware-friendly variant of Route Record to limit source address spoofing and provide the victim with a list of border routers that forward attack traffic. Upon identifying an undesired flow, the victim sends a filtering request to its gateway. The victim's gateway temporarily blocks the undesired flow and identifies the border router located closest to the attack source(s) -- call it the attack gateway. Then, the victim's gateway initiates a 'counter-connection' setup with the attack gateway, i.e., an agreement not to transmit certain packets. As soon as the counter-connection setup is completed, the victim's gateway can remove its temporary filter. If the attack gateway does not cooperate, the victim's gateway can escalate the filtering request to the next border router closest to the attack gateway. Escalation can continue recursively until a router along the attack path responds and a counter-connection setup is completed. If no router responds, attack traffic is blocked locally by the victim's gateway. However, AITF both assists and motivates routers close to the attack source(s) to help block attack traffic.
+
+AITF enables a victim to have an undesired flow blocked within milliseconds. Also, an AITF-enabled router can block millions of flows with tens of thousands of filters and a few megabytes of DRAM -- resources easly accommodated by today's routers. Finally, AITF can be deployed incrementally and yields a concrete benefit even to the very first adopters.")
+ddos_pj.owner = dc;
+ddos_pj.save()
+
 #
 # Researcher Groups
 #
 
-g = Group.new(:name => "The Batzoglou Lab", :email => "serafim@estanfor.edu", :description => "We develop and apply methods for the analysis of cancer genomes. Currently we have two ongoing collaborative projects, on breast cancer and medulloblastoma.")
-g.researchers << sb << ss;
-g.save();
+batz_lab = Group.new(:name => "The Batzoglou Lab", :email => "serafim@estanfor.edu", :description => "We develop and apply methods for the analysis of cancer genomes. Currently we have two ongoing collaborative projects, on breast cancer and medulloblastoma.")
+batz_lab.researchers << sb << ss;
+batz_lab.save();
+
+hci_group = Group.new(:name => "Stanford HCI Group", :email => "stanordHCI@estanfor.edu", :description => "CURRENT PROJECTS: Interactive Cognitive Aid; Designing an interactive cognitive aid system for crisis in the operating room; Private, Accountable Crowdsourcing Help people complete tasks; Bricolage Web design alternatives by borrowing from examples; Prototyping Theory How prototyping practices affect design work; Self & Peer Assessment Learn creative skills and wisdom.")
+hci_group.researchers << mb << jh << sk << tw;
+hci_group.save();
+
+crypto_group = Group.new(:name => "Applied Crypto Group", :email => "crypto@estanfor.edu", :description => "The Applied Crypto Group is a part of the Security Lab in the Computer Science Department at Stanford University. Research projects in the group focus on various aspects of network and computer security. In particular the group focuses on applications of cryptography to real world security problems.")
+crypto_group.researchers << db
+crypto_group.save()
+
+security_lab = Group.new(:name => "Stanford Security Laboratory", :email => "security@estanfor.edu", :description => "The Security Lab is a part of the Computer Science Department at Stanford University. Research projects in the group focus on various aspects of network and computer security.")
+security_lab.researchers << aa << db << dd << hg << ml << dm << nm << jm << mr
+security_lab.save()
+
+cs_lab = Group.new(:name => "Computer Systems Laboratory", :email => "cs_lab@estanfor.edu", :description => "The Computer Systems Laboratory is a joint lab of the Departments of Electrical Engineering and Computer Science located on the Stanford University Campus in the Gates Computer Science Building.
+
+Established in 1968, CSL has grown to include approximately 20 faculty members and 150 Ph.D. students. CSL is internationally recognized for its excellence; the faculty, research staff and students are widely known for their leadership in developing new ideas and trends in the design, organization, and use of computers. CSL is distinguished in its research and teaching.
+
+Research in CSL is both experimental and theoretical, traversing many domains: operating systems, computer networking, special architectures, compilers, programming languages, information management, graphics, security, reliability and fault tolerance, system specification and verification, user interfaces, integrated circuit design and special computer architectures. Current research being done in the Computer Systems Laboratory can be viewed at CSL Research or Computer Forum. Technical reports are also available from 1960 to 1990 and for 2000 on.
+
+Teaching is formalized in the classroom, but constantly challenged and enriched through the hands-on work of the various CSL project groups and the wider influence of Silicon Valley technology. Of special interest is the Stanford Electrical Engineer Computer Systems Colloquium which is open to the public. The Colloquium is an ongoing guest lecture series touching on many elements of computer systems, the technologies they employ, and the systems they enable. Outstanding and sometimes controversial speakers are drawn form academia, commercial research labs, and industry. You can review the current program on the Colloquium website and join us for the next talk! Students may enroll in the Colloquium as a class, EE380, and will earn 1 unit of S/NC credit.
+
+Students working in CSL are admitted to either the Electrical Engineering or the Computer Science department. Usually students with primary interest in VLSI, CAD, and computer architecture come from the EE department, while students with interest in compilers, operating systems, and programming environments come from the CS department. Because of the interdisciplinary nature of the lab, there are no rigid student classifications; undergraduates, Masters students and Ph.D. candidates from either department can work with any faculty member or any research project for which they qualify. It is just this interdisciplinary composition of the research teams that has proven the CSL to be a good environment for nurturing interesting and profitable ideas.")
+cs_lab.researchers << aa << db << dc << bd << dd << de << rf << hg << lg << ph << john_hennessy << mh << sk << monica_lam << pl << ml << dm << nm << tm << sm << ko << jo << bp << mr << jw << tw
+cs_lab.save()
 
 #
 # Researcher Info
 #
 gb.about_me = "Only 2-3% of the 3 billion bases in the human genome is used to encode the genome's 20-25,000 protein coding genes. Recent genomics advances have revealed a multitude of cis-regulatory regions that occupy at least 3-5 times more of the genome. These roughly 1,000,000 promoters, enhancers, silencers and insulators regulate gene expression in every cell in our body, allowing different cells to express very different protein repertoires. We study this fascinating 'control layer' of the human genome, with an aim to: identify cis-regulatory elements in the human genome and annotate them for function; map the cis-regulatory architecture controlling early limb, forebrain and placenta development, and understand its contribution to human disease; study the origins and evolution of regulatory genomic regions and reveal their contribution to vertebrate, mammalian and human specific evolution.
 To address these challenges we use a potent combination of computational and experimental approaches. We write computational tools to discover cis-regulatory codes and trace their evolution; we run our tools on massive genomic datasets to generate testable hypotheses; and we perform molecular biology experiments to validate our hypotheses and generate novel ones. We work in small teams of experimentalists and computational tool users, who interact directly with our computational tool builders."
+
+#
+# Researcher Experience
+#
+hci_lab = ResearchLab.new
+hci_lab.name = 'Stanford HCI Group'
+hci_lab.location = 'Stanford, CA'
+hci_lab.focus = 'Human-Computer Interaction'
+hci_lab.save
+
+work_experience_mb = WorkExperience.new
+work_experience_mb.title = 'Assistant Professor, Computer Science Department'
+work_experience_mb.start_date = Time.new(2013, 1, 1)
+work_experience_mb.end_date = Time.now()
+work_experience_mb.researcher = mb
+work_experience_mb.research_lab = hci_lab
+work_experience_mb.save
+
+stanford_cs = Company.new
+stanford_cs.name = 'Stanford Computer Science Depatrment'
+stanford_cs.location = 'Stanford, CA'
+stanford_cs.save
+
+work_experience_dd = WorkExperience.new
+work_experience_dd.title = 'Professor of Computer Science'
+work_experience_dd.start_date = Time.new(1987, 1, 1)
+work_experience_dd.end_date = Time.now()
+work_experience_dd.researcher = dd
+work_experience_dd.company = stanford_cs
+work_experience_dd.save
 
 aa.save()
 sb.save()
@@ -147,7 +254,7 @@ mg.save()
 lg.save()
 ph.save()
 ok.save()
-sk.save()
+sachin_katti.save()
 jh.save()
 john_hennessy.save()
 mh.save()
@@ -156,9 +263,9 @@ don_knuth.save()
 dk.save()
 vk.save()
 ck.save()
-ml.save()
+monica_lam.save()
 jl.save()
-pl.save()
+philip_levis.save()
 ml.save()
 fl.save()
 jm.save()
@@ -188,6 +295,12 @@ rw.save()
 # Researcher Friends
 #
 sb.direct_friends << gb; 
+
+#
+# Researcher Profile Pics
+#
+de_profile_pic = Photo.new(:file_name => 'profile_pictures/1370573979_d_engler_profile.jpg')
+de.photo = de_profile_pic
 
 ##################################
 

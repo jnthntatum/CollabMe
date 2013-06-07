@@ -12,9 +12,11 @@
           <p><%= 'Specialization in ' + e.specialization %></p>
         <% end %>
       <% end %>
+      <% if e.start_date and e.end_date %>
       <p class="experience_date">
         <%= e.start_date.getlocal.strftime("%B %Y") + ' - ' + e.end_date.getlocal.strftime("%B %Y") %> 
       </p>
+      <% end %>
     </div>
     <!--
     <% e.courses.each do |c| %> 
