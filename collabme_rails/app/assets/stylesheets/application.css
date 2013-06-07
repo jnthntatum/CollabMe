@@ -113,9 +113,19 @@ body {
 	margin: 2px auto;
 }
 
+.medium-circle {
+  height: 60px !important;
+  width: 60px !important;
+}
+
 .big-circle {
   height: 100px !important;
   width: 100px !important;
+}
+
+.very-big-circle {
+  height: 120px !important;
+  width: 120px !important;
 }
 
 /* Add Info Icons */
@@ -268,6 +278,11 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
 }
 
 .search_result {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #cccccc;
+}
+
+.search_title {
+  margin-top: 0;
 }

@@ -1,0 +1,12 @@
+<% if @entity.class.name == 'Researcher'
+     title = @entity.first_name + ' ' + @entity.last_name
+   elsif @entity.class.name == 'Group'
+     title = @entity.name
+   elsif @entity.class.name == 'Project'
+     title = @entity.name
+   end %>
+<% if @entity.photo %>
+  <%= link_to image_tag(@entity.photo.file_name, :alt => 'Profile Picture', :class => 'img-circle', :title => title), @entity %>
+<% else %>
+  <%= link_to image_tag('default-profile-pic.png', :alt => 'Profile Picture', :class => 'img-circle', :title => title), @entity %>
+<% end %>

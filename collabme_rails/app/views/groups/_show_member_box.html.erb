@@ -1,0 +1,7 @@
+<div class="member_box">
+  <% @group = @entity %>
+  <% @group.researchers.each do |r| %>
+    <% @entity = r %>
+    <%= render :partial => 'shared/show_medium_thumbnail' %> 
+  <% end %>
+</div>
