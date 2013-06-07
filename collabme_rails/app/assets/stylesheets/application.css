@@ -121,3 +121,7 @@ body {
 .add_info:hover {
 	text-decoration: none;
 }
+
+.text-label {
+	padding-top: 5px;
+}

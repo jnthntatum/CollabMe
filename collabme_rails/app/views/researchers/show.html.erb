@@ -28,7 +28,7 @@
           <a href="#interest_tab" data-toggle="tab">Interests</a>
         </li>
         <li>
-          <a href="#tab6" data-toggle="tab">About Me</a>
+          <a href="#about_me_tab" data-toggle="tab">About Me</a>
         </li>
       </ul>
 
@@ -60,8 +60,8 @@
         </div>
 
         <!-- About Me -->
-        <div class="tab-pane" id="tab6">
-          <%= @researcher.about_me %>
+        <div class="tab-pane" id="about_me_tab">
+          <%= render :partial => 'show_about_me' %>
         </div>
       </div>
     </div>

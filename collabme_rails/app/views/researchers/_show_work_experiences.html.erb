@@ -1,4 +1,4 @@
-<% if @researcher.work_experiences %>
+<% if !@researcher.work_experiences.empty? %>
   <% @researcher.work_experiences.each do |w| %>
     <div class="experience_header">
       <h4><%= w.title %></h4>

@@ -1,5 +1,13 @@
-<% if @researcher.photo %>
-  <%= link_to image_tag(@researcher.photo.file_name, :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
+<% if @currentUserPage %>
+  <% if @researcher.photo %>
+    <%= link_to image_tag(@researcher.photo.file_name, :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
+  <% else %>
+    <%= link_to image_tag("default-profile-pic.png", :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
+  <% end %>
 <% else %>
-  <%= link_to image_tag("default-profile-pic.png", :alt => "Profile Picture"), {:controller => 'researchers', :action => 'edit_profile_picture', :id => params[:id]} %>
+  <% if @researcher.photo %>
+    <%= image_tag(@researcher.photo.file_name, :alt => 'Profile Picture') %>
+  <% else %>
+    <%= image_tag('default-profile-pic.png', :alt => 'Profile Picture') %>
+  <% end %>
 <% end %>

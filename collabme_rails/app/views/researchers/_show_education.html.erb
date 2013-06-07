@@ -1,4 +1,4 @@
-<% if @researcher.educations %>
+<% if !@researcher.educations.empty? %>
   <% @researcher.educations.each do |e| %>
     <div class="experience_header">
       <h4><%= e.school.name %></h4>

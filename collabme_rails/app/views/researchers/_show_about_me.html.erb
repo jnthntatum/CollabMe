@@ -1,0 +1,11 @@
+<% if @researcher.about_me %>
+  <p><%= @researcher.about_me %></p>
+<% else %>
+  <p>Nothing here yet.</p>
+<% end %>
+<% if @currentUserPage %>
+  <%= link_to edit_researcher_path(:anchor => 'personal') do %>
+    <i class="icon-plus"></i>
+    Change About Me
+  <% end %>
+<% end %>
