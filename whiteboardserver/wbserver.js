@@ -154,9 +154,11 @@ function HandleCreate(client, message, uid){
 			s.addUser(message.uids[i])
 		}	
 	}
+
 	message.sid=sessions.length; 
 	
 	message.sid = sessions.length;
+	broadcast(s, message, uid);
 	sendAck(client,message);  
 	sessions.push(s); 
 }
@@ -346,6 +348,15 @@ function HandleRestore(client, message, uid){
 
 }
 
+function HandleWhoIs(client, message, uid){
+	if(!validSid(message)){
+		sendError(client, message, 'invalid sid')
+		return; 
+	}
+	message.session = sessions[message.sid];
+	sendAck(client, message); 
+}
+
 /*function HandleX(client, message, uid){
 
 }*/
@@ -363,6 +374,7 @@ function SetUpEventHandles(){
 	FNs["HISTORY"] = HandleHistory;
 	FNs["FLATTEN"] = HandleFlatten;
 	FNs["RESTORE"] = HandleRestore;  
+	FNs["WHOIS"] = HandleWhoIs;
 }
 
 function procMessage(client, message){

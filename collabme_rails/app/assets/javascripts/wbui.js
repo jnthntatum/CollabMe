@@ -18,6 +18,7 @@ var uiMode = "Squiggle"
 var	uiSensitivity = 8
 var name = "unset";
 var uiCanvOffset; 
+var uiMaxScroll = 10000000;
 //====================================
 //EVENT HANDLING
 //====================================
@@ -179,7 +180,6 @@ function dist(x1, y1, x2, y2){
 function dist2(x1, y1, x2, y2 ){
 	var dx = x1- x2; 
 	var dy = y1- y2; 
-	console.log('distance: ', (dy * dy) + (dx *dx)  )
 	return ((dy * dy) + (dx *dx)); 
 }
 
@@ -573,7 +573,9 @@ function makeChatLine(author, text){
 }
 
 function addLine(context, author, value){
-	$('.chat_history', context)[0].appendChild(makeChatLine(author, value))
+	var node = $('.chat_history', context)[0];
+	node.appendChild(makeChatLine(author, value))
+	node.scrollTop=uiMaxScroll;
 }
 
 function chatKeyupCB(ev){
