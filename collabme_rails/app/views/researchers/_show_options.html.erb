@@ -9,11 +9,11 @@
   <p><%= link_to @researcher.email, {:controller =>"researchers", :action => "email"} %></p>
       
     <script type="text/javascript" src="http://cdn.dev.skype.com/uri/skype-uri.js"></script>
-    <div id="SkypeButton_Call__1">
+    <div id="skype">
     <%= javascript_tag do -%>
       Skype.ui({
         'name': 'call',
-        'element': 'SkypeButton_Call_<%= @researcher.skype%>_1',
+        'element': 'skype',
         'participants': ['<%= @researcher.skype%>'],
         'imageSize': 32
       });
