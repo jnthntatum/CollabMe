@@ -118,6 +118,17 @@ education_aa2.researcher = aa
 education_aa2.save
 
 #
+# Researcher Projects
+#
+ddos_pj = Project.new(:name => "Defense against Distributed Denial of Service Attacks", :description => "Distributed Denial-of-Service (DDoS) attacks are an acute contemporary problem with few practical solutions available today. One key-reason why such attacks are hard to block is the large number of attack sources, which can be orders of magnitude higher than the number of filters available at the victim's firewall -- wire-speed filters are typically stored in expensive, power-hungry TCAM; today, the most sophisticated hardware router accommodates a few hundred thousand filters, while an attack can involve millions of attack sources, evenly distributed across Internet prefixes. If the victim's firewall cannot block attack traffic by itself, the straightforward solution is to push filtering of attack traffic back into the Internet core. Unfortunately, this approach does not scale, because it introduces end-to-end filtering state into core routers. Yet, there are enough filtering resources in the Internet to block large-scale attacks; they are located close to the attack sources. Active Internet Traffic Filtering (AITF) leverages this observation and enables the victim to (i) identify routers located close to the attack sources and (ii) make them block their misbehaving clients.
+
+We use a hardware-friendly variant of Route Record to limit source address spoofing and provide the victim with a list of border routers that forward attack traffic. Upon identifying an undesired flow, the victim sends a filtering request to its gateway. The victim's gateway temporarily blocks the undesired flow and identifies the border router located closest to the attack source(s) -- call it the attack gateway. Then, the victim's gateway initiates a 'counter-connection' setup with the attack gateway, i.e., an agreement not to transmit certain packets. As soon as the counter-connection setup is completed, the victim's gateway can remove its temporary filter. If the attack gateway does not cooperate, the victim's gateway can escalate the filtering request to the next border router closest to the attack gateway. Escalation can continue recursively until a router along the attack path responds and a counter-connection setup is completed. If no router responds, attack traffic is blocked locally by the victim's gateway. However, AITF both assists and motivates routers close to the attack source(s) to help block attack traffic.
+
+AITF enables a victim to have an undesired flow blocked within milliseconds. Also, an AITF-enabled router can block millions of flows with tens of thousands of filters and a few megabytes of DRAM -- resources easly accommodated by today's routers. Finally, AITF can be deployed incrementally and yields a concrete benefit even to the very first adopters.")
+ddos_pj.owner = dc;
+ddos_pj.save()
+
+#
 # Researcher Groups
 #
 
@@ -132,6 +143,10 @@ hci_group.save();
 crypto_group = Group.new(:name => "Applied Crypto Group", :email => "crypto@estanfor.edu", :description => "The Applied Crypto Group is a part of the Security Lab in the Computer Science Department at Stanford University. Research projects in the group focus on various aspects of network and computer security. In particular the group focuses on applications of cryptography to real world security problems.")
 crypto_group.researchers << db
 crypto_group.save()
+
+security_lab = Group.new(:name => "Stanford Security Laboratory", :email => "security@estanfor.edu", :description => "The Security Lab is a part of the Computer Science Department at Stanford University. Research projects in the group focus on various aspects of network and computer security.")
+security_lab.researchers << aa << db << dd << hg << ml << dm << nm << jm << mr
+security_lab.save()
 
 #
 # Researcher Info
