@@ -26,12 +26,16 @@
 
         <!-- Project Description -->
         <div class="tab-pane active" id="tab1">
-          <p>Hello, I'm in Section 3.</p>
+          <%= render :partial => 'show_description' %>
         </div>
 
         <!-- Tasks -->
         <div class="tab-pane" id="tab2">
           <%= render :partial => 'show_tasks' %>
+        </div>
+
+        <div class="tab-pane" id="tab3">
+          <%= render :partial => 'show_stats' %>
         </div>
       </div>
     </div>
