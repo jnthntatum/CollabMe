@@ -29,11 +29,16 @@ function Session(sid){
 	this.addUser = function (uid){
 		if (this.hasUser(uid))
 			return false
-		uids.push(uid)
+		this.uids.push(uid)
 		return true;
 	}
 	this.noUsers = function (){
 		return uids.length == 0;
+	}
+	this.addAll = function(uids){
+		for (var i = 0; i < uids.length; i++){
+			this.addUser(uids[i]);
+		}
 	}
 	
 }
@@ -120,8 +125,11 @@ function ioUserList(sid){
 	var list = "";
 	for (var i = 0; i < s.uids.length; i++){
 		var fid = s.uids[i];
-
-		list += ((i > 0)? " ,": "") + ioFriendMap[fid].first_name
+		if (!ioFriendMap[fid]){
+			console.log('fid not in friend map', fid);
+			continue
+		}
+		list += ((i > 0)? ", ": "") + ioFriendMap[fid].first_name
 	} 
 	return list;
 
@@ -145,6 +153,17 @@ function procCreate(message){
 		s.uids = message.uids;
 		ioSessions[sid] = s;   
 		sessionDisplay(sid, message.drawing)
+}
+
+function procAdd(message){
+	console.log('received message ', message);
+	var sid = message.sid;
+	ioSessions[sid].addAll(message.uids); 
+	var txt = ioUserList(sid)
+	if (sid === ioCanvSid){
+		uiSetWhiteboardTitle("Whiteboard with: " + txt)
+	}
+	uiSetChatWindowTitle(sid, txt) 
 }
 
 function procAck(message){
@@ -175,6 +194,8 @@ function procAck(message){
 		var imgData = ackd.img;
 	}else if(ackd.command === 'WHOIS'){
 		procWhoIs(ackd); 
+	}else if (ackd.command === "ADD"){
+		procAdd(ackd);
 	}else if(ackd.command in ioAckCallbacks){
 		var fn = ioAckCallbacks[ackd.command];
 		fn(ackd)
@@ -185,7 +206,7 @@ function procMessage(message){
 	if (message.command === "POST"){
 		procPOST(message); 
 	} else if (message.command === "CREATE"){
-		procCreate(); 
+		procCreate(message); 
 	} else if (message.command === "ACK"){
 		procAck(message); 
 	} else if (message.command === "ERASE"){
@@ -194,7 +215,9 @@ function procMessage(message){
 		uiDeleteDrawable(message.idx);
 	}else if (message.command === "FLATTEN"){
 		uiFlattenCanvas(message.layers, parseJSON(message.img))
-	}else{
+	}else if (message.command === "ADD"){
+		procAdd(message)
+	}	else{
 		console.log("Error, unhandled server command: " + message.command, message);
 	}
 }
@@ -202,7 +225,7 @@ function procMessage(message){
 function ioSendAdd(uids, sid){
 	if(typeof sid !== 'number')
 		sid=ioCanvSid; 
-	var m = new Message(add, uid); 
+	var m = new Message('ADD', uid); 
 	m.sid = sid;
 	m.uids = uids;
 	sendMessageToServer(m); 
