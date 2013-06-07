@@ -2,7 +2,10 @@
 
 <p>Searched for <%= @query%></p>
 
-<%@groups.each do |group|%>
+<%while @pq.empty? == false%>
+	<% app = @pq.pop%>
+	<% id = app[:ID] %>
+	<% group = Group.find_by_id(id)%>
 	<% name = group.name%>
 	<%= link_to name, :controller => "groups", :action => "show", :id => group%>
 <%end%>
