@@ -50,6 +50,12 @@ function ioCloseSession(sid){
 		ioSaveState(s.messages, s.drawables, s.uid[0])
 }
 
+function ioSendWhoIs(sid){
+	var m = new Message("WHOIS", uid);
+	m.sid = sid; 
+	sendMessageToServer(m); 
+}
+
 function Message(command, uid){
 	this.command= command;
 	this.uid = uid;
@@ -58,11 +64,26 @@ function Message(command, uid){
 function procError(message){
 	console.log("Received error: ", message); 
 }
+
+function procWhoIs(message){
+	var sid = message.sid;
+	var s = message.session;
+	if (sid in ioSessions){
+		ioSessions[sid].drawables = s.drawables;
+		ioSessions[sid].messages = s.messages;
+		ioSessions[sid].uids = s.users; 
+		ioSessions[sid].uids.splice(ioSessions[sid].uids.indexOf(uid), 1);
+	}
+	uiReloadChatMessages(sid, s.messages);	
+}
+
+
 var ioAckCallbacks = {}
 function ioSetAckCallback(command, fn){
 	if (typeof fn === 'function')
 		ioAckCallbacks[command] = fn;
 }
+
 
 function procPOST(message){
 	var idx = message.idx;
@@ -74,6 +95,7 @@ function procPOST(message){
 		s = ioSessions[sid];
 	} else {
 		s = new Session(sid); 
+		ioSendWhoIs(sid);
 		ioSessions[sid] = s;
 	}
 	s.dirty=true; 
@@ -126,7 +148,7 @@ function procAck(message){
 		//yay! we deleted something!
 	} else if (ackd.command === "HISTORY"){
 		if (ackd.type === "chat_messages"){
-			uiReloadMessages(ackd.chat_messages)
+			uiReloadChatMessages(ackd.chat_messages)
 		} else if (ackd.type === "drawables"){
 			uiSetDrawables(ackd.drawables)
 		}
@@ -135,6 +157,8 @@ function procAck(message){
 	}else if(ackd.command === 'FLATTEN'){
 		//send a saved copy to the server
 		var imgData = ackd.img;
+	}else if(ackd.command === 'WHOIS'){
+		procWhoIs(ackd); 
 	}else if(ackd.command in ioAckCallbacks){
 		var fn = ioAckCallbacks[ackd.command];
 		fn(ackd)
@@ -143,9 +167,9 @@ function procAck(message){
 
 function procMessage(message){
 	if (message.command === "POST"){
-		procPOST(message);
-	} else if (message.command === "ADD"){
-		//received an invite to join a session
+		procPOST(message); 
+	} else if (message.command === "CREATE"){
+		procCreate(); 
 	} else if (message.command === "ACK"){
 		procAck(message); 
 	} else if (message.command === "ERASE"){

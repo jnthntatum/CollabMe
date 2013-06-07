@@ -68,12 +68,16 @@ p.friend_listing{
 	font-family: sans-serif;
 	font-size: 9pt;
 	margin: 0;
+	background-color: white;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(220,180,180,40);
 }
 
 .chat_title_bar{
 	text-align: right;
 	border-width: 0 0 1px 0;
-	border-color: black;
 	border-style: solid; 
 }
 
@@ -92,11 +96,7 @@ p.friend_listing{
 
 .chat_friend_list{
 	display: block;
-	background-color: white;
-	border-radius: 5px;
-	border-style: solid;
-	border-width: 1px;
-	border-color: rgba(0,0,0,40);
+	
 }
 
 .chat_btn{
@@ -124,17 +124,17 @@ p.friend_listing{
 	min-width: 200px;
 }
 
-
-.chat_history{
+.chat_history, .chat_friend_list_body{
 	min-height: 100px;
-	border-color: rgba(220, 220, 220, 180);
-	border-style: solid;
-	border-radius: 5px;
-	border-width: 3px;
+	max-height: 150px;
 	line-height: 100%;
-	margin: 0;
+	overflow-y: scroll;
+	
 }
 
-.chat_input_wrapper{
+.chat_input_wrapper textarea{
 	min-height: 30px;
+	width: 190px;
+	padding: 4px; 
+	margin: 0;
 }
