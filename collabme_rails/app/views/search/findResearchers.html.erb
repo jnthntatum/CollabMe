@@ -4,7 +4,7 @@
 
 <%while @pq.empty? == false%>
 	<% app = @pq.pop%>
-	<% id = app[:researcherID] %>
+	<% id = app[:ID] %>
 	<% researcher = Researcher.find_by_id(id)%>
 	<% researcher_name = researcher.first_name + " " + researcher.last_name%>
 	<%= link_to researcher_name, :controller => "researchers", :action => "show", :id => researcher%><br>

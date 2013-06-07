@@ -13,28 +13,28 @@
     <div class="tabbable span12" style="height: 100%;"> <!-- Only required for left/right tabs -->
       <ul class="nav nav-tabs">
         <li class="active">
-          <a href="#tab1" data-toggle="tab">Project Description</a>
+          <a href="#description" data-toggle="tab">Project Description</a>
         </li>
         <li>
-          <a href="#tab2" data-toggle="tab">Tasks</a>
+          <a href="#tasks" data-toggle="tab">Tasks</a>
         </li>
         <li>
-          <a href="#tab3" data-toggle="tab">Project Stats</a>
+          <a href="#stats" data-toggle="tab">Project Stats</a>
         </li>
       </ul>
       <div class="tab-content">
 
         <!-- Project Description -->
-        <div class="tab-pane active" id="tab1">
+        <div class="tab-pane active" id="description">
           <%= render :partial => 'show_description' %>
         </div>
 
         <!-- Tasks -->
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="tasks">
           <%= render :partial => 'show_tasks' %>
         </div>
 
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="stats">
           <%= render :partial => 'show_stats' %>
         </div>
       </div>

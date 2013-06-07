@@ -1,3 +1,5 @@
-<p>
-  <%= @project.description %>
-</p>
+<p><%= @project.description %></p>
+<%= link_to edit_project_path do %>
+  <i class="icon-plus"></i>
+  Edit Description
+<% end %>

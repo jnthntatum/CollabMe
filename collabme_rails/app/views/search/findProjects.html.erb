@@ -2,7 +2,10 @@
 
 <p>Searched for <%= @query%></p>
 
-<%@projects.each do |project|%>
+<%while @pq.empty? == false%>
+	<% app = @pq.pop%>
+	<% id = app[:ID] %>
+	<% project = Project.find_by_id(id)%>
 	<% name = project.name%>
 	<%= link_to name, :controller => "projects", :action => "show", :id => project%>
 <%end%>

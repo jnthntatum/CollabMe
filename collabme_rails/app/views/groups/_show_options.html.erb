@@ -1,6 +1,6 @@
 <h1><%= @group.name %></h1>
-<% if @currUserInGroup %>
-  <p><%= link_to @group.email %></p>
+<p><%= link_to @group.email %></p>
+  <% if @currUserInGroup %>
   <p><%= link_to "Edit Group Info", {:controller => "groups", :action => "edit"} %></p>
   <p><%= link_to "Check Requests", group_requests_path(@group) %></p>
 <% elsif session[:current_user_id] and not @hasRequested %>
