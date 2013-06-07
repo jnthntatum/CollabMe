@@ -5,30 +5,30 @@
 <div class="tabbable">
   <ul class="nav nav-tabs">
     <li class="active">
-      <a href="#tab1" data-toggle="tab">Personal Information</a>
+      <a href="#personal" data-toggle="tab">Personal Information</a>
     </li>
     <li>
-      <a href="#tab2" data-toggle="tab">Education</a>
+      <a href="#education" data-toggle="tab">Education</a>
     </li>
     <li>
-      <a href="#tab3" data-toggle="tab">Work Experience</a>
+      <a href="#experience" data-toggle="tab">Work Experience</a>
     </li>
     <li>
-      <a href="#tab4" data-toggle="tab">Publications</a>
+      <a href="#publication" data-toggle="tab">Publications</a>
     </li>
     <li>
-      <a href="#tab5" data-toggle="tab">Skills and Interests</a>
+      <a href="#skill" data-toggle="tab">Skills and Interests</a>
     </li>
   </ul>
 
   <div class="tab-content">
     <!-- Personal Profile -->
-    <div class="tab-pane active" id="tab1">
+    <div class="tab-pane active" id="personal">
       <%= render :partial => 'edit_personal_profile' %>
     </div>
 
     <!-- Education -->
-    <div class="tab-pane" id="tab2">
+    <div class="tab-pane" id="education">
       <div class="row-fluid">
         <div class="span7">
           <%= render :partial => 'edit_education' %>
@@ -40,7 +40,7 @@
     </div>
 
     <!-- Work Experience -->
-    <div class="tab-pane" id="tab3">
+    <div class="tab-pane" id="experience">
       <div class="row-fluid">
         <div class="span7">      
           <%= render :partial => 'edit_work_experience' %>
@@ -51,21 +51,20 @@
       </div>
     </div>
 
-    <div class="tab-pane" id="tab4">
+    <div class="tab-pane" id="publication">
       <p>Nothing here yet.</p>
     </div>
-    <div class="tab-pane" id="tab5">
-      <%= form_tag({:controller => "researchers", :action => "addInterest"}, :method => "get") do %>
-        <%= text_field_tag(:tag) %>
-        <%= hidden_field_tag :id, @researcher.id %>
-        <%= submit_tag "Add Interest", :class => "btn btn-success" %>
-      <% end %>
 
-      <%= form_tag({:controller => "researchers", :action => "addSkill"}, :method => "get") do %>
-        <%= text_field_tag(:tag) %>
-        <%= hidden_field_tag :id, @researcher.id %>
-        <%= submit_tag "Add Skill", :class => "btn btn-success"%>
-      <% end %>
+    <!-- Skills and Interests -->
+    <div class="tab-pane" id="skill">
+      <div class="span7">
+        <%= render :partial => 'edit_skill' %>
+        <%= render :partial => 'edit_interest' %>
+      </div>
+      <div class="span4">
+        <%= render :partial => 'show_skills' %>
+        <%= render :partial => 'show_interests' %>
+      </div>
     </div>
   </div>
 </div>

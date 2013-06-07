@@ -17,8 +17,11 @@ class Researcher < ActiveRecord::Base
 
   has_many :requests, :as => :request_interface
 
-  has_many :work_experiences
   has_many :educations
+  has_many :work_experiences
+  has_many :companies, :through => :work_experiences
+  has_many :research_labs, :through => :work_experiences
+  has_many :schools, :through => :educations
 
   # Friends
   def friends

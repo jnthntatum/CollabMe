@@ -1,0 +1,14 @@
+<h4>Skills</h4>
+<% if !@researcher.skill_list.empty? %>
+  <% @researcher.skill_list.each do |skill|%>
+    <p><%= '-  ' + skill %></p>
+  <% end %>
+<% else %>
+  <p>Nothing here yet.</p>
+<% end %>
+<% if @currentUserPage %>
+  <%= link_to edit_researcher_path(:anchor => 'skill') do %>
+    <i class="icon-plus"></i>
+    Add Skill
+  <% end %>
+<% end %>

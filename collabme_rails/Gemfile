@@ -25,6 +25,8 @@ end
 
 gem 'jquery-rails'
 
+gem 'pqueue'
+
 # gem "paperclip", "~> 2.3" 
 
 

@@ -13,81 +13,55 @@
     <div class="tabbable span12" style="height: 100%;"> <!-- Only required for left/right tabs -->
       <ul class="nav nav-tabs">
         <li class="active">
-          <a href="#tab1" data-toggle="tab">Experience</a>
+          <a href="#experience_tab" data-toggle="tab">Experience</a>
         </li>
         <li>
-          <a href="#tab2" data-toggle="tab">Education</a>
+          <a href="#education_tab" data-toggle="tab">Education</a>
         </li>
         <li>
-          <a href="#tab3" data-toggle="tab">Publications</a>
+          <a href="#publication_tab" data-toggle="tab">Publications</a>
         </li>
         <li>
-          <a href="#tab4" data-toggle="tab">Skills</a>
+          <a href="#skill_tab" data-toggle="tab">Skills</a>
         </li>
         <li>
-          <a href="#tab5" data-toggle="tab">Interests</a>
+          <a href="#interest_tab" data-toggle="tab">Interests</a>
         </li>
         <li>
-          <a href="#tab6" data-toggle="tab">About Me</a>
+          <a href="#about_me_tab" data-toggle="tab">About Me</a>
         </li>
       </ul>
+
       <div class="tab-content">
 
         <!-- Work Experiences -->
-        <div class="tab-pane active" id="tab1">
-          <%= render :partial => 'show_work_experiences' %>  
+        <div class="tab-pane active" id="experience_tab">
+          <%= render :partial => 'show_work_experiences' %>
         </div>
 
         <!-- Educations -->
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="education_tab">
           <%= render :partial => 'show_education' %>
         </div>
 
         <!-- Publications -->
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="publication_tab">
           <%= render :partial => 'show_publications' %>
         </div>
 
         <!-- Skills -->
-        <div class="tab-pane" id="tab4">
+        <div class="tab-pane" id="skill_tab">
           <%= render :partial => 'show_skills' %>
         </div>
 
         <!-- Interests -->
-        <div class="tab-pane" id="tab5">
+        <div class="tab-pane" id="interest_tab">
           <%= render :partial => 'show_interests' %>
         </div>
 
         <!-- About Me -->
-        <div class="tab-pane" id="tab6">
-          <div>
-            <p><%= @researcher.about_me %></p>
-            
-            <h6>Interests</h6>
-            <% @researcher.interest_list.each do |interest|%>
-              <p><%= interest%></p>
-            <% end %>
-            
-            <h6>Skills</h6>
-            <% @researcher.skill_list.each do |skill|%>
-            <p><%= skill%></p>
-            <% end %>
-            
-            <div>
-              <%= form_tag({:controller => "researchers", :action => "removeInterest"}, :method => "get") do%>
-                <%= text_field_tag(:tag) %>
-                <%= hidden_field_tag :id, @researcher.id %>
-                <%= submit_tag "Remove Interest", :class => "btn btn-success" %>
-              <% end %>
-            </div>
-            <div>
-              <%= form_tag({:controller => "researchers", :action => "removeSkill"}, :method => "get") do%>
-                <%= text_field_tag(:tag) %>
-                <%= hidden_field_tag :id, @researcher.id %>
-                <%= submit_tag "Remove Skill",:class => "btn btn-success" %>
-              <% end %>
-            </div>
-          </div>
+        <div class="tab-pane" id="about_me_tab">
+          <%= render :partial => 'show_about_me' %>
         </div>
       </div>
     </div>

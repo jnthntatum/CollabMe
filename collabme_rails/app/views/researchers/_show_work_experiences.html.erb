@@ -1,4 +1,4 @@
-<% if @researcher.work_experiences %>
+<% if !@researcher.work_experiences.empty? %>
   <% @researcher.work_experiences.each do |w| %>
     <div class="experience_header">
       <h4><%= w.title %></h4>
@@ -7,9 +7,11 @@
       <% elsif ! w.research_lab.nil? %>
         <p><%= w.research_lab.name + '  |  ' + w.research_lab.location %></p>
       <% end %>
+      <% if w.start_date and w.end_date %>
       <p class="experience_date">
         <%= w.start_date.getlocal.strftime("%B %Y") + ' - ' + w.end_date.getlocal.strftime("%B %Y") %> 
       </p>
+      <% end %>
     <% w.activities.each do |a| %> 
       <p class="activity">
         <%= '-  ' + a.activity %>
@@ -19,4 +21,10 @@
   <% end %>
 <% else %>
   <%= 'Nothing here yet.' %>
+<% end %>
+<% if @currentUserPage %>
+  <%= link_to edit_researcher_path(:anchor => 'experience') do %>
+    <i class="icon-plus"></i>
+    Add Experience
+  <% end %>
 <% end %>

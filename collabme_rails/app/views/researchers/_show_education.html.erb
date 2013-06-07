@@ -1,4 +1,4 @@
-<% if @researcher.educations %>
+<% if !@researcher.educations.empty? %>
   <% @researcher.educations.each do |e| %>
     <div class="experience_header">
       <h4><%= e.school.name %></h4>
@@ -28,4 +28,10 @@
   <% end %>
 <% else %>
   <%= 'Nothing here yet.' %>
+<% end %>
+<% if @currentUserPage %>
+  <%= link_to edit_researcher_path(:anchor => 'education') do %>
+    <i class="icon-plus"></i>
+    Add Education
+  <% end %>
 <% end %>

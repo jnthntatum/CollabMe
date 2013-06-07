@@ -1,16 +1,14 @@
-<p>
-  <% if @researcher.published %>
-    <% articles = Article.find_all_by_aid(@researcher.id) %>
-    <% articles.each do |article|%>
-      <br>
-      <% linkname = article.title + " by " + article.authors %>
-      <%= link_to linkname, article.full_article_url %>
-    <% end%>
-  <% else %>
-    <%= 'Nothing here yet.' %>
-    <br>
-    <%= link_to "Add Publications by Verifying Identity", {:controller => "researchers", :action => "publications", :id => @researcher} %>
-    <br>
+<% if @researcher.published %>
+  <% articles = Article.find_all_by_aid(@researcher.id) %>
+  <% articles.each do |article| %>
+    <br />
+    <% linkname = article.title + " by " + article.authors %>
+    <%= link_to linkname, article.full_article_url %>
   <% end %>
-  <br>
-</p>
+<% else %>
+  <p>Nothing here yet.</p>
+<% end %>
+<%= link_to :controller => "researchers", :action => "publications", :id => @researcher do %>
+  <i class="icon-plus"></i>
+  Find Publications on Google Scholar
+<% end %>

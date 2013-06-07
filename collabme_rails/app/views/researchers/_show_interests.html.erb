@@ -1,0 +1,14 @@
+<h4>Interests</h4>
+<% if !@researcher.interest_list.empty? %>
+  <% @researcher.interest_list.each do |interest| %>
+    <p><%= '-  ' + interest %></p>
+  <% end %>
+<% else %>
+  <p>Nothing here yet.</p>
+<% end %>
+<% if @currentUserPage %>
+  <%= link_to edit_researcher_path(:anchor => 'skill') do %>
+    <i class="icon-plus"></i>
+    Add Interest
+  <% end %>
+<% end %>
