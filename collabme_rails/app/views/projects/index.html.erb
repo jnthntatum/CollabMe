@@ -1,16 +1,24 @@
-<h1>projects index</h1>
-
-<table>
-<tr><th>id</th><th>Name</th><th>Desc</th><th>owner</th><th></th></tr>
+<h1>All Projects</h1>
+<div class="row-fluid">
 <% @projects.each do |project| %>
-	<tr>
-	<td><%= project.id%></td>
-	<td><%= if project.name != nil then project.name else "nil" end %></td>
-	<td><%= if project.description != nil then project.description else "nil" end %></td>
-	<td><%= if project.owner != nil then project.owner.email else "nil" end %> </td>
-	<td><%= link_to "Show", project %> | </td> 
-	</tr> 	
+  <div class="row-fluid search_result">
+    <div class="span2 search_picture">
+      <% @entity = project %>
+      <%= render :partial => 'shared/show_big_thumbnail' %>	
+    </div>
+    <div class="span6">
+      <h3><%= link_to project.name, project %></h3>
+      <%= render :partial => 'show_member_box' %>
+    </div>
+    <div class="span4">
+      <p>
+        <% if project.description.length < 250 %>
+          <%= project.description %>
+        <% else %>
+          <%= project.description[0..250] + '...' %>
+        <% end %>
+      </p>
+    </div>
+  </div>
 <% end %>
-</table>
-<br /> 
-<%= link_to("Create new project", new_project_path) %>
+</div>
