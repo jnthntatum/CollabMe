@@ -156,4 +156,14 @@ $(document).ready(function() {
   $('#work_experience_end_date_month').change(function () {
     $('#hidden_work_experience_end_date_year').val($('#work_experience_end_date_year').val());
   });
+
+  var hash = window.location.hash;
+  if (hash) {
+    var location = hash.substring(1);
+  
+    $('.active').toggleClass('active');
+    
+    $('a[href=' + hash + ']').parent().toggleClass('active');
+    $('div[id=' + location + ']').toggleClass('active');
+  }
 });

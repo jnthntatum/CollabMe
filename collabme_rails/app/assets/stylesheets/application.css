@@ -116,3 +116,8 @@ body {
 .small_profile {
 	margin: 2px auto;
 }
+
+/* Add Info Icons */
+.add_info:hover {
+	text-decoration: none;
+}

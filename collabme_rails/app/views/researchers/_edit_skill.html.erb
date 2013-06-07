@@ -1,0 +1,6 @@
+<%= form_tag({:controller => "researchers", :action => "addSkill"}, :method => "get") do %>
+  <%= text_field_tag(:tag) %>
+  <%= hidden_field_tag :id, @researcher.id %>
+  <br />
+  <%= submit_tag "Add Skill", :class => "btn btn-primary"%>
+<% end %>

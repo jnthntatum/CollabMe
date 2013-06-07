@@ -27,3 +27,9 @@
 <% else %>
   <%= 'Nothing here yet.' %>
 <% end %>
+<% if @currentUserPage %>
+  <%= link_to edit_researcher_path(:anchor => 'education') do %>
+    <i class="icon-plus"></i>
+    Add Education
+  <% end %>
+<% end %>
