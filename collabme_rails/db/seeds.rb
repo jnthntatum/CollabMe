@@ -73,7 +73,7 @@ sp = Researcher.new(:first_name => 'Serge', :last_name => 'Plotkin', :email => '
 bp = Researcher.new(:first_name => 'Balaji', :last_name => 'Prabhakar', :email => 'balaji@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 er = Researcher.new(:first_name => 'Eric', :last_name => 'Roberts', :email => 'eroberts@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 mr = Researcher.new(:first_name => 'Mendel', :last_name => 'Rosenblum', :email => 'mendel@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-tr = Researcher.new(:first_name => 'Tim', :last_name => 'Roughgarden', :email => 'the_hennessy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+tr = Researcher.new(:first_name => 'Tim', :last_name => 'Roughgarden', :email => 'tim@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ms = Researcher.new(:first_name => 'Mehran', :last_name => 'Sahami', :email => 'sahami@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ks = Researcher.new(:first_name => 'Ken', :last_name => 'Salisbury', :email => 'jks@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ys = Researcher.new(:first_name => 'Yoav', :last_name => 'Shoham', :email => 'shoham@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
@@ -292,6 +292,29 @@ bp.about_me = "Balaji Prabhakar is a faculty member in the Departments of Electr
 
 He has been a Terman Fellow at Stanford University and a Fellow of the Alfred P. Sloan Foundation. He has received the CAREER award from the U.S. National Science Foundation, the Erlang Prize, the Rollo Davidson Prize, and delivered the Lunteren Lectures. He is a co-recipient of several best paper awards."
 
+ms.about_me = "In 2007, I joined the Computer Science Department at Stanford University as Associate Professor (Teaching) and Associate Chair for Education. From 2001 to 2006, I also taught in the CS department at Stanford as a Lecturer. From 2002-2007, I was a full-time Senior Research Scientist at Google. After moving to Stanford, I continued to consult at Google part-time until 2010. My research interests include computer science education, machine learning, and information retrieval on the Web. Please see my publications web page for more information.
+Previously, I worked for several years as a Senior Engineering Manager at Epiphany. Prior to working at Epiphany, I completed my PhD in the Computer Science Department at Stanford. I was also an undergrad at Stanford and I loved it so much that I didn't want to leave.
+
+Outside of work, I enjoy spending time with family, playing the guitar, going on outdoor excursions, and sleeping (which seems to be getting rarer and rarer these days). I also continue to maintain a foot in the start-up world by serving on advisory boards to various companies."
+
+ys.about_me = "Yoav Shoham is Professor of Computer Science at Stanford University, where he has been since receiving his PhD in Computer Science from Yale University in 1987 and spending an abbreviated post-doctoral position at the Weizmann Institute of Science. He has worked in various areas of AI, including temporal reasoning, nonmonotonic logics and theories of commonsense. Shoham's interest in recent years has been multiagent systems, and in particular the interaction between computer science and game theory. Shoham is a Fellow of the Association for Advancement of Artificial Intelligence (AAAI), and charter member of the Game Theory Society. He is an author of four books, an editor of one, and an author of numerous articles. He is also a founder of several successful e-commerce software companies."
+
+lt.about_me = "I am a professor of Computer Science at Stanford. I am from Rome, where I studied at the University 'La Sapienza', advised by Pierluigi Crescenzi. Before coming to Stanford, I was a post-doc at MIT (with theTheory of Computing Group) and at DIMACS and then an assistant professor at Columbia University and then at Berkeley. I am interested in Theoretical Computer Science."
+
+jw.about_me = "Jennifer Widom is the Fletcher Jones Professor and Chair of the Computer Science Department at Stanford University. She received her Bachelor's degree from the Indiana University School of Music in 1982 and her Computer Science Ph.D. from Cornell University in 1987. She was a Research Staff Member at the IBM Almaden Research Center before joining the Stanford faculty in 1993. Her research interests span many aspects of nontraditional data management. She is an ACM Fellow and a member of the National Academy of Engineering and the American Academy of Arts & Sciences; she received the ACM SIGMOD Edgar F. Codd Innovations Award in 2007 and was a Guggenheim Fellow in 2000; she has served on a variety of program committees, advisory boards, and editorial boards."
+
+rw.about_me = "I grew up near the big city of Somerville, Alabama, where there is good fishing in the water and good football on the radio. Further south in Alabama there is a good school for math and science."
+
+tw.about_me = "Professor Winograd's focus is on human-computer interaction design and the design of technologies for development. He directs the teaching programs and HCI research in the Stanford Human-Computer Interaction Group, which recently celebrated it's 20th anniversary. He is also a founding faculty member of the Hasso Plattner Institute of Design at Stanford (the 'd.school') and on the faculty of the Center on Democracy, Development, and the Rule of Law (CDDRL). Winograd was a founding member and past president of Computer Professionals for Social Responsibility. He is on a number of journal editorial boards, including Human Computer Interaction, ACM Transactions on Computer Human Interaction, and Informatica. He has advised a number of companies started by his students, including Google. In 2011 he received the ACM SIGCHI Lifetime Research Award."
+
+
+#
+# Researcher Posts
+#
+
+tr_p = Post.new(:title=>"status", :desc => "I'm on sabbatical in the New York area for the 2012-2013 school year.")
+tr_p.creator = tr
+tr.posts << tr_p
 
 #
 # Researcher Experience
@@ -448,6 +471,7 @@ lt.save()
 gv.save()
 jw.save()
 rw.save()
+tw.save()
 
 #
 # Researcher Friends
@@ -472,7 +496,7 @@ er.photo = er_profile_pic
 ##################################
 
 # Projects
-pj = Project.new(:name => "CollabMe", :description => "GroupProject Page! Woo and hoo.")
+pj = Project.new(:name => "CollabMe", :description => "Connecting researchers from around the globe to reach new heights.")
 pj.owner = ss;
 pj.members << gk << kg << jt;
 pj.save()
@@ -488,17 +512,28 @@ kg.direct_friends << gk << jt;
 gk.direct_friends << jt; 
 
 # Tasks
-t = Task.new(:desc => "Woo a task!!!", :category => 1);
+t = Task.new(:desc => "Work on the CollabMe backend and databases", :category => 5);
 t.project=pj;
-t.category = 1; 
-t.creator = jt;
+t.creator = ss;
 t.assignee = ss; 
 t.save();
 
-t = Task.new(:desc => "Woo another task!!!", :category => 2);
+t = Task.new(:desc => "Work on the CollabMe front-end", :category => 5);
 t.project=pj;
-t.category = 2; 
 t.creator = ss;
+t.assignee = kg; 
+t.save();
+
+t = Task.new(:desc => "Implement search abilities for CollabMe", :category => 5);
+t.project=pj;
+t.creator = gk;
+t.assignee = gk
+t.save();
+
+t = Task.new(:desc => "Write up collaboration tools for CollabMe", :category => 5);
+t.project=pj; 
+t.creator = ss;
+t.assignee = jt
 t.save();
 
 # Posts
