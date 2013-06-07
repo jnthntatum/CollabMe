@@ -506,6 +506,7 @@ function uiShowWhiteboard(sid){
 	
 	if (sid){
 		uiCanvasInit(sid);
+		uiDrawables = ioGetSessionDrawables(sid);
 		$('#whiteboard_flyout').on('shown', function(){uiCanvOffset = evDetectOffset(canvasID); $("body").css("overflow", "hidden");});
 		$('#whiteboard_flyout').on('hidden', uiHideWhiteboard);
 	} 
@@ -557,7 +558,7 @@ function uiAddChatMessage(sid, message, idx){
 	//messageScrollback[idx] = message; 
 	var w = uiGetChatWindowBySid(sid);
 	if (w.length == 0){
-		var tmp = uiCreateChatWindow(sid);
+		var tmp = uiOpenChatWindow(sid);
 		w = uiGetChatWindowBySid(sid,  tmp)
 	}
 	addLine(w, message.name, message.text)
@@ -606,6 +607,7 @@ function uiMinimizeChatWindow(sid){
 
 function uiCloseChatWindow(sid){
 	uiGetChatWindowBySid(sid).parent().remove();
+	ioCloseSession(sid)
 }
 
 function uiChatWindow(sid){
@@ -653,7 +655,12 @@ function uiChatWindow(sid){
 
 }
 
-function uiCreateChatWindow(sid){
+function uiOpenChatWindow(sid){
+	var node = uiGetChatWindowBySid(sid)
+	if(node.length > 0){
+		return node[0]; 
+	}
+
 	var container = $('.chat_bar')[0];
 	var cwind = uiChatWindow(sid);
 	container.insertBefore(cwind, $(container).children()[0]); 
@@ -710,3 +717,6 @@ function uiSetFriendList(friends){
 	}  
 }
 
+function uiSetFriendListTitle(str){
+	$('.friend_list_title')[0].innerHTML = str; 
+}

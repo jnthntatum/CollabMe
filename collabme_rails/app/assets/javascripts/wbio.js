@@ -38,6 +38,18 @@ function Session(sid){
 	
 }
 
+function ioGetSessionDrawables(sid){
+	if (!(sid in ioSessions))
+		return []; 
+	return ioSessions[sid].drawables;
+} 
+
+function ioCloseSession(sid){
+	var s = ioSessions[sid]
+	if(s)
+		ioSaveState(s.messages, s.drawables, s.uid[0])
+}
+
 function Message(command, uid){
 	this.command= command;
 	this.uid = uid;
@@ -61,7 +73,6 @@ function procPOST(message){
 	if (sid in ioSessions){
 		s = ioSessions[sid];
 	} else {
-		console.log('creating new session', sid);
 		s = new Session(sid); 
 		ioSessions[sid] = s;
 	}
@@ -78,6 +89,14 @@ function procPOST(message){
 	}
 }
 
+function sessionDisplay(sid, drawing){
+	uiOpenChatWindow(sid) 
+	if(drawing === true){
+		ioCanvSid = sid; 
+		uiShowWhiteboard(ioCanvSid);	
+	}
+}
+
 function procCreate(message){
 		console.log ("session Created. id: " + message.sid, message);
 		var sid = message.sid;
@@ -87,11 +106,7 @@ function procCreate(message){
 		var s = new Session(sid);
 		s.uids = message.uids;
 		ioSessions[sid] = s;   
-		uiCreateChatWindow(sid) 
-		if(message.drawing === true){
-			ioCanvSid = sid; 
-			uiShowWhiteboard(ioCanvSid);	
-		}
+		sessionDisplay(sid, message.drawing)
 }
 
 function procAck(message){
@@ -190,11 +205,40 @@ function ioSendDelete(idx, chatMessage, sid){
 
 }
 
+function findSession(uids){
+	var sid;
+	var foundS = false;
+	for (var key in ioSessions){
+		foundS = true;
+		if (!key)
+			continue;
+		sid = key;
+		for (var i =0; i < uids.length; i++){
+			if (!(ioSessions[key].hasUser(uids[i]))){
+				foundS = false; 
+				break;
+			}
+		}
+		if (foundS)
+			break;  
+	}
+	if (foundS)
+		return sid;
+	else
+		return null;
+
+}
+
 function ioCreateSession(drawing, uids){
-	var m = new Message("CREATE", uid);
-	m.uids= uids;
-	m.drawing = drawing;
-	sendMessageToServer(m);
+	var sid = findSession(uids); 
+	if (sid){
+		sessionDisplay(sid, drawing)
+	} else{
+		var m = new Message("CREATE", uid);
+		m.uids= uids;
+		m.drawing = drawing;
+		sendMessageToServer(m);
+	}
 }
 
 function sendMessageToServer(message){
@@ -303,6 +347,7 @@ function ioInit(){
 	socket = io.connect(ioChatServer);
 	socket.on('connect', function(){
 		ioConnectRetries = 0; 
+		uiSetFriendListTitle('Friends Status')
 		console.log('connection success!');
 		var m = new Message("STATUS", uid)
 		m.status = 'ONLINE'; 

@@ -72,6 +72,9 @@ p.friend_listing{
 
 .chat_title_bar{
 	text-align: right;
+	border-width: 0 0 1px 0;
+	border-color: black;
+	border-style: solid; 
 }
 
 .chat_body_wrapper{
@@ -96,6 +99,10 @@ p.friend_listing{
 	border-color: rgba(0,0,0,40);
 }
 
+.chat_btn{
+	margin-left: 3px;
+	margin-right: 3px;
+}
 .chat_bar{
 
 	position: fixed;
@@ -111,7 +118,8 @@ p.friend_listing{
 .chat_nub{
 	position: relative;
 	clear: none;
-	margin-left: 4px; 
+	margin-left: 5px; 
+	margin-right: 5px;
 	display:inline-block;
 	min-width: 200px;
 }

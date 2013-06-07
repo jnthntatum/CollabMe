@@ -393,7 +393,7 @@ io.sockets.on('connection', function(client){
 
 	client.on('disconnect',function(){
 		console.log('Server has disconnected from client', client);
-		users.remove(users.getUser(client)); 
+		users.remove(users.getUser(client.id)); 
 	});
 
 });
