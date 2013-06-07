@@ -16,14 +16,31 @@ class SearchController < ApplicationController
   def findResearchers
   	logger.debug @query
   	@query = flash[:query]
-  	@researchers = Researcher.where("first_name LIKE ? OR last_name LIKE ?", @query, @query)
-    @tagged = Researcher.tagged_with(@query)
-    @researchers.concat(@tagged)
-    @researchersCheck = @researchers
-    @researchersCheck.uniq!
-    if !@researchersCheck.nil?
-      @researchers = @researchersCheck
+    searchTerms = @query.split
+    @results = []
+    searchTerms.each do |term|
+      researchersFirstName = Researcher.where("first_name LIKE ?", term)
+      unless researchersFirstName.empty?
+        @results += researchersFirstName
+      end
+      researchersLastName = Researcher.where("last_name LIKE ?", term)
+      unless researchersLastName.empty?
+        @results += researchersLastName
+      end
+      @tagged = Researcher.tagged_with(term)
+      unless @tagged.empty?
+        @results += @tagged
+      end
     end
+
+    @researchers = @results
+
+    unique = Hash.new(0)
+    @researchers.each do |researcher|
+      unique[researcher.id] += 1
+    end
+
+    
   end
 
    def findGroups

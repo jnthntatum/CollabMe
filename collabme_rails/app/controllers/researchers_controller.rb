@@ -230,8 +230,8 @@ class ResearchersController < ApplicationController
           @researcher.save
         end
       end
-      redirect_to @researcher
     end
+    redirect_to @researcher
   end
 
   def edit_profile_picture

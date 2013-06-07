@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130606215831) do
+ActiveRecord::Schema.define(:version => 20130606221231) do
 
   create_table "activities", :force => true do |t|
     t.integer  "work_experience_id"
@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(:version => 20130606215831) do
     t.text     "publications"
     t.integer  "citations"
     t.boolean  "published"
+    t.boolean  "open"
   end
 
   create_table "resources", :force => true do |t|

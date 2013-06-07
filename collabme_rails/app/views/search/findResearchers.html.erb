@@ -4,5 +4,5 @@
 
 <%@researchers.each do |researcher|%>
 	<% researcher_name = researcher.first_name + " " + researcher.last_name%>
-	<%= link_to researcher_name, :controller => "researchers", :action => "show", :id => researcher%>
+	<%= link_to researcher_name, :controller => "researchers", :action => "show", :id => researcher%><br>
 <%end%>
