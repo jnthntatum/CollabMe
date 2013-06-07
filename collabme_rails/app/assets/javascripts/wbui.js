@@ -510,15 +510,15 @@ function uiCanvasInit(sid, parent){
 	return true;  
 }
 
+function uiSetWhiteboardTitle(txt){
+	$('.whiteboard_title').text(txt);
+		
+}
+
 function uiShowWhiteboard(sid){
 	if (uiCanvasActive){
-		$('.canvas_wrapper').empty();
-		if(sid){
-			uiCanvasInit(sid);
-			uiSetDrawables(GetSessionDrawables(sid));
-			$('.whiteboard_title').text("Whiteboard with: " + ioUserList(sid));
-			uiCanvOffset = evDetectOffset(canvasID);
-		} 
+		uiHideWhiteboard()
+		$('#whiteboard_flyout').on('hidden', function(){uiCanvasActive=false;uiShowWhiteboard(sid)});
 		return; 
 	}
 	uiCanvasActive = true;
@@ -529,7 +529,7 @@ function uiShowWhiteboard(sid){
 	if (sid){
 		uiCanvasInit(sid);
 		uiSetDrawables(ioGetSessionDrawables(sid));
-		$('.whiteboard_title').text("Whiteboard with: " + ioUserList(sid));
+		uiSetWhiteboardTitle("Whiteboard with: " + ioUserList(sid))
 		$('#whiteboard_flyout').on('shown', function(){uiCanvOffset = evDetectOffset(canvasID); $("body").css("overflow", "hidden");});
 		$('#whiteboard_flyout').on('hidden', uiHideWhiteboard);
 	} 
@@ -572,6 +572,10 @@ function uiReloadChatMessages(sid, messages){
 	for (var i = 0; i < messages.length; i++){
 		uiAddChatMessage(sid, messages[i], i )
 	}
+}
+
+function uiSetChatWindowTitle(sid, txt){
+	$('.chat_title', uiGetChatWindowBySid(sid)).text(txt);
 }
 
 function uiGetChatWindowBySid(sid, tmp){
@@ -689,7 +693,8 @@ function uiOpenChatWindow(sid){
 
 	var container = $('.chat_bar')[0];
 	var cwind = uiChatWindow(sid);
-	container.insertBefore(cwind, $(container).children()[0]); 
+	container.insertBefore(cwind, $(container).children()[0]);
+	uiSetChatWindowTitle(sid, ioUserList(sid)); 
 	bindCWListeners(cwind) 
 	return cwind;
 }
@@ -730,6 +735,17 @@ function uiFriendTag(id, f ){
 	return el; 
 }
 
+function uiWbFriendTag(id, f){
+	var el = document.createElement('li');
+	var btn = document.createElement('a'); 
+	btn.setAttribute('class', 'add_friend');
+	btn.setAttribute('role', 'menu_item')
+	btn.setAttribute('onClick', 'ioSendAdd([' + id +'])');
+	btn.innerHTML = f.first_name + ' -- ' + f.status;
+	el.appendChild(btn);
+	return el;
+}
+
 /*
 array: [fid, name, status]
 */
@@ -740,7 +756,14 @@ function uiSetFriendList(friends){
 		var f = friends[fid];
 		if (f.status)
 			obj[0].appendChild(uiFriendTag(fid, f))
-	}  
+	}
+	obj = $('.whiteboard_friend_list');
+	obj.empty(); 
+	for (var fid in friends){
+		var f = friends[fid];
+		if (f.status)
+			obj[0].appendChild(uiWbFriendTag(fid, f))
+	}
 }
 
 function uiSetFriendListTitle(str){
