@@ -113,6 +113,11 @@ body {
 	margin: 2px auto;
 }
 
+.big-circle {
+  height: 100px !important;
+  width: 100px !important;
+}
+
 /* Add Info Icons */
 .add_info:hover {
 	text-decoration: none;
@@ -255,4 +260,14 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
   display: inline;
   padding: 0 10px;
   color: rgba(255,255,255,.25);
+}
+
+/* Search Results */
+.search_picture {
+  padding-left: 20px;
+}
+
+.search_result {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

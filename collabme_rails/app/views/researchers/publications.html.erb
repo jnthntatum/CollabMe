@@ -16,7 +16,7 @@
          end %>
       
       <h1>Google Scholar Publications</h1>
-      <%= render :partial => 'back_to_profile', :id => params[:id] %>   
+      <%= render :partial => 'shared/back_to_profile', :id => params[:id] %>   
       <% if profilePresent %>   
         <p>Please choose your Google Scholar profile:</p>
         <%= @potential_publications.authors.each do |author| %>
