@@ -7,17 +7,23 @@
       <%= render :partial => 'shared/show_big_thumbnail' %>	
     </div>
     <div class="span6">
-      <h3><%= link_to project.name, project %></h3>
+      <h3 class="search_title"><%= link_to project.name, project %></h3>
       <%= render :partial => 'show_member_box' %>
     </div>
     <div class="span4">
-      <p>
-        <% if project.description.length < 250 %>
-          <%= project.description %>
-        <% else %>
-          <%= project.description[0..250] + '...' %>
-        <% end %>
-      </p>
+      <% if project.description %>
+        <p>
+          <% if project.description.length < 400 %>
+            <%= project.description %>
+          <% else %>
+            <%= project.description[0..400] + '...' %>
+          <% end %>
+        </p>
+      <% else %>
+        <p>
+          No description.
+        </p>
+      <% end %>
     </div>
   </div>
 <% end %>

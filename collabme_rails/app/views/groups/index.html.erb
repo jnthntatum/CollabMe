@@ -1,16 +1,28 @@
-<h1>List of Groups</h1>
-<p>Find me in app/views/groups/index.html.erb</p>
-<table>
-	<tr>
-		<th>Name</th>
-		<th>Email</th>
-		<th></th>
-	</tr>
-<% @groups.each do |g| %>
-<tr>
-	<td><%=g.name%></td>
-	<td><%=g.email%></td>
-	<td><%=link_to("show", group_path(g)) %></td>
-</tr>
+<h1>All Groups</h1>
+<div class="row-fluid">
+<% @groups.each do |group| %>
+  <div class="row-fluid search_result">
+    <div class="span2 search_picture">
+      <% @entity = group %>
+      <%= render :partial => 'shared/show_big_thumbnail' %> 
+    </div>
+    <div class="span6">
+      <h3 class="search_title"><%= link_to group.name, group %></h3>
+      <%= render :partial => 'show_member_box' %>
+    </div>
+    <div class="span4">
+      <% if group.description %>
+        <p>
+          <% if group.description.length < 400 %>
+            <%= group.description %>
+          <% else %>
+            <%= group.description[0..400] + '...' %>
+          <% end %>
+        </p>
+      <% else %>
+        <p>No description.<p>
+      <% end %>
+    </div>
+  </div>
 <% end %>
-</table>
+</div>

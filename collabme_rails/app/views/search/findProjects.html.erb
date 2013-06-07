@@ -1,11 +1,38 @@
 <h1>Search Projects</h1>
-
-<p>Searched for <%= @query%></p>
-
-<%while @pq.empty? == false%>
-	<% app = @pq.pop%>
-	<% id = app[:ID] %>
-	<% project = Project.find_by_id(id)%>
-	<% name = project.name%>
-	<%= link_to name, :controller => "projects", :action => "show", :id => project%>
-<%end%>
+<h3>Searched for <%= '"' + @query + '":' %></h3>
+<div class="row-fluid">
+  <% if !@pq.empty? %>
+  <% while @pq.empty? == false %>
+    <% app = @pq.pop %>
+    <% id = app[:ID] %>
+    <% project = Project.find_by_id(id)%>
+    <div class="row-fluid search_result">
+      <div class="span2 search_picture">
+        <% @entity = project %>
+        <%= render :partial => 'shared/show_big_thumbnail' %> 
+      </div>
+      <div class="span6">
+        <h3 class="search_title"><%= link_to project.name, project %></h3>
+        <%= render :partial => 'show_member_box' %>
+      </div>
+      <div class="span4">
+        <% if project.description %>
+          <p>
+            <% if project.description.length < 400 %>
+              <%= project.description %>
+            <% else %>
+              <%= project.description[0..400] + '...' %>
+            <% end %>
+          </p>
+        <% else %>
+          <p>
+            No description.
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p>No results found.</p>
+<% end %>
+</div>

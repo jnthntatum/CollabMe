@@ -1,11 +1,35 @@
 <h1>Search Researchers</h1>
+<h3>Searched for <%= '"' + @query + '":' %></h3>
+<div class="row-fluid">
+  <% if !@pq.empty? %>
+  <% while @pq.empty? == false %>
+    <% app = @pq.pop %>
+    <% id = app[:ID] %>
+    <% researcher = Researcher.find_by_id(id)%>
+    <div class="row-fluid search_result">
+      <div class="span2 search_picture">
+        <% @entity = researcher %>
+        <%= render :partial => 'shared/show_big_thumbnail' %>
+      </div>
+      <div class="span6">
+        <h3 class="search_title"><%= link_to researcher.first_name + ' ' + researcher.last_name, researcher %></h3>
+        <%= render :partial => 'show_member_box' %>
+      </div>
+      <div class="span4">
+        <% if researcher.about_me %>
+          <p>
+            <% if researcher.about_me.length < 400 %>
+              <%= researcher.about_me %>
+            <% else %>
+              <%= researcher.about_me[0..400] + '...' %>
+            <% end %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p>No results found.</p>
+<% end %>
+</div>
 
-<p>Searched for <%= @query%></p>
-
-<%while @pq.empty? == false%>
-	<% app = @pq.pop%>
-	<% id = app[:ID] %>
-	<% researcher = Researcher.find_by_id(id)%>
-	<% researcher_name = researcher.first_name + " " + researcher.last_name%>
-	<%= link_to researcher_name, :controller => "researchers", :action => "show", :id => researcher%><br>
-<%end%>

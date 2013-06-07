@@ -1,0 +1,10 @@
+<div class="member_box">
+  <% @project = @entity %>
+  <% @entity = @project.owner %>    
+  <%= render :partial => 'shared/show_medium_thumbnail' %> 
+
+  <% @project.members.each do |m| %>
+    <% @entity = m %>
+    <%= render :partial => 'shared/show_medium_thumbnail' %> 
+  <% end %>
+</div>
