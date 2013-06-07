@@ -1,3 +1,31 @@
 // Place all the styles related to the Tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#tasks_table td {
+  vertical-align: middle;
+}
+
+#tasks_table textarea {
+  width: 80%;
+}
+
+.task_number {
+  width: 5%;
+}
+
+.task_description {
+  width: 30%;
+}
+
+.task_creator, .task_assignee {
+  width: 20%;
+}
+
+.task_category {
+  width: 10%;
+}
+
+.task_submit {
+  width: 15%;
+}
