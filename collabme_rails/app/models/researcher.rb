@@ -1,7 +1,7 @@
 class Researcher < ActiveRecord::Base
   acts_as_taggable
   acts_as_taggable_on :skills, :interests
-  attr_accessible :email, :first_name, :last_name, :about_me, :citations
+  attr_accessible :email, :first_name, :last_name, :about_me, :citations, :skype
   has_many :owned_projects, :class_name => "Project", :foreign_key => "researcher_id" 
   has_and_belongs_to_many :memberof, :class_name => "Project", :association_foreign_key => "project_id", :foreign_key => "researcher_id"
   has_many :direct_friendships, :class_name => "Friendship", :foreign_key => "user_id"
