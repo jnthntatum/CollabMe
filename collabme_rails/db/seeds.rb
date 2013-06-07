@@ -144,6 +144,21 @@ education_sc3.major = 'Computer Science'
 education_sc3.researcher = sc
 education_sc3.save
 
+ucla = School.new
+ucla.name = 'University of California - Los Angeles'
+ucla.location = 'Los Angeles, CA'
+ucla.school_type = 'university'
+ucla.save
+
+education_rf = Education.new
+education_rf.school = ucla
+education_rf.degree = 'Ph.D.'
+education_rf.major = 'Mathematics'
+education_rf.start_date = Time.new(1990, 9, 1)
+education_rf.end_date = Time.new(1996, 6, 1)
+education_rf.researcher = rf
+education_rf.save
+
 #
 # Researcher Projects
 #
@@ -280,6 +295,12 @@ rw.save()
 # Researcher Friends
 #
 sb.direct_friends << gb; 
+
+#
+# Researcher Profile Pics
+#
+de_profile_pic = Photo.new(:file_name => 'profile_pictures/1370573979_d_engler_profile.jpg')
+de.photo = de_profile_pic
 
 ##################################
 
