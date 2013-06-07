@@ -75,14 +75,28 @@ class SearchController < ApplicationController
     @researchers = @results
 
     unique = Hash.new(0)
+    
     @researchers.each do |researcher|
       unique[researcher.id] += 1
+      if researcher.full_name == @query
+        unique[researcher.id] += 10
+      end
     end
+
+    require 'levenshtein'
+    unique.each do |key, value|
+      researcher = Researcher.find_by_id(key)
+      score = Levenshtein.distance(researcher.full_name, @query)
+      unique[researcher.id] -= score
+    end
+
+
     require 'pqueue'
 
     arrayForPQ = []
     unique.each do | key, value|
       version = Appearance.new(key, value)
+      logger.debug(value)
       arrayForPQ += [version] 
     end
 
