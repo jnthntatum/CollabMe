@@ -47,16 +47,16 @@ ph = Researcher.new(:first_name => 'Patrick', :last_name => 'Hanrahan', :email =
 jh = Researcher.new(:first_name => 'Jeff', :last_name => 'Heer', :email => 'jheer@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 john_hennessy= Researcher.new(:first_name => 'John', :last_name => 'Hennessy', :email => 'the_hennessy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 mh= Researcher.new(:first_name => 'Mark', :last_name => 'Horowitz', :email => 'horowitz@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-sk = Researcher.new(:first_name => 'Sachin', :last_name => 'Katti', :email => 'skatti@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+sachin_katti = Researcher.new(:first_name => 'Sachin', :last_name => 'Katti', :email => 'skatti@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ok = Researcher.new(:first_name => 'Oussama', :last_name => 'Khatib', :email => 'khatib@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 sk = Researcher.new(:first_name => 'Scott', :last_name => 'Klemmer', :email => 'srk@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 don_knuth = Researcher.new(:first_name => 'Don', :last_name => 'Knuth', :email => 'realmailonly@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 dk = Researcher.new(:first_name => 'Daphne', :last_name => 'Koller', :email => 'koller@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 vk = Researcher.new(:first_name => 'Vladlen', :last_name => 'Koltun', :email => 'vladlen@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ck = Researcher.new(:first_name => 'Christos', :last_name => 'Kozyrakis', :email => 'the_hennessy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-ml = Researcher.new(:first_name => 'Monica', :last_name => 'Lam', :email => 'lam@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+monica_lam = Researcher.new(:first_name => 'Monica', :last_name => 'Lam', :email => 'lam@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 jl = Researcher.new(:first_name => 'Jure', :last_name => 'Leskovec', :email => 'jure@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
-pl = Researcher.new(:first_name => 'Philip', :last_name => 'Levis', :email => 'philip.levis@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
+philip_levis = Researcher.new(:first_name => 'Philip', :last_name => 'Levis', :email => 'philip.levis@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 ml = Researcher.new(:first_name => 'Marc', :last_name => 'Levoy', :email => 'levoy@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 fl = Researcher.new(:first_name => 'Fei-Fei', :last_name => 'Li', :email => 'feifeili@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
 pl = Researcher.new(:first_name => 'Percy', :last_name => 'Liang', :email => 'pliang@estanfor.edu', :password => "collabme13", :password_confirmation => "collabme13")
@@ -117,6 +117,33 @@ education_aa2.end_date = Time.new(1988, 6, 1)
 education_aa2.researcher = aa
 education_aa2.save
 
+syracuse = School.new
+syracuse.name = 'Syracuse University'
+syracuse.location = 'Syracuse, NY'
+syracuse.school_type = 'university'
+syracuse.save
+
+education_sc2 = Education.new
+education_sc2.school = cornell
+education_sc2.degree = 'B.S.'
+education_sc2.major = 'Computer Science'
+education_sc2.researcher = sc
+education_sc2.save
+
+education_sc = Education.new
+education_sc.school = syracuse
+education_sc.degree = 'M.S.'
+education_sc.major = 'Computer Science'
+education_sc.researcher = sc
+education_sc.save
+
+education_sc3 = Education.new
+education_sc3.school = syracuse
+education_sc3.degree = 'Ph.D.'
+education_sc3.major = 'Computer Science'
+education_sc3.researcher = sc
+education_sc3.save
+
 #
 # Researcher Projects
 #
@@ -148,6 +175,18 @@ security_lab = Group.new(:name => "Stanford Security Laboratory", :email => "sec
 security_lab.researchers << aa << db << dd << hg << ml << dm << nm << jm << mr
 security_lab.save()
 
+cs_lab = Group.new(:name => "Computer Systems Laboratory", :email => "cs_lab@estanfor.edu", :description => "The Computer Systems Laboratory is a joint lab of the Departments of Electrical Engineering and Computer Science located on the Stanford University Campus in the Gates Computer Science Building.
+
+Established in 1968, CSL has grown to include approximately 20 faculty members and 150 Ph.D. students. CSL is internationally recognized for its excellence; the faculty, research staff and students are widely known for their leadership in developing new ideas and trends in the design, organization, and use of computers. CSL is distinguished in its research and teaching.
+
+Research in CSL is both experimental and theoretical, traversing many domains: operating systems, computer networking, special architectures, compilers, programming languages, information management, graphics, security, reliability and fault tolerance, system specification and verification, user interfaces, integrated circuit design and special computer architectures. Current research being done in the Computer Systems Laboratory can be viewed at CSL Research or Computer Forum. Technical reports are also available from 1960 to 1990 and for 2000 on.
+
+Teaching is formalized in the classroom, but constantly challenged and enriched through the hands-on work of the various CSL project groups and the wider influence of Silicon Valley technology. Of special interest is the Stanford Electrical Engineer Computer Systems Colloquium which is open to the public. The Colloquium is an ongoing guest lecture series touching on many elements of computer systems, the technologies they employ, and the systems they enable. Outstanding and sometimes controversial speakers are drawn form academia, commercial research labs, and industry. You can review the current program on the Colloquium website and join us for the next talk! Students may enroll in the Colloquium as a class, EE380, and will earn 1 unit of S/NC credit.
+
+Students working in CSL are admitted to either the Electrical Engineering or the Computer Science department. Usually students with primary interest in VLSI, CAD, and computer architecture come from the EE department, while students with interest in compilers, operating systems, and programming environments come from the CS department. Because of the interdisciplinary nature of the lab, there are no rigid student classifications; undergraduates, Masters students and Ph.D. candidates from either department can work with any faculty member or any research project for which they qualify. It is just this interdisciplinary composition of the research teams that has proven the CSL to be a good environment for nurturing interesting and profitable ideas.")
+cs_lab.researchers << aa << db << dc << bd << dd << de << rf << hg << lg << ph << john_hennessy << mh << sk << monica_lam << pl << ml << dm << nm << tm << sm << ko << jo << bp << mr << jw << tw
+cs_lab.save()
+
 #
 # Researcher Info
 #
@@ -171,6 +210,19 @@ work_experience_mb.researcher = mb
 work_experience_mb.research_lab = hci_lab
 work_experience_mb.save
 
+stanford_cs = Company.new
+stanford_cs.name = 'Stanford Computer Science Depatrment'
+stanford_cs.location = 'Stanford, CA'
+stanford_cs.save
+
+work_experience_dd = WorkExperience.new
+work_experience_dd.title = 'Professor of Computer Science'
+work_experience_dd.start_date = Time.new(1987, 1, 1)
+work_experience_dd.end_date = Time.now()
+work_experience_dd.researcher = dd
+work_experience_dd.company = stanford_cs
+work_experience_dd.save
+
 aa.save()
 sb.save()
 gb.save()
@@ -187,7 +239,7 @@ mg.save()
 lg.save()
 ph.save()
 ok.save()
-sk.save()
+sachin_katti.save()
 jh.save()
 john_hennessy.save()
 mh.save()
@@ -196,9 +248,9 @@ don_knuth.save()
 dk.save()
 vk.save()
 ck.save()
-ml.save()
+monica_lam.save()
 jl.save()
-pl.save()
+philip_levis.save()
 ml.save()
 fl.save()
 jm.save()
