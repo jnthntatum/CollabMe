@@ -466,6 +466,9 @@ hg.photo = hg_profile_pic
 don_knuth_profile_pic = Photo.new(:file_name => 'profile_pictures/1370577885_knuth.gif')
 don_knuth.photo = don_knuth_profile_pic
 
+er_profile_pic = Photo.new(:file_name => 'profile_pictures/1370581664_EricInClass.gif')
+er.photo = er_profile_pic
+
 ##################################
 
 # Projects
