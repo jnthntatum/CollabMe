@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(:version => 20130606215831) do
     t.string   "full_article_url"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.integer  "aid"
     t.integer  "authorid"
+    t.integer  "aid"
   end
 
   create_table "chat_sessions", :force => true do |t|

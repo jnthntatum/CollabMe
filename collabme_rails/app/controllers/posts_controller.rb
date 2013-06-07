@@ -33,6 +33,20 @@ class PostsController < ApplicationController
         end
       end
       return
+    elsif params[:group_id]
+      group = Group.find_by_id(params[:group_id])
+      group.posts << @post
+      @post.save
+      respond_to do |format|
+        if @post.save
+          format.html { redirect_to group_path(group)}
+          format.json { render :json => @post, :status => :created, :location => @post }
+        else
+          format.html { redirect_to :back }
+          format.json { render :json => @post.errors, :status => :unprocessable_entity }
+        end
+      end
+      return
     end
     @post.desc = params[:post_text]
     @post.save

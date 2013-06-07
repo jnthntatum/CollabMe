@@ -12,114 +12,32 @@
   <div class="row-fluid border_row">
     <div class="tabbable span12" style="height: 100%;"> <!-- Only required for left/right tabs -->
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Bulletin Board</a></li>
-        <li><a href="#tab2" data-toggle="tab">Task</a></li>
-        <li><a href="#tab3" data-toggle="tab">Project Description</a></li>
+        <li class="active">
+          <a href="#tab1" data-toggle="tab">Project Description</a>
+        </li>
+        <li>
+          <a href="#tab2" data-toggle="tab">Tasks</a>
+        </li>
+        <li>
+          <a href="#tab3" data-toggle="tab">Project Stats</a>
+        </li>
       </ul>
-      <div class="tab-content" style="overflow-y: scroll; height: 80%; z-index: -1;">
+      <div class="tab-content">
+
+        <!-- Project Description -->
         <div class="tab-pane active" id="tab1">
-          <% if session[:current_user_id] %>
-            <%= form_for([@project, Post.new], :html => {:class => 'input-append input-block-level'}) do |p| %>
-              
-                <%= p.text_field(:desc, {:placeholder => "Write a New Post", :class => "span11"}) %>
-                <%= p.hidden_field(:creator_id, :value => session[:current_user_id]) %> 
-              
-              <%= p.submit "Post" %>
-            <% end %>
-          <% end %>
-          <div>
-          <% @project.posts.each do |p| %>
-            <% creator = Researcher.find_by_id(p.creator_id)%>
-            <%= creator.first_name + " " + creator.last_name + ": " + p.desc %>
-          <% end %>
-          </div>
-        </div>
-        <div class="tab-pane" id="tab2">
-          <table class="table table-striped" style="table-layout:fixed; width: 100%;">
-            <thead>
-              <tr style="width: 100%;">
-                <th>#</th>
-                <th>Description</th>
-                <th>Creator</th>
-                <th>Assignee</th>
-                <th>Category</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% counter = 1 %>
-              <% if @currUserIsMember %>
-                <% @tasks.each do |t| %>
-                  <%= content_tag :tr, :style => "width: 100%;" do %>
-                    <%= content_tag :td, counter.to_s %>
-                    <%= form_for t, :url => {:controller => :tasks, :action => 'update', :id => t.id}, :html => {:method => :put, :class => 'form-inline'} do |f| %>
-                        <%= content_tag :td do %>
-                          <%= f.text_area(:desc, :rows => 3, :class => 'input-small') %>
-                        <% end %>
-                        <%= content_tag(:td, t.creator.full_name) %>
-                        <%= content_tag :td do %>
-                          <%= f.collection_select(:assignee_id, Array.new(@project.members) << @project.owner, :id, :full_name, {:include_blank => true}, {:class => "input-small"}) %>
-                        <% end %>
-                        <%= content_tag :td do %>
-                          <%= f.select(:category, options_for_select((0..9).map{|x| [x.to_s, x.to_i]}, t.category), {}, :class => 'input-small') %>
-                        <% end %>
-                        <%= content_tag :td do %>
-                          <%= f.hidden_field(:creator_id, :value => t.creator_id) %>
-                          <%= f.hidden_field(:project_id, :value => t.project_id) %>
-                          <%= f.submit("Update") %>
-                        <% end %>
-                    <% end %>
-                  <% end %>
-                  <% counter += 1 %>
-                <% end %>
-              <% else %>
-                <% @tasks.each do |t| %>
-                  <%= content_tag :tr, :style => "width: 100%;" do %>
-                    <%= content_tag :td, counter.to_s %>
-                    <%= content_tag :td, t.desc %>
-                    <%= content_tag :td, t.creator.full_name %>
-                    <% if t.assignee %>
-                      <%= content_tag :td, t.assignee.full_name %>
-                    <% else %>
-                      <%= content_tag :td, 'Unassigned' %>
-                    <% end %>
-                    <%= content_tag :td, t.category.to_s %>
-                  <% end %>
-                  <% counter += 1 %>
-                <% end %>
-              <% end %>
-              <% if @currUserIsMember %>
-                <%= content_tag :tr, :style => "width: 100%;" do %>
-                  <%= content_tag :td, counter.to_s %>
-                  <%= form_for @newTask, :url => {:controller => :tasks, :action => 'create'}, :html => {:class => 'form-inline'} do |f| %>
-                      <%= content_tag :td do %>
-                        <%= f.text_area(:desc, :rows => 3, :class => 'input-small') %>
-                      <% end %>
-                      <%= content_tag(:td, @newTask.creator.first_name + ' ' + @newTask.creator.last_name) %>
-                      <%= content_tag :td do %>
-                        <%= f.collection_select(:assignee_id, Array.new(@project.members) << @project.owner, :id, :full_name, {:include_blank => true}, {:class => "input-small"}) %>
-                      <% end %>
-                      <%= content_tag :td do %>
-                        <%= f.select(:category, options_for_select(0..9), {}, :class => 'input-small') %>
-                      <% end %>
-                      <%= content_tag :td do %>
-                        <%= f.hidden_field(:creator_id, :value => @newTask.creator_id) %>
-                        <%= f.hidden_field(:project_id, :value => @newTask.project_id) %>
-                        <%= f.submit("Create") %>
-                      <% end %>
-                  <% end %>
-                <% end %>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-        <div class="tab-pane" id="tab3">
           <p>Hello, I'm in Section 3.</p>
+        </div>
+
+        <!-- Tasks -->
+        <div class="tab-pane" id="tab2">
+          <%= render :partial => 'show_tasks' %>
         </div>
       </div>
     </div>
   </div>
-  <div class="row-fluid border_row" style="border-top: 1px solid #cccccc;">
-    Put project stats here possibly.
+  <div class="row-fluid border_row" id="post_div">
+    <%= render :partial => 'show_posts' %>
   </div>
 </div>
 <div class="span3 well sidebar">

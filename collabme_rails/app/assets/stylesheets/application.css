@@ -101,7 +101,12 @@ body {
 }
 
 .img-circle {
+	display: inline-block;
 	height: 50px !important;
 	width: 50px !important;
 	margin-right: 5px;
+}
+
+.small_profile {
+	margin: 2px auto;
 }
