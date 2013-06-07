@@ -130,6 +130,14 @@ class SearchController < ApplicationController
     @groups.each do |group|
       unique[group.id] += 1
     end
+
+    require 'levenshtein'
+    unique.each do |key, value|
+      group = Group.find_by_id(key)
+      score = Levenshtein.distance(group.name, @query)
+      unique[group.id] -= score
+    end
+
     require 'pqueue'
 
     arrayForPQ = []
@@ -168,6 +176,14 @@ class SearchController < ApplicationController
     @projects.each do |project|
       unique[project.id] += 1
     end
+
+    require 'levenshtein'
+    unique.each do |key, value|
+      project = Project.find_by_id(key)
+      score = Levenshtein.distance(project.name, @query)
+      unique[project.id] -= score
+    end
+
     require 'pqueue'
 
     arrayForPQ = []
