@@ -1,14 +1,16 @@
+<h4>Publications</h4>
 <% if @researcher.published %>
   <% articles = Article.find_all_by_aid(@researcher.id) %>
   <% articles.each do |article| %>
-    <br />
-    <% linkname = article.title + " by " + article.authors %>
-    <%= link_to linkname, article.full_article_url %>
+    <div class="article">
+      <% linkname = article.title + " by " + article.authors %>
+      <%= link_to linkname, article.full_article_url %>
+    </div>
   <% end %>
 <% else %>
   <p>Nothing here yet.</p>
-<% end %>
-<%= link_to :controller => "researchers", :action => "publications", :id => @researcher do %>
-  <i class="icon-plus"></i>
-  Find Publications on Google Scholar
+  <%= link_to :controller => "researchers", :action => "publications", :id => @researcher do %>
+    <i class="icon-plus"></i>
+    Find Publications on Google Scholar
+  <% end %>
 <% end %>

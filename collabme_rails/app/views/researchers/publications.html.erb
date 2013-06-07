@@ -20,8 +20,11 @@
       <% if profilePresent %>   
         <p>Please choose your Google Scholar profile:</p>
         <%= @potential_publications.authors.each do |author| %>
-          <%= link_to author.name, {:controller => "researchers", :action => "validate", :id => params[:id], :authorid =>  author.id, :citations => author.citations} %>
-          <%= link_to "Google Scholar Profile", author.author_url%>
+          <p>
+            <%= link_to author.name, {:controller => "researchers", :action => "validate", :id => params[:id], :authorid =>  author.id, :citations => author.citations} %>
+            | 
+            <%= link_to "Google Scholar Profile", author.author_url%>
+          </p>
         <% end %>
         <% @potential_publications.authors do |pub| %>
           <%= pub %>

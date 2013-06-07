@@ -1,6 +1,6 @@
 class ResearchersController < ApplicationController
   before_filter :require_login, :only => [:email, :edit, :update, :edit_profile_picture, :upload_picture]
-  before_filter :authenticate_user, :only => [:edit, :update, :edit_profile_picture, :upload_picture]
+  before_filter :authenticate_user, :only => [:edit, :update, :edit_profile_picture, :upload_picture, :publications]
 
   include ResearchersHelper
 	
