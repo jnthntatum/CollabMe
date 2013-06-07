@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
 
-  Appearance = Struct.new(:researcherID, :priority)
+  Appearance = Struct.new(:ID, :priority)
 
   def search
   	type = params[:type]
@@ -94,27 +94,75 @@ class SearchController < ApplicationController
    def findGroups
     logger.debug @query
     @query = flash[:query]
-    @groups = Group.where("name LIKE ?", @query)
-    @tagged = Group.tagged_with(@query)
-    @groups.concat(@tagged)
-    @groupsCheck = @groups
-    @groupsCheck.uniq!
-    if !@groupsCheck.nil?
-      @groups = @groupsCheck
+    searchTerms = @query.split
+    @results = []
+    searchTerms.each do |term|
+      term = '%' + term + '%'
+      groups = Group.where("name LIKE ?", term)
+      unless groups.empty?
+        @results += groups
+      end
+      
+      tagged = Group.tagged_with(term)
+      unless tagged.empty?
+        @results += tagged
+      end
+
     end
+
+    @groups = @results
+
+    unique = Hash.new(0)
+    @groups.each do |group|
+      unique[group.id] += 1
+    end
+    require 'pqueue'
+
+    arrayForPQ = []
+    unique.each do | key, value|
+      version = Appearance.new(key, value)
+      arrayForPQ += [version] 
+    end
+
+
+    @pq = PQueue.new(arrayForPQ){ |a,b| a[:priority] > b[:priority] }
 
   end
 
    def findProjects
     logger.debug @query
     @query = flash[:query]
-    @projects = Project.where("name LIKE ?", @query)
-    @tagged = Project.tagged_with(@query)
-    @orojects.concat(@tagged)
-    @projectsCheck = @projects
-    @projectsCheck.uniq!
-    if !@projectsCheck.nil?
-      @projects = @projectsCheck
+    searchTerms = @query.split
+    @results = []
+    searchTerms.each do |term|
+      term = '%' + term + '%'
+      projects = Project.where("name LIKE ?", term)
+      unless projects.empty?
+        @results += projects
+      end
+      
+      tagged = Project.tagged_with(term)
+      unless tagged.empty?
+        @results += tagged
+      end
+
     end
+
+    @projects = @results
+
+    unique = Hash.new(0)
+    @projects.each do |project|
+      unique[project.id] += 1
+    end
+    require 'pqueue'
+
+    arrayForPQ = []
+    unique.each do | key, value|
+      version = Appearance.new(key, value)
+      arrayForPQ += [version] 
+    end
+
+
+    @pq = PQueue.new(arrayForPQ){ |a,b| a[:priority] > b[:priority] }
   end
 end
