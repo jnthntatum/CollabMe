@@ -121,15 +121,40 @@ education_aa2.save
 # Researcher Groups
 #
 
-g = Group.new(:name => "The Batzoglou Lab", :email => "serafim@estanfor.edu", :description => "We develop and apply methods for the analysis of cancer genomes. Currently we have two ongoing collaborative projects, on breast cancer and medulloblastoma.")
-g.researchers << sb << ss;
-g.save();
+batz_lab = Group.new(:name => "The Batzoglou Lab", :email => "serafim@estanfor.edu", :description => "We develop and apply methods for the analysis of cancer genomes. Currently we have two ongoing collaborative projects, on breast cancer and medulloblastoma.")
+batz_lab.researchers << sb << ss;
+batz_lab.save();
+
+hci_group = Group.new(:name => "Stanford HCI Group", :email => "stanordHCI@estanfor.edu", :description => "CURRENT PROJECTS: Interactive Cognitive Aid; Designing an interactive cognitive aid system for crisis in the operating room; Private, Accountable Crowdsourcing Help people complete tasks; Bricolage Web design alternatives by borrowing from examples; Prototyping Theory How prototyping practices affect design work; Self & Peer Assessment Learn creative skills and wisdom.")
+hci_group.researchers << mb << jh << sk << tw;
+hci_group.save();
+
+crypto_group = Group.new(:name => "Applied Crypto Group", :email => "crypto@estanfor.edu", :description => "The Applied Crypto Group is a part of the Security Lab in the Computer Science Department at Stanford University. Research projects in the group focus on various aspects of network and computer security. In particular the group focuses on applications of cryptography to real world security problems.")
+crypto_group.researchers << db
+crypto_group.save()
 
 #
 # Researcher Info
 #
 gb.about_me = "Only 2-3% of the 3 billion bases in the human genome is used to encode the genome's 20-25,000 protein coding genes. Recent genomics advances have revealed a multitude of cis-regulatory regions that occupy at least 3-5 times more of the genome. These roughly 1,000,000 promoters, enhancers, silencers and insulators regulate gene expression in every cell in our body, allowing different cells to express very different protein repertoires. We study this fascinating 'control layer' of the human genome, with an aim to: identify cis-regulatory elements in the human genome and annotate them for function; map the cis-regulatory architecture controlling early limb, forebrain and placenta development, and understand its contribution to human disease; study the origins and evolution of regulatory genomic regions and reveal their contribution to vertebrate, mammalian and human specific evolution.
 To address these challenges we use a potent combination of computational and experimental approaches. We write computational tools to discover cis-regulatory codes and trace their evolution; we run our tools on massive genomic datasets to generate testable hypotheses; and we perform molecular biology experiments to validate our hypotheses and generate novel ones. We work in small teams of experimentalists and computational tool users, who interact directly with our computational tool builders."
+
+#
+# Researcher Experience
+#
+hci_lab = ResearchLab.new
+hci_lab.name = 'Stanford HCI Group'
+hci_lab.location = 'Stanford, CA'
+hci_lab.focus = 'Human-Computer Interaction'
+hci_lab.save
+
+work_experience_mb = WorkExperience.new
+work_experience_mb.title = 'Assistant Professor, Computer Science Department'
+work_experience_mb.start_date = Time.new(2013, 1, 1)
+work_experience_mb.end_date = Time.now()
+work_experience_mb.researcher = mb
+work_experience_mb.research_lab = hci_lab
+work_experience_mb.save
 
 aa.save()
 sb.save()
