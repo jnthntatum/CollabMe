@@ -1,11 +1,28 @@
 <h1>Create a Project</h1>
-
-<%= form_for @project, :url => {:action => "create"} do |f| %>
-	<%= label_tag("Project Owner") %>
-	<% researcher_array = Researcher.all.map {|r| ["#{r.last_name}, #{r.first_name}", r.id]} %>
-	<%= select_tag(:researcher_id, options_for_select(researcher_array)) %>
-	<%= f.label(:name, "Project Name: ") %> 
-  	<%= f.text_field :name %> <br />
-  	<%= f.text_area :description, :size => "60x12" %> <br />
-  	<%= f.submit "Create" %>
+<%= render :partial => 'shared/back_to_own_profile' %>
+<%= form_for @project, :html => {:class => 'form-horizontal'}, :url => {:action => "create"} do |f| %>
+  <div class="control-group">
+    <label class="control-label" for="researcher_id">Project Owner</label>
+    <div class="controls">
+      <% researcher_array = Researcher.all.map {|r| ["#{r.first_name} #{r.last_name}", r.id]} %>
+      <%= select_tag(:researcher_id, options_for_select(researcher_array, session[:current_user_id])) %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="name">Project Name</label>
+    <div class="controls">
+    	<%= f.text_field :name %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="description">Description</label>
+    <div class="controls">
+      <%= f.text_area :description, :size => "60x12" %>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit 'Create Project', :class => 'btn btn-primary' %>
+    </div>
+  </div>     
 <% end %>

@@ -1,9 +1,21 @@
 <h1>Edit Group</h1>
-<%= render 'shared/show_errors' %>
-<%= form_for @group do |f| %>
-  <p>
-    Email: <%= f.text_field :email %> <br />
-    Description: <%= f.text_area :description %> <br />
-    <%= f.submit %>
-  </p>
+<%= render :partial => 'shared/back_to_group' %>
+<%= form_for @group, :html => {:class => 'form-horizontal'} do |f| %>
+  <div class="control-group">
+    <label class="control-label" for="email">Email</label>
+    <div class="controls">
+      <%= f.text_field :email %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="description">Description</label>
+    <div class="controls">
+      <%= f.text_area :description, :size => "60x12" %>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit 'Edit Group', :class => 'btn btn-primary' %>
+    </div>
+  </div>     
 <% end %>

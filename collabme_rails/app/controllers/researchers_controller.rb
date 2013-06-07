@@ -157,8 +157,7 @@ class ResearchersController < ApplicationController
   def update
     @researcher = Researcher.find_by_id(params[:id]) 
     if @researcher.update_attributes(params[:researcher])
-      flash[:notice] = 'You have successfully changed your profile.'
-      redirect_to edit_researcher_path
+      redirect_to @researcher
     else
       flash[:error] = 'Something is wrong in your profile.'
       redirect_to edit_researcher_path

@@ -1,10 +1,30 @@
 <h1>Create a Group</h1>
+<%= render :partial => 'shared/back_to_own_profile' %>
+<%= form_for @group, :html => {:class => 'form-horizontal'}, :url => {:action => "create"} do |f| %>
+  <div class="control-group">
+    <label class="control-label" for="name">Group Name</label>
+    <div class="controls">
+      <%= f.text_field :name %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="email">Email</label>
+    <div class="controls">
+      <%= f.text_field :email %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="description">Description</label>
+    <div class="controls">
+      <%= f.text_area :description, :size => "60x12" %>
+    </div>
+  </div>
 
-<%= form_for @group, :url => {:action => "create"} do |f| %>
-	<%= f.label(:name, "Group Name: ") %> 
-  <%= f.text_field :name %> <br />
-  <%= f.label(:description, "Description: ") %>
-  <%= f.text_area :description, :size => "60x12" %> <br />
-  <%= hidden_field_tag 'first_member', session[:current_user_id] %> <br />
-  <%= f.submit "Create" %>
+  <%= hidden_field_tag 'first_member', session[:current_user_id] %>
+
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit 'Create Group', :class => 'btn btn-primary' %>
+    </div>
+  </div>     
 <% end %>
