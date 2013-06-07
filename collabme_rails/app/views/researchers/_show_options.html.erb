@@ -7,17 +7,18 @@
   <p><%= link_to "Create a Group", {:controller => "groups", :action => "new"} %></p>
 <% else %>
   <p><%= link_to @researcher.email, {:controller =>"researchers", :action => "email"} %></p>
-      <script type="text/javascript" src="http://cdn.dev.skype.com/uri/skype-uri.js"></script>
-    <div id="SkypeButton_Call_#{@researcher.skype}_1">
-    <script type="text/javascript">
-        Skype.ui({
-          "name": "call",
-          "element": "SkypeButton_Call_#{@researcher.skype}_1",
-          "participants": ["#{@researcher.skype}"],
-          "imageSize": 32
-        });
-    </script>
-    </div>
+      
+    <script type="text/javascript" src="http://cdn.dev.skype.com/uri/skype-uri.js"></script>
+    <div id="SkypeButton_Call__1">
+    <%= javascript_tag do -%>
+      Skype.ui({
+        'name': 'call',
+        'element': 'SkypeButton_Call_<%= @researcher.skype%>_1',
+        'participants': ['<%= @researcher.skype%>'],
+        'imageSize': 32
+      });
+    <% end -%>
+</div>
   <% if session[:current_user_id] and not @hasRequested and not @isCurrUserFriend %>
     <p>
       <%= button_to "Request Connection", researcher_requests_path(@researcher), :class => "btn btn-primary" %>

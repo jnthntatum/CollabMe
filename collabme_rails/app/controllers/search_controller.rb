@@ -83,10 +83,10 @@ class SearchController < ApplicationController
       end
     end
 
-    require 'levenshtein'
+    require 'damerau-levenshtein'
     unique.each do |key, value|
       researcher = Researcher.find_by_id(key)
-      score = Levenshtein.distance(researcher.full_name, @query)
+      score = DamerauLevenshtein.distance(researcher.full_name, @query)
       unique[researcher.id] -= score
     end
 
@@ -131,10 +131,11 @@ class SearchController < ApplicationController
       unique[group.id] += 1
     end
 
-    require 'levenshtein'
+    require 'damerau-levenshtein'
     unique.each do |key, value|
       group = Group.find_by_id(key)
-      score = Levenshtein.distance(group.name, @query)
+      
+      score = DamerauLevenshtein.distance(group.name, @query)
       unique[group.id] -= score
     end
 
@@ -177,10 +178,10 @@ class SearchController < ApplicationController
       unique[project.id] += 1
     end
 
-    require 'levenshtein'
+    require 'damerau-levenshtein'
     unique.each do |key, value|
       project = Project.find_by_id(key)
-      score = Levenshtein.distance(project.name, @query)
+      score = DamerauLevenshtein.distance(project.name, @query)
       unique[project.id] -= score
     end
 
