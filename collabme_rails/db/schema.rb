@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130606215831) do
+ActiveRecord::Schema.define(:version => 20130606221231) do
 
   create_table "activities", :force => true do |t|
     t.integer  "work_experience_id"
@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(:version => 20130606215831) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "aid"
-    t.integer  "authorid"
   end
 
   create_table "chat_sessions", :force => true do |t|
@@ -43,10 +42,11 @@ ActiveRecord::Schema.define(:version => 20130606215831) do
   end
 
   create_table "companies", :force => true do |t|
+    t.integer  "work_experience_id"
     t.string   "name"
     t.string   "location"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "courses", :force => true do |t|
@@ -145,11 +145,14 @@ ActiveRecord::Schema.define(:version => 20130606215831) do
   add_index "research_group_members", ["researcher_id", "group_id"], :name => "member_groups_index", :unique => true
 
   create_table "research_labs", :force => true do |t|
+    t.integer  "work_experience_id"
+    t.integer  "school_id"
+    t.integer  "company_id"
     t.string   "name"
     t.string   "location"
     t.string   "focus"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "researchers", :force => true do |t|
@@ -165,6 +168,7 @@ ActiveRecord::Schema.define(:version => 20130606215831) do
     t.text     "publications"
     t.integer  "citations"
     t.boolean  "published"
+    t.boolean  "open"
   end
 
   create_table "resources", :force => true do |t|
@@ -179,11 +183,12 @@ ActiveRecord::Schema.define(:version => 20130606215831) do
   add_index "resources", ["resource_interface_id"], :name => "index_resources_on_resource_interface_id"
 
   create_table "schools", :force => true do |t|
+    t.integer  "education_id"
     t.string   "name"
     t.string   "location"
     t.string   "school_type"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "taggings", :force => true do |t|

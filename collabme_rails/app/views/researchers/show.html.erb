@@ -43,11 +43,12 @@
               <% articles = Article.find_all_by_aid(@researcher.id) %>
               <% articles.each do |article|%>
                 <br>
-                <% linkname = article.title + " by " + article.authors%>
-                <%= link_to linkname, article.full_article_url%>
+                <% linkname = article.title + " by " + article.authors %>
+                <%= link_to linkname, article.full_article_url %>
               <% end%>
             <% else %>
-              <%= 'Nothing here yet.' %><br>
+              <%= 'Nothing here yet.' %>
+              <br>
               <%= link_to "Add Publications by Verifying Identity", {:controller => "researchers", :action => "publications", :id => @researcher} %>
               <br>
             <% end %>
