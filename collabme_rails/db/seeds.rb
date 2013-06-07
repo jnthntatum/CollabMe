@@ -236,12 +236,12 @@ work_experience_mb.research_lab = hci_lab
 work_experience_mb.save
 
 stanford_cs = Company.new
-stanford_cs.name = 'Stanford Computer Science Depatrment'
+stanford_cs.name = 'Stanford Computer Science Department'
 stanford_cs.location = 'Stanford, CA'
 stanford_cs.save
 
 stanford_ee = Company.new
-stanford_ee.name = 'Stanford Electrical Engineering Depatrment'
+stanford_ee.name = 'Stanford Electrical Engineering Department'
 stanford_ee.location = 'Stanford, CA'
 stanford_ee.save
 
