@@ -88,6 +88,9 @@ CollabmeRails::Application.routes.draw do
     end
   end
 
+  resources :photos do
+  end
+
   resources :projects do
     resources :posts
     resources :requests
@@ -106,6 +109,8 @@ CollabmeRails::Application.routes.draw do
 
     member do
       post 'add_member'
+      get 'edit_profile_picture'
+      post 'upload_picture'
     end
   end
   

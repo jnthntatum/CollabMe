@@ -1,0 +1,5 @@
+<% if @entity.photo %>
+  <%= link_to image_tag(@entity.photo.file_name, :alt => 'Profile Picture', :class => 'img-circle', :title => @entity.first_name + ' ' + @entity.last_name), @entity %>
+<% else %>
+  <%= link_to image_tag('default-profile-pic.png', :alt => 'Profile Picture', :class => 'img-circle', :title => @entity.first_name + ' ' + @entity.last_name), @entity %>
+<% end %>

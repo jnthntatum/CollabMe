@@ -32,10 +32,8 @@ function Session(){
 	this.addUser = function (uid){
 		if (this.users.indexOf(uid) == -1){
 			this.users.push(uid);
-			return true
-		} else{
-			return false;
 		}
+		return true;
 	}
 	this.removeUser = function (uid){
 		var idx = this.users.indexOf(uid); 
@@ -156,10 +154,10 @@ function HandleCreate(client, message, uid){
 			s.addUser(message.uids[i])
 		}	
 	}
-	var m = new Message("ACK", 0)
-	m.sid = sessions.length;
-	m.ack = message; 
-	sendMessage(client, m);  
+	message.sid=sessions.length; 
+	
+	message.sid = sessions.length;
+	sendAck(client,message);  
 	sessions.push(s); 
 }
 
@@ -329,6 +327,25 @@ function HandleFlatten(client, message, uid){
 	s.drawables = tmp; 
 }
 
+function HandleRestore(client, message, uid){
+	if(!validSid(message)){
+		sendError(client, message, 'invalid sid')
+		return; 
+	}
+
+	var s = sessions[message.sid]; 
+	if (	typeof message.drawables !== 'object' || !(message.drawables instanceof Array)
+		||	typeof message.messages !== 'object' || !(message.messages instanceof Array)
+		){
+		sendError(client, message, 'session data sent is invalid.')
+		return; 
+	}
+	s.drawables = message.drawables;
+	s.messages = message.messages;
+	sendAck(client, message); 
+
+}
+
 /*function HandleX(client, message, uid){
 
 }*/
@@ -344,7 +361,8 @@ function SetUpEventHandles(){
 	FNs["ERASE"] = HandleErase;
 	FNs["GET_STATUS"] = HandleGetStatus;
 	FNs["HISTORY"] = HandleHistory;
-	FNs["FLATTEN"] = HandleFlatten; 
+	FNs["FLATTEN"] = HandleFlatten;
+	FNs["RESTORE"] = HandleRestore;  
 }
 
 function procMessage(client, message){

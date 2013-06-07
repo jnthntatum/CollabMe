@@ -201,10 +201,6 @@ class ResearchersController < ApplicationController
     redirect_to @researcher
   end
 
-  def edit_profile_picture
-    @user = Researcher.find_by_id(params[:id])
-  end
-
   def publications
     @researcher = Researcher.find_by_id(params[:id])
     name = @researcher.first_name + " " + @researcher.last_name
@@ -236,7 +232,10 @@ class ResearchersController < ApplicationController
       end
       redirect_to @researcher
     end
+  end
 
+  def edit_profile_picture
+    @user = Researcher.find_by_id(params[:id])
   end
 
   def upload_picture
