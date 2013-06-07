@@ -10,13 +10,13 @@
           var name = '<%= session[:current_user_first_name] %>';
           $(function(){
             
-            //ioChatServer="http://ancho.stanford.edu:8989/"
+            ioChatServer="http://ancho.stanford.edu:8989/"
             ioInit(); 
           }); 
         </script>
 <div id="whiteboard_flyout" class="modal hide fade" >
 	<div class="modal-header">
-		<h3>Whiteboard with: </h3> 
+		<h3 class="whiteboard_title">Whiteboard with: </h3> 
 	</div>
 	<div class="modal-body">
 		<!-- insertion point for canvas--> 

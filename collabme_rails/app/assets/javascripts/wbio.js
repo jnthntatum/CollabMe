@@ -70,6 +70,8 @@ function procWhoIs(message){
 	var s = message.session;
 	if (sid in ioSessions){
 		ioSessions[sid].drawables = s.drawables;
+		if (sid === ioCanvSid)
+			uiSetDrawables(ioSessions[sid].drawables);
 		ioSessions[sid].messages = s.messages;
 		ioSessions[sid].uids = s.users; 
 		ioSessions[sid].uids.splice(ioSessions[sid].uids.indexOf(uid), 1);
@@ -101,20 +103,34 @@ function procPOST(message){
 	s.dirty=true; 
 	if (d.type === 'chat_message'){
 		if (message.uid != uid){
-			uiAddChatMessage(sid, d, idx); 
 			s.messages[idx] = d; 
+			uiAddChatMessage(sid, d, idx); 
 		}
 	}
 	else{
-		uiAddDrawable(sid, d, idx)
 		s.drawables[idx] = d;
+		uiAddDrawable(sid, d, idx)
 	}
+}
+
+function ioUserList(sid){
+	if (! (sid in ioSessions) )
+		return ""
+	var s = ioSessions[sid]; 
+	var list = "";
+	for (var i = 0; i < s.uids.length; i++){
+		var fid = s.uids[i];
+
+		list += ((i > 0)? " ,": "") + ioFriendMap[fid].first_name
+	} 
+	return list;
+
 }
 
 function sessionDisplay(sid, drawing){
 	uiOpenChatWindow(sid) 
 	if(drawing === true){
-		ioCanvSid = sid; 
+		ioCanvSid = parseInt(sid); 
 		uiShowWhiteboard(ioCanvSid);	
 	}
 }
@@ -177,7 +193,7 @@ function procMessage(message){
 	} else if (message.command === "DELETE"){
 		uiDeleteDrawable(message.idx);
 	}else if (message.command === "FLATTEN"){
-		uiFlattenCanvas(message.layers, parse(message.img))
+		uiFlattenCanvas(message.layers, parseJSON(message.img))
 	}else{
 		console.log("Error, unhandled server command: " + message.command, message);
 	}
@@ -192,9 +208,11 @@ function ioSendAdd(uids, sid){
 	sendMessageToServer(m); 
 }
 
-function ioSendDrawable(drawable, idx){
+function ioSendDrawable(drawable, idx, sid){
 	var m = new Message("POST", uid);
-	m.sid = ioCanvSid;
+	if(sid==undefined)
+		sid = ioCanvSid
+	m.sid = sid;
 	m.idx = idx; 
 	m.data = drawable;
 	sendMessageToServer(m);  

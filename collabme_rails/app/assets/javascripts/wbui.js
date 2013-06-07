@@ -19,6 +19,7 @@ var	uiSensitivity = 8
 var name = "unset";
 var uiCanvOffset; 
 var uiMaxScroll = 10000000;
+var uiCanvasActive = false
 //====================================
 //EVENT HANDLING
 //====================================
@@ -305,8 +306,10 @@ function bindCircleFns(id){
 function uiAddDrawable(sid, drawable, idx){
 	var canvas=getCanvas(sid);
 	if (canvas === null){
-		console.log('error no canvas for session ', sid);
-		return
+		ioCanvSid = sid;
+		uiShowWhiteboard(sid);
+		ioCanvSid = sid;
+		canvas = getCanvas(sid);
 	}
 	console.log('updated obj at idx: ', idx)
 	uiDrawables[idx] = drawable; 
@@ -314,7 +317,11 @@ function uiAddDrawable(sid, drawable, idx){
 }
 
 function uiSetDrawables(arr){
-	uiDrawables = arr;
+	uiDrawables = [];
+	for (var i = 0; i < arr.length; i ++){
+		uiDrawables.push(parseJSON(arr[i]));
+	}
+	uiRedraw();
 }
 
 function uiRedraw(ctx){
@@ -390,6 +397,7 @@ function uiToolBar(){
 	tb.appendChild(uiSimpleTool("circle", "c")) 
 	tb.appendChild(uiSimpleTool("selector", "se"));
 	tb.appendChild(uiSimpleTool("flatten", "F"));
+	tb.appendChild(uiSimpleTool("calibrate", "cal"))
 	return tb 
 }
 
@@ -444,6 +452,9 @@ function attachToolBarHandlers(){
 		var layers = uiDrawables.length;
 		var img = uiFlattenCanvas(layers)
 		ioSendFlatten(layers, img) 
+	})
+	$('.calibrate').click(function(){
+		uiCanvOffset = evDetectOffset(canvasID);
 	})
 
 }
@@ -500,13 +511,25 @@ function uiCanvasInit(sid, parent){
 }
 
 function uiShowWhiteboard(sid){
+	if (uiCanvasActive){
+		$('.canvas_wrapper').empty();
+		if(sid){
+			uiCanvasInit(sid);
+			uiSetDrawables(GetSessionDrawables(sid));
+			$('.whiteboard_title').text("Whiteboard with: " + ioUserList(sid));
+			uiCanvOffset = evDetectOffset(canvasID);
+		} 
+		return; 
+	}
+	uiCanvasActive = true;
 	var width = $(window).width();
 	var height = $(window).height(); 
 	$('#whiteboard_flyout').modal().css('width', 1050).css('height', 700).css('left', (width-1050)/2 + 280).css('top', 10);
 	
 	if (sid){
 		uiCanvasInit(sid);
-		uiDrawables = ioGetSessionDrawables(sid);
+		uiSetDrawables(ioGetSessionDrawables(sid));
+		$('.whiteboard_title').text("Whiteboard with: " + ioUserList(sid));
 		$('#whiteboard_flyout').on('shown', function(){uiCanvOffset = evDetectOffset(canvasID); $("body").css("overflow", "hidden");});
 		$('#whiteboard_flyout').on('hidden', uiHideWhiteboard);
 	} 
@@ -516,6 +539,7 @@ function uiHideWhiteboard(){
 	$('#whiteboard_flyout').modal('hide');
 	$("body").css('overflow', 'auto');
 	$('.canvas_wrapper').empty();
+	uiCanvasActive = false;
 }
 
 function uiFlattenCanvas(layers, image){
@@ -528,13 +552,13 @@ function uiFlattenCanvas(layers, image){
 				d.draw(uiCtx); 
 			}
 		}
+		var enc_url = uiCtx.canvas.toDataURL()
+		image = new DImage(0,0,enc_url);
 	}
-	var enc_url = uiCtx.canvas.toDataURL()
-	var img = new DImage(0,0,enc_url);
 	
 	tmp = uiDrawables.slice(layers); 
-	uiDrawables = [img].concat(tmp);  
-	return img;  
+	uiDrawables = [image].concat(tmp);  
+	return image;  
 } 
 
 //=====================================
