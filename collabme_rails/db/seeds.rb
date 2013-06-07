@@ -218,6 +218,22 @@ Members of the Stanford AI Lab have contributed to fields as diverse as bio-info
 ai_lab.researchers << sb << gb << mg << lg << ok << dk << fl << pl << jl << cm << an << ks << ys
 ai_lab.save()
 
+mobisocial_lab = Group.new(:name => "The Stanford Mobile and Social Computing Research Group (MobiSocial)", :email => "mobisocial@estanfor.edu", :description => "What does the future hold when we have billions of users with personal smart phones? Like the PCs automating the office, smart phones will transform our social life. The Stanford MobiSocial Computing Laboratory focuses on creating novel user experience, system architecture, infrastructure design, development frameworks, and security protocols for the programmable open mobile internet (POMI) by year 2020.")
+mobisocial_lab.researchers << monica_lam << db << sk << jl << nm
+mobisocial_lab.save()
+
+sing = Group.new(:name => "Stanford Information Networks Group (SING)", :email => "sing@estanfor.edu", :description => "The Stanford Information Networks Group (SING) researches data-centric networked systems. Currently, much of its work deals with low-power sensor networks, including measuring the behavior of low-power wireless, network protocols and architecture, and operating systems. It also includes work in network infrastructures for virtual worlds.")
+sing.researchers << philip_levis
+sing.save()
+
+nlp_group = Group.new(:name => "The Stanford Natural Language Processing Group", :email => "nlp_group@estanfor.edu", :description => "NLP")
+nlp_group.researchers << pl << cm
+nlp_group.save()
+
+pp_group = Group.new(:name => "Pervasive Parallelism Laboratory", :email => "pp_group@estanfor.edu", :description => "The Stanford Pervasive Parallelism Lab is a collaboration of many leading Stanford computer scientists and electrical engineers for the purpose of developing the parallel computing platform for the year 2020. We are supported by a completely open industrial affiliates program.")
+pp_group.researchers << ko << bd << john_hennessy << mh << aa << ph << mr << jo << rf << vk
+pp_group.save()
+
 #
 # Researcher Info
 #
@@ -228,9 +244,70 @@ lg.about_me = "Professor Guibas heads the Geometric Computation group in the Com
 
 sk.about_me = "Scott is an Associate Professor of Computer Science at Stanford University. He co-directs the Human-Computer Interaction Group and holds the Bredt Faculty Scholar development chair. Organizations around the world use his lab's open-source design tools and curricula; several books and popular press articles have covered his research and teaching. He has been awarded the Katayanagi Emerging Leadership Prize, Sloan Fellowship, NSF CAREER award, Microsoft Research New Faculty Fellowship. He has authored and co-authored more than 40 peer-reviewed articles; eight were awarded best paper or honorable mention at the premier HCI conferences. His former graduate students are leading professors, researchers, founders, social entrepeneurs, and engineers. He has a dual BA in Art-Semiotics and Computer Science from Brown University, Graphic Design work at RISD, and an MS and PhD in Computer Science from UC Berkeley."
 
+dk.about_me = "I am the Rajeev Motwani Professor in the Computer Science Department at Stanford University. I joined the department in September 1995.   I also have a courtesy appointment in the Department of Pathology.
+
+I completed my PhD in 1993 at Stanford, and was a postdoctoral researcher at the Computer Science Division at UC Berkeley.  Before that, I did my masters and undergraduate degrees at the Hebrew University of Jerusalem, Israel."
+
+vk.about_me = "I am an assistant professor of Computer Science at Stanford, specializing in visual computing."
+
+jl.about_me = "I am assistant professor of Computer Science at Stanford University. My research focuses on mining and modeling large social and information networks, their evolution, and diffusion of information and influence over them. Problems I investigate are motivated by large scale data, the Web and on-line media."
+
+philip_levis.about_me = "I'm an Associate Professor in the Computer Science and Electrical Engineering Departments of Stanford University, where I head the Stanford Information Networking Group (SING). I research operating systems, network protocols, hardware and software design for computers that touch the physical world, such as embedded systems, sensor networks, mobile phones, green computing, wireless networks, 3D virtual worlds, and physical simulation.
+The operating systems, languages and tools I've researched are used by thousands of people, run on hundreds of thousands of devices, and are the basis for the Internet standard for connecting physical objects, such electricity meters, to the Internet (which I co-authored). I've authored over 60 peer reviewed papers, several of which have received best paper or most influential paper awards. I've been awarded an NSF CAREER Award, a Microsoft New Faculty Fellowship, and a Stanford Terman Fellowship. I co-founded Kumu Networks to commercialize research from SING on full duplex wireless."
+
+ml.about_me = "Marc Levoy is the VMware Founders Professor of Computer Science at Stanford University, with a joint appointment in the Department of Electrical Engineering. He received a Bachelor's and Master's in Architecture from Cornell University in 1976 and 1978, and a PhD in Computer Science from the University of North Carolina at Chapel Hill in 1989. In the 1970's Levoy worked on computer animation, developing a cartoon animation system that was used by Hanna-Barbera Productions to make The Flintstones, Scooby Doo, and other shows. In the 1980's Levoy worked on volume rendering, a technique for displaying three-dimensional functions such as computed tomography (CT) or magnetic resonance (MR) data. In the 1990's he worked on 3D laser scanning, culminating in the Digital Michelangelo Project, in which he and his students spent a year in Italy digitizing the statues of Michelangelo. Outside of academia, Levoy co-designed the Google book scanner and launched Google's Street View project. His current interests include light fields. optical microscopy, and computational photography - meaning computational imaging techniques that extend the capabilities of digital photography. Awards: Charles Goodwin Sands Medal for best undergraduate thesis (1976), National Science Foundation Presidential Young Investigator (1991), ACM SIGGRAPH Computer Graphics Achievement Award (1996), ACM Fellow (2007)."
+
+fl.about_me = "Research in our lab focuses on two intimately connected branches of vision research: computer vision and human vision. In both fields, we are intrigued by visual functionalities that give rise to semantically meaningful interpretations of the visual world. In computer vision, we aspire to build intelligent visual algorithms that perform important visual perception tasks such as object recognition, scene categorization, integrative scene understanding, human motion recognition, material recognition, etc. In human vision, our curiosity leads us to study the underlying neural mechanisms that enable the human visual system to perform high level visual tasks with amazing speed and efficiency."
+
+cm.about_me = "Chris Manning works on systems and formalisms that can intelligently process and produce human languages. His research concentrates on probabilistic models of language and statistical natural language processing; including text understanding, text mining, machine translation, information extraction, named entity recognition, part-of-speech tagging, probabilistic parsing and semantic role labeling, syntactic typology, computational lexicography, and other topics in computational linguistics and machine learning."
+
+dm.about_me = "David Mazieres is an associate professor of Computer Science at Stanford University, where he leads the Secure Computer Systems research group.  Prof. Mazieres received a BS in Computer Science from Harvard in 1994 and Ph.D. in Electrical Engineering and Computer Science from MIT in 2000.  Prof. Mazieres's research interests include Operating Systems and Distributed Systems, with a particular focus on security.  Some of the projects he and his students have worked on include SFS (a self-certifying network file system), SUNDR (a file system that introduced the notion of fork linearizability), Kademlia (a widely used peer-to-peer routing algorithm), Coral (a peer-to-peer content distribution network), HiStar (a secure operating system based on decentralized information flow control), and ICING (a network architecture allowing enforcement of decentralized policies).  Most recently, Prof. Mazieres is working on language-level security in Haskell and on a new web security architecture called Starlight based on information flow control.  Prof. Mazieres has several awards including a Sloan award (2002), USENIX best paper award (2001), NSF CAREER award (2001), MIT Sprowls best thesis in computer science award (2000), and fast-track journal papers at OSDI (2000), SOSP (1995), and SOSP (2005)."
+
+nm.about_me = "Nick McKeown is the Kleiner Perkins, Mayfield and Sequoia Professor of Electrical Engineering and Computer Science at Stanford University, and Faculty Director of the Open Networking Research Center. From 1986-1989 he worked for Hewlett-Packard Labs in Bristol, England. In 1995, he helped architect Cisco's GSR 12000 router. In 1997 Nick co-founded Abrizio Inc. (acquired by PMC-Sierra), where he was CTO. He was co-founder and CEO of Nemo ('Network Memory'), which is now part of Cisco. In 2007 he co-founded Nicira (acquired by VMware) with Martin Casado and Scott Shenker. In 2011, he co-founded the Open Networking Foundation (ONF) with Scott Shenker.
+
+Nick is a member of the US National Academy of Engineering (NAE), a Fellow of the Royal Academy of Engineering (UK), Fellow of the IEEE and the ACM. In 2005, he was awarded the British Computer Society Lovelace Medal, in 2009 the IEEE Kobayashi Computer and Communications Award and in 2012 the ACM Sigcomm Lifetime Achievement Award. Nick is the STMicroelectronics Faculty Scholar, the Robert Noyce Faculty Fellow, a Fellow of the Powell Foundation and the Alfred P. Sloan Foundation, and recipient of a CAREER award from the National Science Foundation. In 2000, he received the IEEE Rice Award for the best paper in communications theory. Nick's current research interests include software defined networks (SDN), how to enable more rapid improvements to the Internet infrastructure, and tools and platforms for networking research and teaching."
+
+tm.about_me = "Teresa H. Meng is the Reid Weaver Dennis Professor of Electrical Engineering at Stanford University. Her research activities during the first 10 years at Stanford focused on low-power circuit and system design, video signal processing, and wireless communications. In 1999, Dr. Meng took leave from Stanford and founded Atheros Communications, Inc., which developed semiconductor system solutions for communication network products. She returned to Stanford in 2000 to continue her research and teaching at the University.
+Dr. Meng has received many awards and honors, including the Distinguished Alumni Award from the U.C. Berkeley EECS Department and the Nationnal Taiwan University in 2010, the 2009 IEEE Solid-State Circuits Field Award, the DEMO Lifetime Achievement Award in 2009, the McKnight Technological Innovations in Neurosciences Award in 2007, the Distinguished Lecturer Award from the IEEE Signal Processing Society in 2004, the Bosch Faculty Scholar Award in 2003, the Innovator of the Year Award by MIT Sloan School eBA in 2002, the CIO 20/20 Vision Award in 2002, named one of the Top 10 Entrepreneurs by Red Herring in 2001, a Best Paper Award from the IEEE Signal Processing Society, an NSF Presidential Young Investigator Award, an ONR Young Investigator Award, and an IBM Faculty Development Award, all in 1989, and the Eli Jury Award from U.C. Berkeley in 1988.
+
+Dr. Meng's current research interests are bio-implant technologies, neural signal processing and non-invasive medical treatments using focused EM energy. She has given plenary talks at major conferences in the areas of signal processing and wireless communications. She is the author of one book, several book chapters, and over 200 technical articles in journals and conferences. Dr. Meng is a Fellow of the IEEE and a member of the National Academy of Engineering. She is also a member of the Academia Sinica of Taiwan. She received her M.S. and Ph.D. in EECS from the University of California at Berkeley and her B.S. from National Taiwan University."
+
+sm.about_me = "Professor Subhasish Mitra directs the Robust Systems Group in the Department of Electrical Engineering and the Department of Computer Science of Stanford University, where he is the Chambers Faculty Scholar of Engineering. Prior to joining Stanford, he was a Principal Engineer at Intel Corporation. He received Ph.D. in Electrical Engineering from Stanford University.
+ 
+Prof. Mitra's research interests include robust system design, VLSI design, CAD, validation and test, and emerging nanotechnologies.  His X-Compact technique for test compression has been used in more than 50 Intel products, and has influenced major Electronic Design Automation tools.  The IFRA technology for post-silicon validation, created jointly with his student, was characterized as 'a breakthrough' in a Research Highlight in the Communications of the ACM (CACM). His work on the first demonstration of carbon nanotube imperfection-immune digital VLSI, jointly with his students and collaborators, was selected by the National Science Foundation (NSF) as a Research Highlight to the United States Congress, and was highlighted 'as a significant breakthrough' by the Semiconductor Research Corporation (SRC), the MIT Technology Review, the New York Times, and several others.
+
+Prof. Mitra has served on numerous conference committees and journal editorial boards. Recently, he served on the Defense Advanced Research Projects Agency's (DARPA) Information Science and Technology (ISAT) Board as an invited member. He is a Fellow of the IEEE."
+
+jo.about_me = "I received a BS in Physics from Yale University in 1975 and a PhD in Computer Science from Carnegie Mellon University in 1980.
+
+From 1980-1994 I was a Professor of Computer Science at the University of California, Berkeley. My research projects included design tools for integrated circuits such as the Magic layout editor and the Crystal timing analyzer, the Sprite network operating system, log-structured file systems, the Tcl scripting language, and the Tk toolkit.
+
+In 1994 I left Berkeley to fulfill a long-standing desire to build commercial software. From 1994-1998 I was a Distinguished Engineer at Sun Microsystems Laboratories. In 1998 I founded Scriptics Corporation to commercialize Tcl development tools, where I was CEO until 2000. In 2002 I founded Electric Cloud. I was at Electric Cloud until 2007, and I led the development of a parallel build system (ElectricAccelerator) and a Web-based server for managing distributed processes such as nightly builds and automated tests (ElectricCommander).
+
+In 2008 I returned to academia as Professor (Research) in the Department of Computer Science at Stanford."
+
+sp.about_me = "Serge Plotkin is an Associate Professor of Computer Science at Stanford University. Serge has served as a Vice Chair of IEEE  Security in Storage Workgroup (P1619/P1619.1/P1619.2 workgroups) since its inception in 2003  and is the technical editor of the IEEE1619 standard. Serge is also a venture partner at Opus Capital, a venture capital fund that focuses on investments in early-stage technology companies. In 2001 Serge co-founded Decru and served as CTO and VP Engineering. Decru became the leader in the emerging field of security for data-at-rest and was acquired by Network Appliance in 2005."
+
+bp.about_me = "Balaji Prabhakar is a faculty member in the Departments of Electrical Engineering and Computer Science at Stanford University. His research interests are in computer networks; notably, in designing algorithms for the Internet and for Data Centers. Recently, he has been interested in Societal Networks: networks vital for society's functioning, such as transportation, electricity and recycling systems. He has been involved in developing and deploying incentive mechanisms to move commuters to off-peak times so that congestion, fuel and pollution costs are reduced.
+
+He has been a Terman Fellow at Stanford University and a Fellow of the Alfred P. Sloan Foundation. He has received the CAREER award from the U.S. National Science Foundation, the Erlang Prize, the Rollo Davidson Prize, and delivered the Lunteren Lectures. He is a co-recipient of several best paper awards."
+
+
 #
 # Researcher Experience
 #
+batzoglou_lab = ResearchLab.new
+batzoglou_lab.name = 'Batzoglou Lab'
+batzoglou_lab.location = 'Stanford, CA'
+batzoglou_lab.focus = 'Biocomputation'
+batzoglou_lab.save
+
+sail_lab = ResearchLab.new
+sail_lab.name = 'Stanford AI Lab (SAIL)'
+sail_lab.location = 'Stanford, CA'
+sail_lab.focus = 'Artificial Intelligence'
+sail_lab.save
+
 hci_lab = ResearchLab.new
 hci_lab.name = 'Stanford HCI Group'
 hci_lab.location = 'Stanford, CA'
@@ -249,6 +326,7 @@ stanford_cs = Company.new
 stanford_cs.name = 'Stanford Computer Science Department'
 stanford_cs.location = 'Stanford, CA'
 stanford_cs.save
+
 
 stanford_ee = Company.new
 stanford_ee.name = 'Stanford Electrical Engineering Department'
@@ -293,6 +371,30 @@ work_experience_sachin_katti2.end_date = Time.now()
 work_experience_sachin_katti2.researcher = sachin_katti
 work_experience_sachin_katti2.company = stanford_cs
 work_experience_sachin_katti2.save
+
+work_experience_jl = WorkExperience.new
+work_experience_jl.title = 'Assistant Professor'
+work_experience_jl.start_date = Time.new(2009, 9, 1)
+work_experience_jl.end_date = Time.now()
+work_experience_jl.researcher = jl
+work_experience_jl.company = stanford_cs
+work_experience_jl.save
+
+work_experience_an = WorkExperience.new
+work_experience_an.title = 'Director'
+work_experience_an.start_date = Time.new(1995, 1, 1)
+work_experience_an.end_date = Time.now()
+work_experience_an.researcher = an
+work_experience_an.research_lab = sail_lab
+work_experience_an.save
+
+work_experience_an2 = WorkExperience.new
+work_experience_an2.title = 'Associate Professor'
+work_experience_an2.start_date = Time.new(1995, 1, 1)
+work_experience_an2.end_date = Time.now()
+work_experience_an2.researcher = an
+work_experience_an2.company = stanford_cs
+work_experience_an2.save
 
 aa.save()
 sb.save()
@@ -360,6 +462,9 @@ de.photo = de_profile_pic
 
 hg_profile_pic = Photo.new(:file_name => 'profile_pictures/1370574737_hector.jpg')
 hg.photo = hg_profile_pic
+
+don_knuth_profile_pic = Photo.new(:file_name => 'profile_pictures/1370577885_knuth.gif')
+don_knuth.photo = don_knuth_profile_pic
 
 ##################################
 
@@ -441,18 +546,6 @@ logan.location = 'Union City, CA'
 logan.school_type = 'high school'
 logan.save
 
-# Research Labs
-batzoglou_lab = ResearchLab.new
-batzoglou_lab.name = 'Batzoglou Lab'
-batzoglou_lab.location = 'Stanford, CA'
-batzoglou_lab.focus = 'Biocomputation'
-batzoglou_lab.save
-
-sail_lab = ResearchLab.new
-sail_lab.name = 'Stanford AI Lab (SAIL)'
-sail_lab.location = 'Stanford, CA'
-sail_lab.focus = 'Artificial Intelligence'
-sail_lab.save
 
 # Work Experience
 work_experience1 = WorkExperience.new
