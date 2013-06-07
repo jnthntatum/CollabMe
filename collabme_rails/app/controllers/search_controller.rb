@@ -19,57 +19,57 @@ class SearchController < ApplicationController
   def findResearchers
   	logger.debug @query
   	@query = flash[:query]
-    searchTerms = @query.split
-    @results = []
-    searchTerms.each do |term|
-      term = '%' + term + '%'
-      researchersFirstName = Researcher.where("first_name LIKE ?", term)
-      unless researchersFirstName.empty?
-        @results += researchersFirstName
-      end
-      researchersLastName = Researcher.where("last_name LIKE ?", term)
-      unless researchersLastName.empty?
-        @results += researchersLastName
-      end
-      @tagged = Researcher.tagged_with(term)
-      unless @tagged.empty?
-        @results += @tagged
-      end
-      schools = School.where("name LIKE ?", term)
-      schools.each do |school|
-        @results += school.researchers
-      end
+    if @query.length > 0
+      searchTerms = @query.split
+      @results = []
+      searchTerms.each do |term|
+        term = '%' + term + '%'
+        researchersFirstName = Researcher.where("first_name LIKE ?", term)
+        unless researchersFirstName.empty?
+          @results += researchersFirstName
+        end
+        researchersLastName = Researcher.where("last_name LIKE ?", term)
+        unless researchersLastName.empty?
+          @results += researchersLastName
+        end
+        @tagged = Researcher.tagged_with(term)
+        unless @tagged.empty?
+          @results += @tagged
+        end
+        schools = School.where("name LIKE ?", term)
+        schools.each do |school|
+          @results += school.researchers
+        end
 
-      schools = School.where("name LIKE ?", term)
-      schools.each do |school|
-        @results += school.researchers
-      end
+        schools = School.where("name LIKE ?", term)
+        schools.each do |school|
+          @results += school.researchers
+        end
 
-      schools = School.where("location LIKE ?", term)
-      schools.each do |school|
-        @results += school.researchers
-      end
+        schools = School.where("location LIKE ?", term)
+        schools.each do |school|
+          @results += school.researchers
+        end
 
-      companies = Company.where("name LIKE ?", term)
-      companies.each do |company|
-        @results += company.researchers
-      end
+        companies = Company.where("name LIKE ?", term)
+        companies.each do |company|
+          @results += company.researchers
+        end
 
-      companies = Company.where("location LIKE ?", term)
-      companies.each do |company|
-        @results += company.researchers
-      end
+        companies = Company.where("location LIKE ?", term)
+        companies.each do |company|
+          @results += company.researchers
+        end
 
-      labs = ResearchLab.where("name LIKE ?", term)
-      labs.each do |lab|
-        @results += lab.researchers
-      end
+        labs = ResearchLab.where("name LIKE ?", term)
+        labs.each do |lab|
+          @results += lab.researchers
+        end
 
-      labs = ResearchLab.where("location LIKE ?", term)
-      labs.each do |lab|
-        @results += lab.researchers
-      end
-
+        labs = ResearchLab.where("location LIKE ?", term)
+        labs.each do |lab|
+          @results += lab.researchers
+        end
     end
 
     @researchers = @results
@@ -102,12 +102,17 @@ class SearchController < ApplicationController
 
 
     @pq = PQueue.new(arrayForPQ){ |a,b| a[:priority] > b[:priority] }
+    else
+        redirect_to :controller => "researchers", :action => "index"
+    end
     
   end
 
    def findGroups
     logger.debug @query
     @query = flash[:query]
+  if @query.length > 0
+
     searchTerms = @query.split
     @results = []
     searchTerms.each do |term|
@@ -149,12 +154,16 @@ class SearchController < ApplicationController
 
 
     @pq = PQueue.new(arrayForPQ){ |a,b| a[:priority] > b[:priority] }
-
+    else
+        redirect_to :controller => "projects", :action => "index"
+    end
   end
 
    def findProjects
     logger.debug @query
     @query = flash[:query]
+    if @query.length > 0
+
     searchTerms = @query.split
     @results = []
     searchTerms.each do |term|
@@ -195,5 +204,9 @@ class SearchController < ApplicationController
 
 
     @pq = PQueue.new(arrayForPQ){ |a,b| a[:priority] > b[:priority] }
+     else
+        redirect_to :controller => "groups", :action => "index"
+    end
   end
+ 
 end
